@@ -1,0 +1,11 @@
+id,name,email,industry,description,preferred_gpa_min,preferred_skills,preferred_experience_type,internship_required,created_at
+1,테크스타트업 A,hr@techstartup-a.com,IT/Software,"AI 기반 채용 플랫폼을 개발하는 스타트업. 혁신적인 기술과 빠른 성장을 추구합니다.",3.5,"React, TypeScript, Node.js",Backend Engineer,Yes,2026-01-10
+2,데이터 소프트 B,recruit@datasoft-b.com,IT/Big Data,"빅데이터 분석 솔루션을 제공하는 기업. 데이터 과학과 머신러닝에 전문.",3.6,"Python, Pandas, Scikit-learn",Data Scientist,Yes,2026-01-15
+3,웹디자인 스튜디오 C,careers@webstudio-c.com,Design/Web,"반응형 웹 디자인과 프론트엔드 개발을 전문. 창의적인 솔루션을 제공.",3.4,"React, Vue, CSS",Frontend Engineer,No,2026-01-20
+4,엔터프라이즈 솔루션 D,jobs@esol-d.com,Enterprise Software,"대규모 기업용 ERP 솔루션을 개발. 안정성과 확장성이 중요.",3.7,"Java, Spring Boot, Oracle",Senior Developer,No,2026-01-25
+5,클라우드 인프라 E,careers@cloudinfra-e.com,Cloud Services,"AWS 기반 클라우드 인프라를 관리. DevOps와 SRE에 특화.",3.8,"Go, Docker, Kubernetes",DevOps Engineer,Yes,2026-02-01
+6,게임개발 스튜디오 F,recruit@gamestudio-f.com,Gaming,"3D 게임과 그래픽 엔진 개발. 최신 기술 활용.",3.5,"C++, Unreal Engine, GLSL",Graphics Engineer,No,2026-02-05
+7,이커머스 플랫폼 G,hr@ecommerce-g.com,E-commerce,"온라인 쇼핑 플랫폼 운영. 규모있는 트래픽 처리.",3.6,"JavaScript, Node.js, React",Full-Stack Developer,Yes,2026-02-10
+8,핀테크 스타트업 H,careers@fintech-h.com,Financial Tech,"블록체인 기반 금융 기술 개발. 보안과 성능이 최우선.",3.7,"Rust, Solidity, TypeScript",Blockchain Developer,Yes,2026-02-15
+9,모빌 앱 회사 I,jobs@mobileapp-i.com,Mobile,"iOS/Android 네이티브 앱 개발. 사용자 경험 중심.",3.5,"Swift, Kotlin, React Native",Mobile Developer,No,2026-02-20
+10,SaaS 솔루션 J,recruit@saas-j.com,SaaS,"B2B SaaS 제품 개발. 스케일러블한 백엔드 구축.",3.6,"PostgreSQL, Redis, Python, Go",Backend Engineer,Yes,2026-02-25

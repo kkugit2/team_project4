@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>기업 상세 정보</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --color-primary-blue: #0052CC;
+            --color-primary-green: #2ECC40;
+            --color-primary-orange: #FF8C00;
+            --color-light-gray: #F5F7FA;
+            --color-medium-gray: #8A92A6;
+            --color-dark-gray: #2C3E50;
+            --color-white: #FFFFFF;
+            --color-error: #DC3545;
+
+            --font-size-h1: 32px;
+            --font-size-h2: 24px;
+            --font-size-h3: 18px;
+            --font-size-body-large: 16px;
+            --font-size-body: 14px;
+            --font-size-small: 12px;
+
+            --spacing-xs: 4px;
+            --spacing-sm: 8px;
+            --spacing-md: 16px;
+            --spacing-lg: 24px;
+            --spacing-xl: 32px;
+            --spacing-2xl: 48px;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+            background-color: var(--color-light-gray);
+            color: var(--color-dark-gray);
+        }
+
+        header {
+            background-color: var(--color-white);
+            border-bottom: 1px solid #E8ECEF;
+            padding: var(--spacing-md) var(--spacing-lg);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 60px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+        }
+
+        .header-left button {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .header-left h1 {
+            font-size: var(--font-size-h2);
+            font-weight: 700;
+        }
+
+        .bookmark-btn {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 200ms ease-out;
+        }
+
+        .bookmark-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .bookmark-btn.bookmarked {
+            color: var(--color-primary-orange);
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: var(--spacing-xl) var(--spacing-lg);
+        }
+
+        /* 회사 배경 */
+        .company-banner {
+            height: 200px;
+            background: linear-gradient(135deg, #0052CC 0%, #003DA8 100%);
+            border-radius: 12px;
+            margin-bottom: -40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* 회사 헤더 */
+        .company-header {
+            background-color: var(--color-white);
+            border-radius: 12px;
+            padding: var(--spacing-2xl) var(--spacing-lg);
+            margin-bottom: var(--spacing-xl);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+            display: flex;
+            gap: var(--spacing-lg);
+            align-items: flex-start;
+        }
+
+        .company-logo {
+            width: 80px;
+            height: 80px;
+            border-radius: 12px;
+            background-color: #DDD;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            flex-shrink: 0;
+        }
+
+        .company-info h1 {
+            font-size: var(--font-size-h1);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .company-info-row {
+            display: flex;
+            gap: var(--spacing-md);
+            flex-wrap: wrap;
+            margin-bottom: var(--spacing-md);
+            font-size: var(--font-size-body);
+        }
+
+        .company-industry {
+            color: var(--color-primary-blue);
+            font-weight: 600;
+        }
+
+        .company-location {
+            color: var(--color-medium-gray);
+        }
+
+        .company-size {
+            color: var(--color-medium-gray);
+        }
+
+        /* 카드 */
+        .card {
+            background-color: var(--color-white);
+            border: 1px solid #E8ECEF;
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+            margin-bottom: var(--spacing-lg);
+            transition: all 200ms ease-out;
+        }
+
+        .card:hover {
+            border-color: var(--color-primary-blue);
+            box-shadow: 0 4px 12px rgba(0, 82, 204, 0.12);
+            transform: translateY(-2px);
+        }
+
+        /* 합격 확률 카드 */
+        .pass-rate-card {
+            background-color: #F0F8F0;
+            border-color: var(--color-primary-green);
+        }
+
+        .pass-rate-card.orange {
+            background-color: #FFF4E6;
+            border-color: var(--color-primary-orange);
+        }
+
+        .pass-rate-card.red {
+            background-color: #FFE6E6;
+            border-color: var(--color-error);
+        }
+
+        .pass-rate-header {
+            font-size: var(--font-size-h3);
+            font-weight: 600;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .pass-rate-number {
+            font-size: var(--font-size-h1);
+            font-weight: 700;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .pass-rate-number.green {
+            color: var(--color-primary-green);
+        }
+
+        .pass-rate-number.orange {
+            color: var(--color-primary-orange);
+        }
+
+        .pass-rate-number.red {
+            color: var(--color-error);
+        }
+
+        .pass-rate-desc {
+            font-size: var(--font-size-small);
+            color: var(--color-medium-gray);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .checklist {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-sm);
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            font-size: var(--font-size-body);
+        }
+
+        .checklist-item.checked {
+            color: var(--color-primary-green);
+        }
+
+        .checklist-item.unchecked {
+            color: var(--color-medium-gray);
+        }
+
+        /* 섹션 제목 */
+        .section-title {
+            font-size: var(--font-size-h2);
+            font-weight: 700;
+            margin: var(--spacing-xl) 0 var(--spacing-lg) 0;
+            color: var(--color-dark-gray);
+        }
+
+        /* 버튼 */
+        button {
+            padding: var(--spacing-sm) var(--spacing-lg);
+            font-size: var(--font-size-body);
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 200ms ease-out;
+        }
+
+        button.primary {
+            background-color: var(--color-primary-blue);
+            color: var(--color-white);
+            height: 48px;
+            width: 100%;
+        }
+
+        button.primary:hover {
+            background-color: #003DA8;
+            box-shadow: 0 4px 12px rgba(0, 82, 204, 0.2);
+            transform: translateY(-1px);
+        }
+
+        button.secondary {
+            background-color: var(--color-light-gray);
+            color: var(--color-primary-blue);
+            border: 1px solid var(--color-medium-gray);
+            height: 40px;
+        }
+
+        button.secondary:hover {
+            background-color: #E8ECEF;
+        }
+
+        button.success {
+            background-color: var(--color-primary-green);
+            color: var(--color-white);
+            height: 40px;
+        }
+
+        .button-group {
+            display: flex;
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .button-group button {
+            flex: 1;
+        }
+
+        /* 기업 소개 */
+        .description {
+            font-size: var(--font-size-body-large);
+            line-height: 1.6;
+            color: var(--color-dark-gray);
+            margin-bottom: var(--spacing-lg);
+            display: -webkit-box;
+            -webkit-line-clamp: 4;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .read-more {
+            color: var(--color-primary-blue);
+            text-decoration: underline;
+            cursor: pointer;
+            font-size: var(--font-size-body);
+            background: none;
+            border: none;
+            padding: 0;
+        }
+
+        /* 포지션 카드 */
+        .position-card {
+            background-color: var(--color-white);
+            border: 1px solid #E8ECEF;
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+            margin-bottom: var(--spacing-md);
+            transition: all 200ms ease-out;
+        }
+
+        .position-card:hover {
+            border-color: var(--color-primary-blue);
+            box-shadow: 0 4px 12px rgba(0, 82, 204, 0.12);
+            transform: translateY(-2px);
+        }
+
+        .position-title {
+            font-size: var(--font-size-h3);
+            font-weight: 600;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .position-meta {
+            font-size: var(--font-size-small);
+            color: var(--color-medium-gray);
+            margin-bottom: var(--spacing-md);
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-xs);
+        }
+
+        .position-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--spacing-xs);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .tag {
+            background-color: var(--color-light-gray);
+            color: var(--color-dark-gray);
+            padding: var(--spacing-xs) var(--spacing-md);
+            border-radius: 4px;
+            font-size: var(--font-size-small);
+        }
+
+        .position-actions {
+            display: flex;
+            gap: var(--spacing-sm);
+        }
+
+        .position-actions a {
+            color: var(--color-primary-blue);
+            text-decoration: underline;
+            cursor: pointer;
+            font-size: var(--font-size-body);
+            flex: 1;
+        }
+
+        /* 기업 정보 그리드 */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--spacing-lg);
+            margin-bottom: var(--spacing-lg);
+            padding: var(--spacing-lg);
+            background-color: var(--color-light-gray);
+            border-radius: 12px;
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-xs);
+        }
+
+        .info-item-label {
+            font-size: var(--font-size-small);
+            color: var(--color-medium-gray);
+            font-weight: 500;
+        }
+
+        .info-item-value {
+            font-size: var(--font-size-body);
+            color: var(--color-dark-gray);
+        }
+
+        /* 복리후생 */
+        .benefits-list {
+            list-style: none;
+        }
+
+        .benefits-list li {
+            font-size: var(--font-size-body);
+            color: var(--color-dark-gray);
+            margin-bottom: var(--spacing-sm);
+            padding-left: var(--spacing-md);
+            position: relative;
+        }
+
+        .benefits-list li:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+        }
+
+        /* 외부 링크 */
+        .external-link {
+            color: var(--color-primary-blue);
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        /* 배지 */
+        .badge {
+            background-color: var(--color-primary-orange);
+            color: var(--color-white);
+            padding: var(--spacing-xs) var(--spacing-md);
+            border-radius: 4px;
+            font-size: var(--font-size-small);
+            font-weight: 500;
+        }
+
+        .deadline-warning {
+            background-color: var(--color-error);
+            color: var(--color-white);
+        }
+
+        /* 반응형 */
+        @media (max-width: 479px) {
+            .container {
+                padding: var(--spacing-lg) var(--spacing-md);
+            }
+
+            .company-header {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            .company-info-row {
+                flex-direction: column;
+                justify-content: center;
+            }
+
+            .button-group {
+                flex-direction: column;
+                gap: 0;
+            }
+
+            .button-group button {
+                width: 100%;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .company-header {
+                align-items: center;
+            }
+
+            .container {
+                padding: var(--spacing-2xl) var(--spacing-lg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 헤더 -->
+    <header>
+        <div class="header-left">
+            <button onclick="goBack()">←</button>
+            <h1>기업 정보</h1>
+        </div>
+        <button class="bookmark-btn" id="bookmarkBtn" onclick="toggleBookmark()">🤍</button>
+    </header>
+
+    <div class="container">
+        <!-- 배경 배너 -->
+        <div class="company-banner"></div>
+
+        <!-- 회사 헤더 -->
+        <div class="company-header">
+            <div class="company-logo">🏢</div>
+            <div class="company-info" style="flex: 1;">
+                <h1 id="companyName">테크스타트업 A</h1>
+                <div class="company-info-row">
+                    <span class="company-industry" id="industry">IT/Software</span>
+                    <span class="company-location" id="location">서울시 강남구</span>
+                    <span class="company-size" id="size">직원 50-100명</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 합격 확률 카드 -->
+        <div id="passRateCard" class="card pass-rate-card">
+            <div class="pass-rate-header">합격 확률</div>
+            <div class="pass-rate-number" id="passRateNumber">75%</div>
+            <div class="pass-rate-desc" id="passRateDesc">요구사항 4개 중 3개 충족</div>
+
+            <div class="checklist">
+                <div class="checklist-item checked" id="check1">✓ 학점 (3.5 이상)</div>
+                <div class="checklist-item checked" id="check2">✓ 기술스택 (React)</div>
+                <div class="checklist-item checked" id="check3">✓ 경험 (2년 이상)</div>
+                <div class="checklist-item unchecked" id="check4">✗ 인턴십 경험</div>
+            </div>
+
+            <div class="pass-rate-desc" style="margin-top: var(--spacing-lg); font-size: var(--font-size-small);">
+                정보를 업데이트하면 합격 확률이 변경됩니다
+            </div>
+        </div>
+
+        <!-- 지원 액션 -->
+        <div class="button-group">
+            <button class="primary" onclick="applyCompany()">지원하기</button>
+            <button class="secondary" id="appliedBtn" onclick="toggleApplied()">지원 완료</button>
+        </div>
+
+        <!-- 기업 소개 -->
+        <h2 class="section-title">기업 소개</h2>
+        <div class="card">
+            <p class="description" id="description">
+                우리는 AI를 통해 채용 경험을 혁신하는 스타트업입니다.
+                구직자와 기업 모두에게 최적화된 채용 매칭 경험을 제공합니다.
+                혁신적인 기술과 빠른 성장을 추구하는 팀입니다.
+            </p>
+        </div>
+
+        <!-- 채용 포지션 -->
+        <h2 class="section-title">채용 중인 포지션</h2>
+        <div id="positionList"></div>
+
+        <!-- 기업 정보 -->
+        <h2 class="section-title">기업 정보</h2>
+        <div class="info-grid">
+            <div class="info-item">
+                <div class="info-item-label">업계</div>
+                <div class="info-item-value" id="infoIndustry">IT, 소프트웨어</div>
+            </div>
+            <div class="info-item">
+                <div class="info-item-label">규모</div>
+                <div class="info-item-value" id="infoSize">50~100명</div>
+            </div>
+            <div class="info-item">
+                <div class="info-item-label">설립</div>
+                <div class="info-item-value" id="infoFounded">2020년 1월</div>
+            </div>
+            <div class="info-item">
+                <div class="info-item-label">근무 형태</div>
+                <div class="info-item-value" id="infoWorkType">하이브리드</div>
+            </div>
+        </div>
+
+        <!-- 복리후생 -->
+        <h2 class="section-title">복리후생</h2>
+        <div class="card">
+            <ul class="benefits-list" id="benefitsList">
+                <li>국민/건강/고용 보험</li>
+                <li>연차, 반차, 병가</li>
+                <li>러닝클럽, 스터디 모임</li>
+                <li>주 2회 홈오피스 가능</li>
+            </ul>
+        </div>
+
+        <!-- 더 알아보기 -->
+        <h2 class="section-title">더 알아보기</h2>
+        <div class="card" style="padding: var(--spacing-lg);">
+            <p style="margin-bottom: var(--spacing-md);">
+                <a href="https://example.com" target="_blank" rel="noopener noreferrer" class="external-link">회사 홈페이지 방문 →</a>
+            </p>
+            <p>
+                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="external-link">LinkedIn 페이지 →</a>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // 더미 회사 데이터
+        const companyData = {
+            id: 1,
+            name: '테크스타트업 A',
+            industry: 'IT/Software',
+            description: '우리는 AI를 통해 채용 경험을 혁신하는 스타트업입니다. 구직자와 기업 모두에게 최적화된 채용 매칭 경험을 제공합니다. 혁신적인 기술과 빠른 성장을 추구하는 팀입니다.',
+            location: '서울시 강남구 테헤란로 123',
+            size: '50-100명',
+            founded: '2020년 1월',
+            workType: '하이브리드',
+            benefits: [
+                '국민/건강/고용 보험',
+                '연차, 반차, 병가',
+                '러닝클럽, 스터디 모임',
+                '주 2회 홈오피스 가능'
+            ],
+            positions: [
+                {
+                    id: 1,
+                    title: 'Senior Backend Engineer',
+                    requirements: '경력: 3년 이상 (필수)',
+                    skills: ['Python', 'Go', 'AWS'],
+                    location: '서울 강남',
+                    deadline: '2026-08-15',
+                    isUrgent: false
+                },
+                {
+                    id: 2,
+                    title: 'Frontend Engineer',
+                    requirements: '경력: 신입 가능',
+                    skills: ['React', 'TypeScript', 'CSS'],
+                    location: '서울 강남',
+                    deadline: '2026-07-30',
+                    isUrgent: true
+                },
+                {
+                    id: 3,
+                    title: 'DevOps Engineer',
+                    requirements: '경력: 2년 이상',
+                    skills: ['Docker', 'Kubernetes', 'AWS'],
+                    location: '서울 강남',
+                    deadline: '2026-08-20',
+                    isUrgent: false
+                }
+            ]
+        };
+
+        // 더미 사용자 데이터
+        const userData = {
+            gpa: 3.8,
+            skills: ['React', 'TypeScript', 'Node.js'],
+            experience: '2년',
+            internship: true
+        };
+
+        let isBookmarked = false;
+        let isApplied = false;
+
+        // 초기화
+        function init() {
+            renderCompanyInfo();
+            renderPassRate();
+            renderPositions();
+        }
+
+        // 회사 정보 표시
+        function renderCompanyInfo() {
+            document.getElementById('companyName').textContent = companyData.name;
+            document.getElementById('industry').textContent = companyData.industry;
+            document.getElementById('location').textContent = companyData.location;
+            document.getElementById('size').textContent = `직원 ${companyData.size}`;
+            document.getElementById('description').textContent = companyData.description;
+            document.getElementById('infoIndustry').textContent = companyData.industry;
+            document.getElementById('infoSize').textContent = companyData.size;
+            document.getElementById('infoFounded').textContent = companyData.founded;
+            document.getElementById('infoWorkType').textContent = companyData.workType;
+
+            const benefitsList = document.getElementById('benefitsList');
+            benefitsList.innerHTML = '';
+            companyData.benefits.forEach(benefit => {
+                const li = document.createElement('li');
+                li.textContent = benefit;
+                benefitsList.appendChild(li);
+            });
+        }
+
+        // 합격 확률 계산 및 표시
+        function renderPassRate() {
+            let met = 0;
+            let total = 4;
+
+            // 학점: 3.5 이상
+            if (userData.gpa >= 3.5) {
+                met++;
+                document.getElementById('check1').className = 'checklist-item checked';
+                document.getElementById('check1').textContent = '✓ 학점 (3.5 이상)';
+            } else {
+                document.getElementById('check1').className = 'checklist-item unchecked';
+                document.getElementById('check1').textContent = '✗ 학점 (3.5 이상)';
+            }
+
+            // 기술스택: React 필요
+            if (userData.skills.includes('React')) {
+                met++;
+                document.getElementById('check2').className = 'checklist-item checked';
+                document.getElementById('check2').textContent = '✓ 기술스택 (React)';
+            } else {
+                document.getElementById('check2').className = 'checklist-item unchecked';
+                document.getElementById('check2').textContent = '✗ 기술스택 (React)';
+            }
+
+            // 경험: 2년 이상
+            if (userData.experience >= '2년') {
+                met++;
+                document.getElementById('check3').className = 'checklist-item checked';
+                document.getElementById('check3').textContent = '✓ 경험 (2년 이상)';
+            } else {
+                document.getElementById('check3').className = 'checklist-item unchecked';
+                document.getElementById('check3').textContent = '✗ 경험 (2년 이상)';
+            }
+
+            // 인턴십: 있어야 함
+            if (userData.internship) {
+                met++;
+                document.getElementById('check4').className = 'checklist-item checked';
+                document.getElementById('check4').textContent = '✓ 인턴십 경험';
+            } else {
+                document.getElementById('check4').className = 'checklist-item unchecked';
+                document.getElementById('check4').textContent = '✗ 인턴십 경험';
+            }
+
+            const passRate = Math.round((met / total) * 100);
+            document.getElementById('passRateNumber').textContent = passRate + '%';
+            document.getElementById('passRateDesc').textContent = `요구사항 ${total}개 중 ${met}개 충족`;
+
+            // 색상 결정
+            const card = document.getElementById('passRateCard');
+            const number = document.getElementById('passRateNumber');
+
+            card.classList.remove('orange', 'red');
+            number.classList.remove('orange', 'red');
+
+            if (passRate >= 75) {
+                card.classList.add('pass-rate-card');
+                number.classList.add('green');
+            } else if (passRate >= 50) {
+                card.classList.add('orange');
+                number.classList.add('orange');
+            } else {
+                card.classList.add('red');
+                number.classList.add('red');
+            }
+        }
+
+        // 포지션 표시
+        function renderPositions() {
+            const list = document.getElementById('positionList');
+            list.innerHTML = '';
+
+            companyData.positions.forEach(position => {
+                const deadline = new Date(position.deadline);
+                const today = new Date();
+                const daysLeft = Math.ceil((deadline - today) / (1000 * 60 * 60 * 24));
+                const isUrgent = daysLeft <= 7;
+
+                let badgeHtml = '';
+                if (isUrgent) {
+                    badgeHtml = `<div class="badge deadline-warning">🔴 마감 임박 ${daysLeft}일</div>`;
+                }
+
+                const card = document.createElement('div');
+                card.className = 'position-card';
+                card.innerHTML = `
+                    <div class="position-title">${position.title}</div>
+                    <div class="position-meta">
+                        <div>${position.requirements}</div>
+                        <div>${position.location} | 마감: ${position.deadline}</div>
+                    </div>
+                    ${badgeHtml}
+                    <div class="position-tags">
+                        ${position.skills.map(skill => `<span class="tag">${skill}</span>`).join('')}
+                    </div>
+                    <div class="position-actions">
+                        <a onclick="openPosition('${position.title}')">공고 보기 →</a>
+                    </div>
+                `;
+                list.appendChild(card);
+            });
+        }
+
+        // 찜하기
+        function toggleBookmark() {
+            isBookmarked = !isBookmarked;
+            const btn = document.getElementById('bookmarkBtn');
+            if (isBookmarked) {
+                btn.textContent = '❤️';
+                btn.classList.add('bookmarked');
+            } else {
+                btn.textContent = '🤍';
+                btn.classList.remove('bookmarked');
+            }
+        }
+
+        // 지원하기
+        function applyCompany() {
+            window.open('https://www.wanted.co.kr', '_blank', 'noopener,noreferrer');
+        }
+
+        // 지원 완료 토글
+        function toggleApplied() {
+            isApplied = !isApplied;
+            const btn = document.getElementById('appliedBtn');
+            if (isApplied) {
+                btn.classList.remove('secondary');
+                btn.classList.add('success');
+                btn.textContent = '✓ 지원됨';
+            } else {
+                btn.classList.remove('success');
+                btn.classList.add('secondary');
+                btn.textContent = '지원 완료';
+            }
+        }
+
+        // 공고 보기
+        function openPosition(title) {
+            alert(`"${title}" 공고 상세 페이지로 이동합니다.`);
+            window.open('https://www.wanted.co.kr', '_blank', 'noopener,noreferrer');
+        }
+
+        // 뒤로가기
+        function goBack() {
+            window.history.back();
+        }
+
+        // 페이지 로드
+        window.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>

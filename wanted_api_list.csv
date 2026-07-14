@@ -1,0 +1,83 @@
+﻿Version,Server URL,Path,Method,Summary,Tags,Description,Parameters,Has Request Body,Request Body Detail,Responses,Operation ID
+V1,/v1,/ai/pass/text-prediction/async,POST,[유료] 텍스트 서류합격예측 실행(비동기),AI,"**본 API는 별도의 계약후 사용이 가능합니다.(문의 : team-ml@wantedlab.com)**
+
+비동기로 예측을 실행하므로 API호출 즉시 완료되며 callback_url로 결과가 전달됩니다.**(한번 호출 시 입력데이터는 최대 50개 입니다.)**",,Yes,Content-Type: application/json (Required),200: Successful Response | 422: 필수 요청 데이터 누락 | 401: 비인증 사용자,_유료__텍스트_서류합격예측_실행_비동기__ai_pass_text_prediction_async_post
+V1,/v1,/ai/apply/text-prediction/async,POST,[유료] 텍스트 지원예측 실행(비동기),AI,"**본 API는 별도의 계약후 사용이 가능합니다.(문의 : team-ml@wantedlab.com)**
+
+비동기로 예측을 실행하므로 API호출 즉시 완료되며 callback_url로 결과가 전달됩니다.**(한번 호출 시 입력데이터는 최대 50개 입니다.)**",,Yes,Content-Type: application/json (Required),200: Successful Response | 422: 필수 요청 데이터 누락 | 401: 비인증 사용자,_유료__텍스트_지원예측_실행_비동기__ai_apply_text_prediction_async_post
+V1,/v1,/companies/{company_id},GET,기업 상세 조회,Company,,#NAME?,No,,200: Successful Response | 422: 필수 요청 데이터 누락 | 401: 비인증 사용자 | 400: Bad Request,get_company_companies__company_id__get
+V1,/v1,/companies/{company_id}/jobs,GET,기업의 채용 중인 포지션 목록 조회,Company,,"- company_id (path, integer, required)
+- offset (query, integer, optional)
+- limit (query, integer, optional)",No,,200: Successful Response | 422: 필수 요청 데이터 누락 | 401: 비인증 사용자,get_company_job_list_companies__company_id__jobs_get
+V1,/v1,/jobs,GET,(탐색) 포지션 리스트 조회 -- v2 api 사용을 권장합니다.,Job,,"- category_tags (query, array[integer], optional): 직군/직무 태그ID(최대 5개)
+- skill_tags (query, array[integer], optional): 스킬 태그 ID(최대 5개)
+- years (query, array[integer], optional): 경력. 10 입력시 연차 10년 이상의 포지션 노출됨
+- locations (query, array[string], optional): 지역. 국가
+- sort (query, any, optional): 정렬
+- offset (query, integer, optional)
+- limit (query, integer, optional)",No,,200: Successful Response | 422: 필수 요청 데이터 누락 | 401: 비인증 사용자,get_job_list_jobs_get
+V1,/v1,/jobs/{job_id},GET,포지션 상세 조회,Job,,#NAME?,No,,200: Successful Response | 422: 필수 요청 데이터 누락 | 401: 비인증 사용자 | 400: Bad Request,get_job_jobs__job_id__get
+V1,/v1,/tags/categories,GET,직군/직무 리스트 조회,Tag,,,No,,200: Successful Response | 422: 필수 요청 데이터 누락 | 401: 비인증 사용자,get_categories_tags_categories_get
+V1,/v1,/tags/skills,GET,스킬 리스트 조회,Tag,,#NAME?,No,,200: Successful Response | 422: 필수 요청 데이터 누락 | 401: 비인증 사용자,get_skills_tags_skills_get
+V1,/v1,/tags/attractions,GET,매력태그 리스트 조회,Tag,,,No,,200: Successful Response | 422: 필수 요청 데이터 누락 | 401: 비인증 사용자,get_attraction_tags_tags_attractions_get
+V1,/v1,/search/company/autocomplete,GET,회사명 자동 완성,Search,,#NAME?,No,,200: Successful Response | 422: 필수 요청 데이터 누락 | 401: 비인증 사용자,autocomplete_search_company_autocomplete_get
+V1,/v1,/search/company,GET,회사 검색,Search,,"- query (query, string, required): 검색할 회사명, 또는 사업자번호
+- offset (query, integer, optional)
+- limit (query, integer, optional)",No,,200: Successful Response | 422: 필수 요청 데이터 누락 | 401: 비인증 사용자,search_companies_search_company_get
+V1,/v1,/search/position,GET,포지션 검색,Search,,"- query (query, string, required): 검색할 키워드
+- years (query, integer, optional): 지원가능한 년차
+- offset (query, integer, optional)
+- limit (query, integer, optional)",No,,200: Successful Response | 422: 필수 요청 데이터 누락 | 401: 비인증 사용자,search_positions_search_position_get
+V1,/v1,/stat/application/summary,GET,(클라이언트별) 지원 현황 summary 조회,Stat,,"- start_date (query, string, optional): 지원서 제출 날짜 시작 범위 (포맷: YYYY-MM-DD)
+- end_date (query, string, optional): 지원서 제출 날짜 종료 범위 (포맷: YYYY-MM-DD)",No,,200: Successful Response | 422: 필수 요청 데이터 누락 | 401: 비인증 사용자 | 400: Bad Request,get_application_summary_by_client_stat_application_summary_get
+V1,/v1,/insight/company,GET,회사상세 정보 조회,Insight,,#NAME?,No,,200: Successful Response | 422: 필수 요청 데이터 누락 | 401: 비인증 사용자 | 400: Bad Request | 503: Service Unavailable,get_company_data_insight_company_get
+V1,/v1,/recruit-company/company/info,GET,기업 정보 조회,recruit-company,기업 기본 정보를 조회합니다.,#NAME?,No,,200: Successful Response | 422: 필수 요청 데이터 누락 | 401: 비인증 사용자,get_company_info_recruit_company_company_info_get
+V1,/v1,/recruit-company/position,GET,공고 목록 조회,recruit-company,"해당 기업의 공고 전체를 조회합니다.
+    게시대기중, 승인 요청중, 게시중인 공고만 확인할 수 있습니다.",#NAME?,No,,200: Successful Response | 422: 필수 요청 데이터 누락 | 401: 비인증 사용자,get_company_position_list_recruit_company_position_get
+V1,/v1,/recruit-company/position,POST,공고 등록,recruit-company,,#NAME?,Yes,Content-Type: application/json (Required),200: Successful Response | 422: 필수 요청 데이터 누락 | 401: 비인증 사용자,post_company_recruit_company_position_post
+V1,/v1,/recruit-company/position/{position_id},GET,공고 상세 조회,recruit-company,,#NAME?,No,,200: Successful Response | 422: 필수 요청 데이터 누락 | 401: 비인증 사용자,get_company_position_recruit_company_position__position_id__get
+V1,/v1,/recruit-company/position/{position_id},DELETE,공고 삭제,recruit-company,,#NAME?,No,,200: Successful Response | 422: 필수 요청 데이터 누락 | 401: 비인증 사용자,delete_company_position_recruit_company_position__position_id__delete
+V1,/v1,/recruit-company/position/{position_id},PATCH,공고 수정,recruit-company,"공고 내용을 수정합니다.
+첫 depth의 값들은 수정하고 싶은 값만 전달하면 되지만, detail의 내용의 경우 한 세트로 취급됩니다.
+(ex : detail의 intro만 변경하고 싶어도, 나머지 main_tasks 등의 패러미터 값도 같이 전달해야 합니다.)",#NAME?,Yes,Content-Type: application/json (Required),200: Successful Response | 422: 필수 요청 데이터 누락 | 401: 비인증 사용자,patch_company_position_recruit_company_position__position_id__patch
+V1,/v1,/recruit-company/position/{position_id}/close_position,DELETE,공고 마감,recruit-company,,#NAME?,No,,200: Successful Response | 422: 필수 요청 데이터 누락 | 401: 비인증 사용자,close_company_position_recruit_company_position__position_id__close_position_delete
+V1,/v1,/recruit-company/applications/{application_id}/process,POST,지원서 처리,recruit-company,,#NAME?,Yes,Content-Type: application/json (Required),200: Successful Response | 422: 필수 요청 데이터 누락 | 401: 비인증 사용자,post_application_recruit_company_applications__application_id__process_post
+V1,/v1,/recruit-company/applications/details,GET,지원서 목록 상세 조회,recruit-company,,"- application_ids (query, array[integer], optional)
+- position_ids (query, array[integer], optional)
+- filter_status (query, array[string], optional)
+- is_open (query, boolean, optional)
+- x-wanted-dashboard-service-key (header, string, required)",No,,200: Successful Response | 422: 필수 요청 데이터 누락 | 401: 비인증 사용자,get_detailed_applications_recruit_company_applications_details_get
+V1,/v1,/recruit-company/applications,GET,지원서 목록 조회,recruit-company,,"- application_ids (query, array[integer], optional)
+- position_ids (query, array[integer], optional)
+- filter_status (query, array[string], optional)
+- is_open (query, boolean, optional)
+- x-wanted-dashboard-service-key (header, string, required)",No,,200: Successful Response | 422: 필수 요청 데이터 누락 | 401: 비인증 사용자,get_applications_recruit_company_applications_get
+V1,/v1,/recruit-company/application/{application_id},GET,지원서 이력서 목록 조회,recruit-company,,#NAME?,No,,200: Successful Response | 422: 필수 요청 데이터 누락 | 401: 비인증 사용자,get_application_resumes_recruit_company_application__application_id__get
+V1,/v1,/recruit-company/application/{application_id}/download/{resume_key},GET,지원서 이력서 다운로드,recruit-company,,#NAME?,No,,200: Successful Response | 422: 필수 요청 데이터 누락 | 401: 비인증 사용자,download_application_resume_recruit_company_application__application_id__download__resume_key__get
+V1,/v1,/ats/company-info,GET,기업 정보 조회,ats,기업 기본 정보를 조회합니다.,#NAME?,No,,200: Successful Response | 422: 필수 요청 데이터 누락 | 401: 비인증 사용자,get_company_info_ats_company_info_get
+V1,/v1,/ats/positions,GET,공고 목록 조회,ats,,"- search_keyword (query, string, optional): 공고명 검색 키워드
+- limit (query, integer, optional): 페이지당 개수
+- offset (query, integer, optional): offset
+- x-wanted-dashboard-service-key (header, string, required)",No,,200: Successful Response | 422: 필수 요청 데이터 누락 | 401: 비인증 사용자,get_positions_ats_positions_get
+V1,/v1,/ats/position/{position_id},GET,공고 상세 정보 조회,ats,,#NAME?,No,,200: Successful Response | 422: 필수 요청 데이터 누락 | 401: 비인증 사용자,get_position_detail_ats_position__position_id__get
+V1,/v1,/ats/position/{position_id},DELETE,공고 삭제,ats,,#NAME?,No,,200: Successful Response | 422: 필수 요청 데이터 누락 | 401: 비인증 사용자,delete_position_detail_ats_position__position_id__delete
+V1,/v1,/ats/position/{position_id},PATCH,공고 상세 정보 수정,ats,,#NAME?,Yes,Content-Type: application/json (Required),200: Successful Response | 422: 필수 요청 데이터 누락 | 401: 비인증 사용자,patch_position_detail_ats_position__position_id__patch
+V1,/v1,/ats/position,POST,공고 등록,ats,,#NAME?,Yes,Content-Type: application/json (Required),200: Successful Response | 422: 필수 요청 데이터 누락 | 401: 비인증 사용자,post_position_detail_ats_position_post
+V1,/v1,/ats/position/{position_id}/hook,POST,공고 연동,ats,,#NAME?,Yes,Content-Type: application/json (Required),200: Successful Response | 422: 필수 요청 데이터 누락 | 401: 비인증 사용자,post_position_hook_ats_position__position_id__hook_post
+V1,/v1,/ats/position/{position_id}/applications,GET,공고 전체 지원서 목록,ats,,"- position_id (path, integer, required)
+- limit (query, integer, optional): 페이지당 개수
+- offset (query, integer, optional): offset
+- x-wanted-dashboard-service-key (header, string, required)",No,,200: Successful Response | 422: 필수 요청 데이터 누락 | 401: 비인증 사용자,get_all_applications_for_position_ats_position__position_id__applications_get
+V1,/v1,/ats/application/{application_id},GET,지원서 개별 조회,ats,,#NAME?,No,,200: Successful Response | 422: 필수 요청 데이터 누락 | 401: 비인증 사용자,get_application_detail_ats_application__application_id__get
+V1,/v1,/ats/application/{application_id},POST,지원서 상태 변경,ats,,#NAME?,Yes,Content-Type: application/json (Required),200: Successful Response | 422: 필수 요청 데이터 누락 | 401: 비인증 사용자,post_application_ats_application__application_id__post
+V1,/v1,/ats/application/{application_id}/file/{file_key},GET,이력서 파일 다운로드,ats,,#NAME?,No,,200: Successful Response | 422: 필수 요청 데이터 누락 | 401: 비인증 사용자,get_download_resume_ats_application__application_id__file__file_key__get
+V2,/v2,/jobs,GET,(탐색) 포지션 리스트 조회,Job,,"- category_tag (query, integer, optional): 직군 태그ID
+- subcategory_tags (query, array[integer], optional): 직무 태그ID(최대 5개)
+- skill_tags (query, array[integer], optional): 스킬 태그 ID(최대 5개)
+- attraction_tags (query, array[integer], optional): 매력 태그 ID(최대 5개)
+- years (query, array[integer], optional): 경력. 10 입력시 연차 10년 이상의 포지션 노출됨
+- locations (query, array[string], optional): 지역. 국가
+- additional_apply_types (query, array[any], optional): 공고 지원 우대 자격
+- sort (query, any, optional): 정렬
+- offset (query, integer, optional)
+- limit (query, integer, optional)",No,,200: Successful Response | 422: 필수 요청 데이터 누락 | 401: 비인증 사용자,get_job_list2_jobs_get
