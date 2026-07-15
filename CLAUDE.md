@@ -40,8 +40,11 @@ data/                    mock 시드 데이터 (jobs, companies, tags, candidate
 types/                   공유 TypeScript 타입 (Backend-Guideline 3장 스키마와 대응)
 ```
 
+## [기획]
+@PRD_all.md
+
 ## [프론트엔드 지침]
-@UI-UX-Guideline.md
+@UI-UX-Guideline_all.md
 
 ## [백엔드 지침]
 @Backend-Guideline.md
