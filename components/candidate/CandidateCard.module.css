@@ -1,0 +1,64 @@
+.row {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.rank {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--muted);
+  width: 24px;
+  flex-shrink: 0;
+  padding-top: 8px;
+}
+
+.info {
+  flex: 1;
+  min-width: 0;
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.head h3 {
+  margin: 0;
+  font-size: 15px;
+}
+
+.meta {
+  margin: 0 0 10px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.skills {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 8px 0;
+}
+
+.excerpt {
+  font-size: 13px;
+  color: var(--text);
+  line-height: 1.6;
+  margin: 8px 0 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.actions {
+  flex-shrink: 0;
+  padding-top: 8px;
+}

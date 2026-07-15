@@ -1,0 +1,10 @@
+.empty {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--text-muted);
+}
+
+.empty a {
+  color: var(--primary);
+  font-weight: 600;
+}

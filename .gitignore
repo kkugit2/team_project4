@@ -1,19 +1,32 @@
+# dependencies
+/node_modules
+node_modules/
+
+# next.js
+/.next/
+.next/
+/out/
+
+# production
+/build
+build/
+dist/
+
+# env
 .env
 .env.local
-.env.*.local
-node_modules/
-dist/
-build/
-.DS_Store
+.env*.local
+
+# misc
 *.log
+.DS_Store
 *.test.js
-.next/
 .idea/
 .vscode/
 *.swp
 *.swo
 *~
 coverage/
-.git/
-package-lock.json
-yarn.lock
+
+# typescript build cache
+tsconfig.tsbuildinfo
