@@ -1,0 +1,11 @@
+id,name,email,gpa,skills,career_history,internship_experience,created_at
+1,김지은,ji.kim@email.com,3.8,"React, TypeScript, Node.js",Backend Engineer 2021-2026,Yes,2026-01-15
+2,이준호,jun.lee@email.com,3.5,"Python, Django, PostgreSQL",Data Analyst 2022-2024,Yes,2026-01-20
+3,박민지,min.park@email.com,3.9,"React, Vue, JavaScript",Frontend Engineer 2020-2026,Yes,2026-02-01
+4,최승현,seung.choi@email.com,3.2,"Java, Spring Boot, AWS",Software Engineer 2019-2025,No,2026-02-10
+5,정수진,su.jung@email.com,3.7,"Go, Rust, Docker",DevOps Engineer 2021-2026,Yes,2026-02-15
+6,양재형,jae.yang@email.com,3.4,"C++, Python, OpenGL",Graphics Engineer,No,2026-02-20
+7,한다은,da.han@email.com,3.6,"React, Next.js, Tailwind",Full-Stack Developer 2022-2026,Yes,2026-03-01
+8,송지훈,ji.song@email.com,3.3,"JavaScript, Express, MongoDB",Web Developer 2020-2024,No,2026-03-10
+9,홍예진,ye.hong@email.com,3.8,"Python, Pandas, Scikit-learn",ML Engineer 2021-2026,Yes,2026-03-15
+10,문준혁,jun.moon@email.com,3.5,"TypeScript, React, GraphQL",Frontend Developer 2022-2026,Yes,2026-03-20
