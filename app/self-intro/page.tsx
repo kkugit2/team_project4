@@ -70,7 +70,7 @@ function SelfIntroPageContent() {
         onSubmit={handleSubmit}
       />
 
-      {feedback && comparison && <FeedbackResult feedback={feedback} comparison={comparison} />}
+      {feedback && comparison && <FeedbackResult content={content} feedback={feedback} comparison={comparison} />}
     </main>
   );
 }

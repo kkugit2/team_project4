@@ -15,16 +15,11 @@
   color: var(--text-muted);
 }
 
-.tabs button.active {
-  color: var(--primary);
-  border-color: var(--primary);
-  background: #eaf1ff;
-}
-
+.tabs button.active,
 .tabs button.companyActive {
-  color: var(--company);
-  border-color: var(--company);
-  background: #f3e8ff;
+  color: var(--navy);
+  border-color: var(--navy);
+  background: var(--navy-100);
 }
 
 .form {

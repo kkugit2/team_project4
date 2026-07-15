@@ -1,0 +1,54 @@
+.originalText {
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--muted);
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  white-space: pre-line;
+  max-height: 200px;
+  overflow-y: auto;
+  margin: 0 0 20px;
+}
+
+.insightGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.card {
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  border: 1px solid transparent;
+}
+
+.strengthCard {
+  background: #eaf3ef;
+  border-color: var(--good);
+}
+
+.weaknessCard {
+  background: #f6e9e6;
+  border-color: var(--warn);
+}
+
+.cardTitle {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin: 0 0 8px;
+}
+
+.list {
+  margin: 0;
+  padding-left: 18px;
+  line-height: 1.7;
+  font-size: 14px;
+}
+
+.comparisonSection {
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}

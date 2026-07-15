@@ -64,3 +64,18 @@ export const computeJobseekerPassProbability = computeMatchScore;
 
 /** 기업 관점: "이 지원자가 우리 인재상에 얼마나 부합하는지" — 4-2에서 사용 (공식은 동일, 인자만 반대) */
 export const computeCandidateFitScore = computeMatchScore;
+
+export const MATCH_CRITERIA_LABELS: Record<keyof MatchBasis, string> = {
+  gpa: "학점",
+  skills: "기술스택",
+  experience: "유사경험",
+  internship: "인턴십",
+};
+
+/** 매칭 게이지 중앙 "충족수/전체" 표기를 위한 헬퍼. 적용된(applicable) 조건 중 몇 개를 충족했는지 센다. */
+export function countApplicableCriteria(basis: MatchBasis): { met: number; applicable: number } {
+  const entries = [basis.gpa, basis.skills, basis.experience, basis.internship];
+  const applicable = entries.filter((c) => c.applicable).length;
+  const met = entries.filter((c) => c.applicable && c.met).length;
+  return { met, applicable };
+}

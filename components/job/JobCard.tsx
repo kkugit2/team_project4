@@ -1,21 +1,21 @@
 "use client";
 
 import Link from "next/link";
-import type { Job } from "@/types";
-import { formatWon } from "@/lib/format";
+import type { Job, MatchScoreResult } from "@/types";
+import { formatWon, formatDday } from "@/lib/format";
 import { Logo } from "@/components/common/Logo";
-import { ScoreBadge } from "@/components/common/ScoreBadge";
+import { MatchGauge } from "@/components/common/MatchGauge";
 import styles from "./JobCard.module.css";
 
 export function JobCard({
   job,
-  passProbability,
+  matchResult,
   applied,
   bookmarked,
   onToggleBookmark,
 }: {
   job: Job;
-  passProbability: number | null;
+  matchResult: MatchScoreResult | null;
   applied: boolean;
   bookmarked: boolean;
   onToggleBookmark?: () => void;
@@ -29,10 +29,11 @@ export function JobCard({
             <h3>{job.companyName}</h3>
             <p className={styles.category}>{job.category}</p>
           </div>
+          <span className={`${styles.dday} mono`}>{formatDday(job.dueTime)}</span>
         </div>
         <p className={styles.position}>{job.position}</p>
 
-        {passProbability !== null && <ScoreBadge label="합격확률" value={passProbability} />}
+        {matchResult && <MatchGauge result={matchResult} size="sm" />}
 
         {applied && <span className="status-pill">지원완료</span>}
 

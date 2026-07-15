@@ -1,0 +1,43 @@
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+.card {
+  display: block;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 32px 24px;
+  text-align: center;
+  transition: border-color 0.12s;
+}
+
+.card:hover {
+  border-color: var(--navy);
+}
+
+.card h2 {
+  margin: 0 0 8px;
+  font-size: 18px;
+  color: var(--ink);
+}
+
+.card p {
+  margin: 0;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.footer {
+  text-align: center;
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.footer a {
+  color: var(--navy);
+  font-weight: 600;
+}

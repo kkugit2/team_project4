@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { signUpJobseeker } from "@/lib/auth";
 import { isAppError } from "@/lib/errors";
 import { getTags } from "@/lib/tags";
@@ -38,6 +39,9 @@ export default function JobseekerSignupPage() {
 
   return (
     <main className="page">
+      <Link href="/signup" style={{ display: "inline-block", marginBottom: 16, color: "var(--text-muted)", fontSize: 14 }}>
+        ← 역할 다시 선택
+      </Link>
       <div className="page-header">
         <h1>구직자 회원가입</h1>
         <p>학적·자격증·경력 정보는 지금 건너뛰고 마이페이지에서 나중에 입력해도 됩니다.</p>

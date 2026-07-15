@@ -1,33 +1,45 @@
 import type { FeedbackResult as FeedbackResultType } from "@/types";
 import type { ComparisonResult } from "@/lib/competitorComparison";
+import styles from "./FeedbackResult.module.css";
 
-export function FeedbackResult({ feedback, comparison }: { feedback: FeedbackResultType; comparison: ComparisonResult }) {
+export function FeedbackResult({
+  content,
+  feedback,
+  comparison,
+}: {
+  content: string;
+  feedback: FeedbackResultType;
+  comparison: ComparisonResult;
+}) {
   return (
     <div className="section-card">
-      <h3>AI 피드백</h3>
-      <div style={{ marginBottom: 16 }}>
-        <h4 style={{ fontSize: 13, color: "var(--text-muted)", margin: "0 0 8px" }}>부합하는 점</h4>
-        <ul style={{ margin: 0, paddingLeft: 18, lineHeight: 1.7 }}>
-          {feedback.strengths.map((s, i) => (
-            <li key={i}>{s}</li>
-          ))}
-        </ul>
-      </div>
-      <div>
-        <h4 style={{ fontSize: 13, color: "var(--text-muted)", margin: "0 0 8px" }}>보완할 점</h4>
-        <ul style={{ margin: 0, paddingLeft: 18, lineHeight: 1.7 }}>
-          {feedback.improvements.map((s, i) => (
-            <li key={i}>{s}</li>
-          ))}
-        </ul>
+      <h3>제출한 자기소개서</h3>
+      <p className={styles.originalText}>{content}</p>
+
+      <div className={styles.insightGrid}>
+        <div className={`${styles.card} ${styles.strengthCard}`}>
+          <h4 className={styles.cardTitle}>부합하는 점</h4>
+          <ul className={styles.list}>
+            {feedback.strengths.map((s, i) => (
+              <li key={i}>{s}</li>
+            ))}
+          </ul>
+        </div>
+        <div className={`${styles.card} ${styles.weaknessCard}`}>
+          <h4 className={styles.cardTitle}>보완할 점</h4>
+          <ul className={styles.list}>
+            {feedback.improvements.map((s, i) => (
+              <li key={i}>{s}</li>
+            ))}
+          </ul>
+        </div>
       </div>
 
-      <div style={{ marginTop: 20, paddingTop: 16, borderTop: "1px solid var(--border)" }}>
-        <h4 style={{ fontSize: 13, color: "var(--text-muted)", margin: "0 0 8px" }}>경쟁자 비교분석</h4>
+      <div className={styles.comparisonSection}>
+        <h4 className={styles.cardTitle}>경쟁자 비교분석</h4>
         {comparison.status === "insufficient_data" ? (
           <p className="hint" style={{ margin: 0 }}>
-            같은 공고에 제출된 비교 대상이 아직 부족합니다 ({comparison.sampleSize}건). 개인식별 위험 방지를 위해
-            최소 5건 이상 모이면 비교 분석을 제공합니다.
+            아직 이 공고에 제출된 자소서가 충분하지 않아요. 비교 데이터가 쌓이면 보여드릴게요.
           </p>
         ) : (
           <p style={{ fontSize: 14, margin: 0 }}>

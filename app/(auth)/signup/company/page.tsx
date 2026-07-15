@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { signUpCompany } from "@/lib/auth";
 import { isAppError } from "@/lib/errors";
 import { getTags } from "@/lib/tags";
@@ -42,6 +43,9 @@ export default function CompanySignupPage() {
 
   return (
     <main className="page">
+      <Link href="/signup" style={{ display: "inline-block", marginBottom: 16, color: "var(--text-muted)", fontSize: 14 }}>
+        ← 역할 다시 선택
+      </Link>
       <div className="page-header">
         <h1>기업 회원가입</h1>
         <p>인재상 정보를 입력하면 지원자와의 부합도를 자동으로 계산해드립니다.</p>

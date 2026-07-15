@@ -2,7 +2,7 @@
 // 나중에 서버 라우트로 그대로 옮길 수 있게 한다.
 import { TABLE_KEYS, SCOUT_MONTHLY_LIMIT, SCOUT_EXPIRY_DAYS } from "./constants";
 import { appError, ERROR_CODES, type AppError } from "./errors";
-import { genId, getTable, setTable, insertRow, getSingleton, setSingleton } from "./localDb";
+import { genId, getTable, setTable, insertRow, removeRow, getSingleton, setSingleton } from "./localDb";
 import type { Scout } from "@/types";
 import { SEED_SCOUT_TEMPLATES } from "@/data/seedScouts";
 
@@ -88,6 +88,20 @@ export function respondToScout(scoutId: string, action: "accepted" | "rejected")
   rows[idx] = { ...rows[idx], status: action };
   setTable(TABLE_KEYS.SCOUTS, rows);
   return rows[idx];
+}
+
+/**
+ * UI-UX-Guideline_all.md 4-4 "제안 취소". Backend-Guideline 7-2의 상태 전이표(sent→accepted|rejected|expired)에
+ * 새 상태를 추가하지 않기 위해, 취소는 상태 변경이 아니라 대기중(sent) 행 자체를 삭제하는 방식으로 구현한다.
+ */
+export function withdrawScout(companyId: string, scoutId: string): true | AppError {
+  const rows = persistLazyExpiry(allScouts());
+  const scout = rows.find((s) => s.id === scoutId);
+  if (!scout) return appError(ERROR_CODES.NOT_FOUND, "스카웃 제안을 찾을 수 없습니다.");
+  if (scout.companyId !== companyId) return appError(ERROR_CODES.FORBIDDEN, "본인이 발송한 스카웃만 취소할 수 있습니다.");
+  if (scout.status !== "sent") return appError(ERROR_CODES.FORBIDDEN, "대기중인 제안만 취소할 수 있습니다.");
+  removeRow<Scout>(TABLE_KEYS.SCOUTS, (s) => s.id === scoutId);
+  return true;
 }
 
 export function remainingMonthlyQuota(companyId: string): number {

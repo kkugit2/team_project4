@@ -21,18 +21,19 @@ export function RoleNav() {
     : isCompany
       ? [
           { href: "/company", label: "홈" },
+          { href: "/company/scouts", label: "스카웃 관리" },
           { href: "/company/mypage", label: "마이페이지" },
         ]
       : [
           { href: "/", label: "홈" },
+          { href: "/jobs", label: "공고 둘러보기" },
           { href: "/mypage", label: "마이페이지" },
-          { href: "/self-intro", label: "자소서 분석" },
         ];
 
   return (
-    <header className={`${styles.topbar} ${isCompany ? styles.company : ""}`}>
+    <header className={styles.topbar}>
       <div className={styles.inner}>
-        <Link href={isCompany ? "/company" : "/"} className={`${styles.brand} ${isCompany ? styles.company : ""}`}>
+        <Link href={isCompany ? "/company" : "/"} className={styles.brand}>
           JobMate{isCompany ? " for Biz" : ""}
         </Link>
         <nav className={styles.nav}>
@@ -41,14 +42,22 @@ export function RoleNav() {
               {l.label}
             </Link>
           ))}
-          {session ? (
-            <button type="button" className={styles.logoutBtn} onClick={handleLogout}>
-              로그아웃
-            </button>
-          ) : (
-            <Link href="/login">로그인 / 회원가입</Link>
-          )}
         </nav>
+        <div className={styles.right}>
+          {session ? (
+            <>
+              <span className={styles.roleTag}>{isCompany ? "기업" : "구직자"}</span>
+              <span className={styles.avatar}>{session.email.charAt(0).toUpperCase()}</span>
+              <button type="button" className={styles.logoutBtn} onClick={handleLogout}>
+                로그아웃
+              </button>
+            </>
+          ) : (
+            <Link href="/login" className={styles.loginLink}>
+              로그인 / 회원가입
+            </Link>
+          )}
+        </div>
       </div>
     </header>
   );

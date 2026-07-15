@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { AuthGuard } from "@/components/nav/AuthGuard";
 import { useSession } from "@/components/nav/SessionProvider";
 import { useToast } from "@/components/common/Toast";
@@ -13,6 +14,8 @@ import { listViewed } from "@/lib/viewedCandidates";
 import { listSentScouts, remainingMonthlyQuota } from "@/lib/scouts";
 import type { CompanyProfile, Scout, Tag, ViewedCandidate } from "@/types";
 import { formatDateTime } from "@/lib/format";
+
+const SCOUT_PREVIEW_COUNT = 5;
 
 function CompanyMyPageContent() {
   const { session } = useSession();
@@ -44,42 +47,51 @@ function CompanyMyPageContent() {
         <p>인재상 정보를 관리하고 열람/스카웃 이력을 확인하세요.</p>
       </div>
 
-      <div className="section-card">
-        <h3>인재상 프로필</h3>
-        <CompanyProfileForm value={profile} onChange={setProfile} skillTags={skillTags} />
-        <button type="button" className="btn btn-company" onClick={saveProfile}>
-          저장
-        </button>
-      </div>
+      <div style={{ display: "grid", gridTemplateColumns: "320px 1fr", gap: 24, alignItems: "start" }}>
+        <div className="section-card">
+          <h3>인재상 프로필</h3>
+          <CompanyProfileForm value={profile} onChange={setProfile} skillTags={skillTags} />
+          <button type="button" className="btn btn-primary" onClick={saveProfile} style={{ width: "100%" }}>
+            저장
+          </button>
+        </div>
 
-      <div className="section-card">
-        <h3>확인한 지원자 로그</h3>
-        {viewed.length === 0 ? (
-          <EmptyState message="아직 열람한 지원자가 없습니다." />
-        ) : (
-          <div className="list">
-            {viewed.map((v) => (
-              <div key={`${v.companyId}-${v.jobseekerId}`} className="row-card">
-                <div className="row-info">
-                  <div>
-                    <h3>지원자 {v.jobseekerId.slice(-4).toUpperCase()}</h3>
-                    <p>열람일 {formatDateTime(v.viewedAt)}</p>
+        <div>
+          <div className="section-card">
+            <h3>확인한 지원자 로그</h3>
+            {viewed.length === 0 ? (
+              <EmptyState message="아직 열람한 지원자가 없습니다." />
+            ) : (
+              <div className="list">
+                {viewed.map((v) => (
+                  <div key={`${v.companyId}-${v.jobseekerId}`} className="row-card">
+                    <div className="row-info">
+                      <div>
+                        <h3>지원자 {v.jobseekerId.slice(-4).toUpperCase()}</h3>
+                        <p>열람일 {formatDateTime(v.viewedAt)}</p>
+                      </div>
+                    </div>
                   </div>
-                </div>
+                ))}
               </div>
-            ))}
+            )}
           </div>
-        )}
-      </div>
 
-      <div className="section-card">
-        <h3>스카웃 발송 내역</h3>
-        <p className="hint">최근 30일간 남은 발송 가능 건수: {remainingQuota}건</p>
-        {sentScouts.length === 0 ? (
-          <EmptyState message="아직 발송한 스카웃이 없습니다." />
-        ) : (
-          <SentScoutList scouts={sentScouts} />
-        )}
+          <div className="section-card">
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 10 }}>
+              <h3 style={{ margin: 0 }}>스카웃 발송 내역</h3>
+              <Link href="/company/scouts">전체보기 →</Link>
+            </div>
+            <p className="hint">최근 30일간 남은 발송 가능 건수: {remainingQuota}건</p>
+            {sentScouts.length === 0 ? (
+              <EmptyState message="아직 발송한 스카웃이 없습니다." />
+            ) : (
+              <SentScoutList
+                scouts={[...sentScouts].sort((a, b) => (a.sentAt < b.sentAt ? 1 : -1)).slice(0, SCOUT_PREVIEW_COUNT)}
+              />
+            )}
+          </div>
+        </div>
       </div>
     </main>
   );

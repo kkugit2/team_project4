@@ -1,23 +1,25 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import type { CandidateSummary } from "@/types";
-import { ScoreBadge } from "@/components/common/ScoreBadge";
+import type { CandidateSummary, MatchScoreResult } from "@/types";
+import { MatchGauge } from "@/components/common/MatchGauge";
 import { ScoutButton } from "@/components/scout/ScoutButton";
 import { findTagsByIds } from "@/data/mockTags";
 import styles from "./CandidateCard.module.css";
 
 export function CandidateCard({
+  rank,
   candidate,
-  fitScore,
+  matchResult,
   content,
   alreadySent,
   remainingQuota,
   onView,
   onSendScout,
 }: {
+  rank: number;
   candidate: CandidateSummary;
-  fitScore: number;
+  matchResult: MatchScoreResult;
   content: string;
   alreadySent: boolean;
   remainingQuota: number;
@@ -34,26 +36,27 @@ export function CandidateCard({
   }, [onView]);
 
   return (
-    <article className={styles.card}>
-      <div className={styles.head}>
-        <h3>{candidate.displayLabel}</h3>
-        {candidate.appliedToThisCompany && <span className="status-pill">우리 회사 지원함</span>}
+    <article className={styles.row}>
+      <span className={`${styles.rank} mono`}>{rank}</span>
+      <MatchGauge result={matchResult} size="sm" />
+
+      <div className={styles.info}>
+        <div className={styles.head}>
+          <h3>{candidate.displayLabel}</h3>
+          {candidate.appliedToThisCompany && <span className="status-pill">우리 회사 지원함</span>}
+        </div>
+        <p className={styles.meta}>
+          {candidate.school} · {candidate.major}
+        </p>
+        <div className={styles.skills}>
+          {findTagsByIds(candidate.skillTagIds).map((tag) => (
+            <span key={tag.id} className="chip">
+              {tag.title}
+            </span>
+          ))}
+        </div>
+        <p className={styles.excerpt}>{content}</p>
       </div>
-      <p className={styles.meta}>
-        {candidate.school} · {candidate.major}
-      </p>
-
-      <ScoreBadge label="인재상 부합도" value={fitScore} />
-
-      <div className={styles.skills}>
-        {findTagsByIds(candidate.skillTagIds).map((tag) => (
-          <span key={tag.id} className="chip">
-            {tag.title}
-          </span>
-        ))}
-      </div>
-
-      <p className={styles.excerpt}>{content}</p>
 
       <div className={styles.actions}>
         <ScoutButton

@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
+import Link from "next/link";
 import { AuthGuard } from "@/components/nav/AuthGuard";
 import { useSession } from "@/components/nav/SessionProvider";
 import { useToast } from "@/components/common/Toast";
@@ -12,7 +13,45 @@ import { computeCandidateFitScore } from "@/lib/matchScore";
 import { sendScout, listSentScouts, remainingMonthlyQuota } from "@/lib/scouts";
 import { recordView } from "@/lib/viewedCandidates";
 import { isAppError } from "@/lib/errors";
+import { findTagsByIds } from "@/data/mockTags";
 import type { CandidateSummary, CompanyProfile, Scout } from "@/types";
+
+function ConditionSummary({ profile }: { profile: CompanyProfile }) {
+  const skillChips = findTagsByIds(profile.preferredSkillTagIds);
+  const hasAnyCondition =
+    skillChips.length > 0 || profile.preferredExperienceType.length > 0 || profile.preferredGpaMin !== null || profile.internshipRequired;
+
+  return (
+    <div className="section-card">
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 10 }}>
+        <h3 style={{ margin: 0 }}>등록된 채용 조건</h3>
+        <Link href="/company/mypage" className="btn btn-outline">
+          채용 조건 수정
+        </Link>
+      </div>
+      {!hasAnyCondition ? (
+        <p className="hint" style={{ margin: 0 }}>
+          아직 등록된 인재상 조건이 없어요. 채용 조건을 등록하면 지원자 랭킹을 확인할 수 있어요.
+        </p>
+      ) : (
+        <div>
+          {profile.preferredGpaMin !== null && <span className="chip">학점 {profile.preferredGpaMin} 이상</span>}
+          {skillChips.map((tag) => (
+            <span key={tag.id} className="chip">
+              {tag.title}
+            </span>
+          ))}
+          {profile.preferredExperienceType.map((type) => (
+            <span key={type} className="chip">
+              {type} 경험
+            </span>
+          ))}
+          {profile.internshipRequired && <span className="chip">인턴십 경험 필수</span>}
+        </div>
+      )}
+    </div>
+  );
+}
 
 function CompanyLandingContent() {
   const { session } = useSession();
@@ -43,7 +82,7 @@ function CompanyLandingContent() {
     return candidates
       .map((candidate) => ({
         candidate,
-        fitScore: computeCandidateFitScore(
+        matchResult: computeCandidateFitScore(
           { gpa: candidate.gpa, gpaScale: candidate.gpaScale, skillTagIds: candidate.skillTagIds, careerHistory: candidate.careerHistory },
           {
             preferredGpaMin: companyProfile.preferredGpaMin,
@@ -51,9 +90,9 @@ function CompanyLandingContent() {
             preferredExperienceType: companyProfile.preferredExperienceType,
             internshipRequired: companyProfile.internshipRequired,
           }
-        ).score,
+        ),
       }))
-      .sort((a, b) => b.fitScore - a.fitScore);
+      .sort((a, b) => b.matchResult.score - a.matchResult.score);
   }, [candidates, companyProfile]);
 
   const handleSendScout = (jobseekerId: string, message: string) => {
@@ -70,19 +109,22 @@ function CompanyLandingContent() {
   return (
     <main className="page">
       <div className="page-header">
-        <h1>지원자 발굴</h1>
+        <h1>인재 랭킹</h1>
         <p>인재상 정보 제공에 동의한 지원자를 부합도 순으로 확인하고 스카웃을 제안하세요.</p>
       </div>
+
+      {companyProfile && <ConditionSummary profile={companyProfile} />}
 
       {ranked.length === 0 ? (
         <EmptyState message="아직 정보 제공에 동의한 지원자가 없습니다." />
       ) : (
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: 16 }}>
-          {ranked.map(({ candidate, fitScore }) => (
+        <div className="list">
+          {ranked.map(({ candidate, matchResult }, index) => (
             <CandidateCard
               key={candidate.selfIntroId}
+              rank={index + 1}
               candidate={candidate}
-              fitScore={fitScore}
+              matchResult={matchResult}
               content={getCandidateSelfIntroContent(candidate)}
               alreadySent={sentJobseekerIds.has(candidate.jobseekerId)}
               remainingQuota={remainingQuota}

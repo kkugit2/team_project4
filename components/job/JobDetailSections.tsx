@@ -1,18 +1,18 @@
-import type { JobDetail, Company } from "@/types";
+import type { JobDetail, Company, MatchScoreResult } from "@/types";
 import { formatDueDate, formatWon } from "@/lib/format";
 import { Logo } from "@/components/common/Logo";
-import { ScoreBadge } from "@/components/common/ScoreBadge";
+import { MatchGauge } from "@/components/common/MatchGauge";
 import styles from "./JobDetailSections.module.css";
 
 export function JobDetailSections({
   job,
   company,
-  passProbability,
+  matchResult,
   actionSlot,
 }: {
   job: JobDetail;
   company: Company | null;
-  passProbability: number | null;
+  matchResult: MatchScoreResult | null;
   actionSlot: React.ReactNode;
 }) {
   return (
@@ -46,10 +46,10 @@ export function JobDetailSections({
         )}
       </div>
 
-      {passProbability !== null && (
+      {matchResult && (
         <div className="section-card">
           <h3>합격확률 (참고용)</h3>
-          <ScoreBadge label="AI 예측 합격률" value={passProbability} />
+          <MatchGauge result={matchResult} size="lg" showChecklist />
           <p className="hint">
             실제 원티드 AI 합격 예측이 아닌, 보유 스킬과 공고 요구 스킬을 비교한 자체 참고 지표입니다.
           </p>

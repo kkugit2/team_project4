@@ -12,7 +12,7 @@ import { getJobseekerProfile, isJobseekerProfileComplete } from "@/lib/profiles"
 import { computeJobseekerPassProbability } from "@/lib/matchScore";
 import { getApplication } from "@/lib/applications";
 import { isBookmarked, toggleBookmark } from "@/lib/bookmarks";
-import type { JobDetail, Company, Application } from "@/types";
+import type { JobDetail, Company, Application, MatchScoreResult } from "@/types";
 
 export default function JobDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = usePromise(params);
@@ -22,7 +22,7 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
   const [job, setJob] = useState<JobDetail | null>(null);
   const [company, setCompany] = useState<Company | null>(null);
   const [notFound, setNotFound] = useState(false);
-  const [passProbability, setPassProbability] = useState<number | null>(null);
+  const [matchResult, setMatchResult] = useState<MatchScoreResult | null>(null);
   const [application, setApplication] = useState<Application | null>(null);
   const [bookmarked, setBookmarked] = useState(false);
 
@@ -42,11 +42,11 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
     if (session.role === "jobseeker") {
       const profile = getJobseekerProfile(session.userId);
       if (isJobseekerProfileComplete(profile)) {
-        const { score } = computeJobseekerPassProbability(
+        const result = computeJobseekerPassProbability(
           { gpa: profile.gpa, gpaScale: profile.gpaScale, skillTagIds: profile.skillTagIds, careerHistory: profile.careerHistory },
           { preferredGpaMin: null, preferredSkillTagIds: job.skillTagIds, preferredExperienceType: [], internshipRequired: false }
         );
-        setPassProbability(score);
+        setMatchResult(result);
       }
       setApplication(getApplication(session.userId, job.id));
       setBookmarked(isBookmarked(session.userId, job.id));
@@ -56,7 +56,7 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
   if (notFound) {
     return (
       <main className="page">
-        <EmptyState message="존재하지 않는 공고입니다." linkHref="/" linkLabel="목록으로 돌아가기" />
+        <EmptyState message="존재하지 않는 공고입니다." linkHref="/jobs" linkLabel="목록으로 돌아가기" />
       </main>
     );
   }
@@ -76,14 +76,14 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
 
   return (
     <main className="page">
-      <Link href="/" style={{ display: "inline-block", marginBottom: 16, color: "var(--text-muted)", fontSize: 14 }}>
+      <Link href="/jobs" style={{ display: "inline-block", marginBottom: 16, color: "var(--text-muted)", fontSize: 14 }}>
         ← 목록으로
       </Link>
 
       <JobDetailSections
         job={job}
         company={company}
-        passProbability={passProbability}
+        matchResult={matchResult}
         actionSlot={
           <>
             {isJobseeker && (

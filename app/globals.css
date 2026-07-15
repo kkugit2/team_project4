@@ -1,24 +1,40 @@
 :root {
-  --primary: #2563eb;
-  --primary-dark: #1d4ed8;
-  --company: #7c3aed;
-  --company-dark: #6d28d9;
-  --success: #16a34a;
-  --warning: #f59e0b;
-  --danger: #dc2626;
-  --bg: #f4f6f9;
+  /* UI-UX-Guideline_all.md 1-1 팔레트. 기존 변수명은 유지하고 값만 남색 계열로 교체해
+     컴포넌트 코드를 건드리지 않고 톤을 바꾼다. 포인트 컬러는 navy 하나로 통일한다. */
+  --primary: #1d3557;
+  --primary-dark: #122a46;
+  --company: #1d3557;
+  --company-dark: #122a46;
+  --success: #3e8f6f;
+  --warning: #b4503b;
+  --danger: #b4503b;
+  --bg: #f5f6f8;
   --surface: #ffffff;
-  --border: #e2e8f0;
-  --text: #0f172a;
-  --text-muted: #64748b;
-  --radius: 12px;
-  --radius-sm: 10px;
+  --border: #e3e6ea;
+  --text: #131a24;
+  --text-muted: #5b6472;
+  --radius: 14px;
+  --radius-sm: 8px;
   --space-1: 4px;
   --space-2: 8px;
   --space-3: 12px;
   --space-4: 16px;
   --space-5: 24px;
   --space-6: 32px;
+
+  /* 신규 컴포넌트(게이지 등)는 가이드 문서 원 토큰명을 그대로 사용 */
+  --navy: #1d3557;
+  --navy-dark: #122a46;
+  --navy-100: #e7ecf3;
+  --navy-mid: #4a6c93;
+  --good: #3e8f6f;
+  --warn: #b4503b;
+  --ink: #131a24;
+  --muted: #5b6472;
+  --line: #e3e6ea;
+  --paper: #ffffff;
+
+  --font-mono: var(--font-jetbrains-mono), "JetBrains Mono", ui-monospace, monospace;
 }
 
 * {
@@ -37,6 +53,11 @@ body {
   color: var(--text);
 }
 
+.mono {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
 a {
   color: inherit;
   text-decoration: none;
@@ -50,7 +71,7 @@ textarea {
 }
 
 .page {
-  max-width: 960px;
+  max-width: 1160px;
   margin: 0 auto;
   padding: 24px 20px 60px;
 }
@@ -116,8 +137,8 @@ textarea {
   display: inline-flex;
   align-items: center;
   padding: 10px 16px;
-  border-radius: var(--radius-sm);
-  background: #eaf1ff;
+  border-radius: 999px;
+  background: var(--navy-100);
   color: var(--primary);
   font-weight: 700;
   font-size: 14px;
@@ -220,8 +241,15 @@ textarea {
 input:focus,
 select:focus,
 textarea:focus {
-  outline: none;
+  outline: 2px solid var(--navy);
+  outline-offset: 1px;
   border-color: var(--primary);
+}
+
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--navy);
+  outline-offset: 2px;
 }
 
 .hint {
@@ -247,6 +275,6 @@ textarea:focus {
   color: var(--success);
 }
 .chip-warning {
-  background: #fef3c7;
-  color: #b45309;
+  background: #f6e4e0;
+  color: var(--warn);
 }

@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-바이브 코딩으로 이 저장소를 작업할 때는 이 문서를 먼저 따르고, 화면 작업은 `@UI-UX-Guideline.md`, 데이터/API 작업은 `@Backend-Guideline.md`를 반드시 함께 참고한다.
+바이브 코딩으로 이 저장소를 작업할 때는 이 문서를 먼저 따르고, 기획/요구사항은 `@PRD_all.md`, 화면 작업은 `@UI-UX-Guideline_all.md`, 데이터/API 작업은 `@Backend-Guideline.md`를 반드시 함께 참고한다.
 
 ## [기술 스택]
 - Next.js 16 (App Router) + React 19 + TypeScript (`strict: true`)
@@ -17,7 +17,7 @@
 - Claude API: 자소서 피드백 생성 (`lib/mockLlm.ts`가 실 연동 시 교체될 지점)
 
 ## [준수 사항]
-1. 화면/스타일 작업 전 `UI-UX-Guideline.md`를, 데이터 모델/매칭 로직/스카웃 규칙 작업 전 `Backend-Guideline.md`를 확인한다.
+1. 화면/스타일 작업 전 `UI-UX-Guideline_all.md`를, 데이터 모델/매칭 로직/스카웃 규칙 작업 전 `Backend-Guideline.md`를, 기획 의도가 불분명할 때는 `PRD_all.md`를 확인한다.
 2. `lib/*` 모듈의 함수 시그니처는 Backend-Guideline 4장 API 라우트 표와 1:1 대응한다 — 실 백엔드 연동 시 시그니처를 바꾸지 않고 내부만 교체한다.
 3. 매칭 스코어(`lib/matchScore.ts`)와 스카웃 한도/만료(`lib/scouts.ts`)는 순수 함수로 유지한다 (I/O 금지) — 나중에 서버 라우트로 그대로 옮길 수 있어야 한다.
 4. `shared_with_company` 동의 필터는 `lib/selfIntro.ts`의 `listCandidatesForCompany` 한 곳에서만 적용한다. 다른 화면에서 임의로 재필터링하지 않는다.
@@ -26,15 +26,16 @@
 ## [디렉토리 구조]
 ```
 app/                    Next.js 라우트 (App Router)
-  page.tsx              4-1 구직자 랜딩
-  (auth)/login, signup/  4-3·4-4 로그인/가입
-  job/[id]/              4-7 공고 상세
-  mypage/                4-5 구직자 마이페이지
-  self-intro/            4-8 자소서 피드백
-  company/, company/mypage/   4-2·4-6 기업 화면
+  page.tsx              구직자 홈(통계 분석) · 비로그인 랜딩 · 기업은 /company로 리다이렉트
+  jobs/                  공고 둘러보기 (구직자용 공고 목록·필터·찜)
+  (auth)/login, signup/  로그인 · 회원가입 역할 선택(signup/page.tsx) · signup/jobseeker, signup/company
+  job/[id]/              공고 상세
+  mypage/                구직자 마이페이지
+  self-intro/            자소서 피드백
+  company/               기업 홈(인재 랭킹), company/mypage, company/scouts(스카웃 관리)
   api/wanted/*, api/tags/*     원티드 프록시 경계 (지금은 mock 반환)
-components/             common / nav / job / profile / applications / bookmarks / scout / candidate / selfIntro
-lib/                     인증, 프로필, 매칭 스코어, 스카웃, 자소서/피드백, 원티드 클라이언트 등 (localStorage 기반 목업)
+components/             common(RingStat/MatchGauge 등) / nav / job / home / profile / applications / bookmarks / scout / candidate / selfIntro
+lib/                     인증, 프로필, 매칭 스코어, 프로필 인사이트, 스카웃, 자소서/피드백, 원티드 클라이언트 등 (localStorage 기반 목업)
 data/                    mock 시드 데이터 (jobs, companies, tags, candidates, scouts)
 types/                   공유 TypeScript 타입 (Backend-Guideline 3장 스키마와 대응)
 ```
