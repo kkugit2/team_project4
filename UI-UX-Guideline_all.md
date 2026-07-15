@@ -1,4 +1,5 @@
-# UI-UX-Guideline.md — 채용 정보 매칭 플랫폼
+# UI-UX-Guideline_all.md — 채용 정보 매칭 플랫폼
+
 
 > 기준 문서: PRD_all.md, Backend-Guideline.md, design-draft-v2.html(남색 톤 시안)
 > 이 문서는 프론트엔드 코드를 작성할 때 반드시 참고해야 하는 지침이다. CLAUDE.md에서 `[프론트엔드 지침] @UI-UX-Guideline`으로 참조된다.

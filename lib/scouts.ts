@@ -4,7 +4,9 @@ import { TABLE_KEYS, SCOUT_MONTHLY_LIMIT, SCOUT_EXPIRY_DAYS } from "./constants"
 import { appError, ERROR_CODES, type AppError } from "./errors";
 import { genId, getTable, setTable, insertRow, removeRow, getSingleton, setSingleton } from "./localDb";
 import type { Scout } from "@/types";
-import { SEED_SCOUT_TEMPLATES } from "@/data/seedScouts";
+
+import { SEED_SCOUT_TEMPLATES } from "@/data/dummyData";
+
 
 const THIRTY_DAYS_MS = 30 * 24 * 60 * 60 * 1000;
 

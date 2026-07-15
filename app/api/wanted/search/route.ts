@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { MOCK_JOBS } from "@/data/mockJobs";
-import { MOCK_COMPANIES } from "@/data/mockCompanies";
+
+import { MOCK_JOBS, MOCK_COMPANIES } from "@/data/dummyData";
+
 
 export async function GET(request: NextRequest) {
   const query = (request.nextUrl.searchParams.get("q") ?? "").trim().toLowerCase();

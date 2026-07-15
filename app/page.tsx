@@ -9,7 +9,9 @@ import { JobseekerStatsHome } from "@/components/home/JobseekerStatsHome";
 import { getJobseekerProfile, isJobseekerProfileComplete } from "@/lib/profiles";
 import { getJobs } from "@/lib/wanted";
 import { computeProfileInsights, type ProfileInsights } from "@/lib/profileInsights";
-import { MOCK_CANDIDATES } from "@/data/mockCandidates";
+
+import { MOCK_CANDIDATES } from "@/data/dummyData";
+
 
 function JobseekerHome({ userId }: { userId: string }) {
   const [insights, setInsights] = useState<ProfileInsights | null>(null);

@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
-import { SKILL_TAGS, CATEGORY_TAGS, ATTRACTION_TAGS } from "@/data/mockTags";
+
+import { SKILL_TAGS, CATEGORY_TAGS, ATTRACTION_TAGS } from "@/data/dummyData";
+
 import type { TagType } from "@/types";
 
 const TAG_MAP: Record<TagType, typeof SKILL_TAGS> = {
