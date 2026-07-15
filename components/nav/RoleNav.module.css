@@ -1,0 +1,66 @@
+.topbar {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.inner {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.brand {
+  font-weight: 800;
+  font-size: 20px;
+  color: var(--primary);
+}
+
+.brand.company {
+  color: var(--company);
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.nav a,
+.logoutBtn {
+  padding: 8px 14px;
+  border-radius: 8px;
+  color: var(--text-muted);
+  font-weight: 600;
+  font-size: 14px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.nav a:hover,
+.logoutBtn:hover {
+  background: var(--bg);
+}
+
+.nav a.active {
+  color: var(--primary);
+  background: #eaf1ff;
+}
+
+.company .nav a.active {
+  color: var(--company);
+  background: #f3e8ff;
+}
+
+.roleBadge {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-right: 4px;
+}

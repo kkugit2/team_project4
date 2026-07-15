@@ -27,3 +27,6 @@ dist/
 *.swo
 *~
 coverage/
+
+# typescript build cache
+tsconfig.tsbuildinfo

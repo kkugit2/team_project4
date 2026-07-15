@@ -1,0 +1,26 @@
+.skillGrid {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.skillGrid button {
+  border: 1px solid transparent;
+  cursor: pointer;
+}
+
+.careerRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr auto auto;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.internshipLabel {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+  color: var(--text-muted);
+  white-space: nowrap;
+}

@@ -1,0 +1,47 @@
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.head h3 {
+  margin: 0;
+  font-size: 15px;
+}
+
+.meta {
+  margin: 0 0 10px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.skills {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 8px 0;
+}
+
+.excerpt {
+  font-size: 13px;
+  color: var(--text);
+  line-height: 1.6;
+  margin: 8px 0 14px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+}

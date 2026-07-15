@@ -1,0 +1,10 @@
+.banner {
+  font-size: 12px;
+  color: #b45309;
+  background: #fff7ed;
+  border: 1px solid #fed7aa;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  margin-bottom: 16px;
+  line-height: 1.6;
+}
