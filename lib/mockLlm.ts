@@ -1,7 +1,9 @@
 // 실제 LLM 연동 전까지 사용하는 더미 분석 로직. generateFeedback의 입출력 형태(Backend-Guideline 6-2:
 // { strengths: [], improvements: [] })만 유지하면 내부 구현을 Claude API 호출로 그대로 교체할 수 있다.
 import type { JobDetail } from "@/types";
+
 import { findTagsByIds } from "@/data/dummyData";
+
 
 export interface LlmFeedback {
   strengths: string[];

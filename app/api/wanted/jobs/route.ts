@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
+
 import { MOCK_JOBS } from "@/data/dummyData";
+
 
 // 원티드 /jobs 목록 프록시 경계. 지금은 목업을 반환하지만, 실제 연동 시
 // 이 파일 내부에서만 원티드 API 호출(+ job_cache 조회)로 바꾸면 된다.

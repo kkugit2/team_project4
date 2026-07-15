@@ -5,7 +5,9 @@ import { genId, getTable, insertRow, upsertRow } from "./localDb";
 import { getJobseekerProfile } from "./profiles";
 import { hasApplied } from "./applications";
 import { generateFeedback } from "./mockLlm";
+
 import { findJobById, MOCK_CANDIDATES } from "@/data/dummyData";
+
 import type { SelfIntro, FeedbackResult, JobDetail, CandidateSummary, CompanyProfile } from "@/types";
 
 export function submitSelfIntro(input: {

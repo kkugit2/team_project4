@@ -4,7 +4,9 @@ import { useEffect, useRef } from "react";
 import type { CandidateSummary, MatchScoreResult } from "@/types";
 import { MatchGauge } from "@/components/common/MatchGauge";
 import { ScoutButton } from "@/components/scout/ScoutButton";
+
 import { findTagsByIds } from "@/data/dummyData";
+
 import styles from "./CandidateCard.module.css";
 
 export function CandidateCard({
