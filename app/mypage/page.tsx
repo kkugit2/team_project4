@@ -17,13 +17,14 @@ import { listBookmarks, toggleBookmark } from "@/lib/bookmarks";
 import { listReceivedScouts, respondToScout } from "@/lib/scouts";
 import { isAppError } from "@/lib/errors";
 import type { Application, Bookmark, Job, JobseekerProfile, Scout, Tag, ApplicationStatus } from "@/types";
+import { emptyJobseekerProfile } from "@/types";
 
 function MyPageContent() {
   const { session } = useSession();
   const { showToast } = useToast();
   const userId = session!.userId;
 
-  const [profile, setProfile] = useState<JobseekerProfile>(() => getJobseekerProfile(userId));
+  const [profile, setProfile] = useState<JobseekerProfile>(emptyJobseekerProfile(userId));
   const [skillTags, setSkillTags] = useState<Tag[]>([]);
   const [applications, setApplications] = useState<Application[]>([]);
   const [bookmarks, setBookmarks] = useState<Bookmark[]>([]);
@@ -48,11 +49,15 @@ function MyPageContent() {
 
   useEffect(() => {
     getTags("skill").then(setSkillTags);
+    (async () => {
+      const p = await getJobseekerProfile(userId);
+      setProfile(p);
+    })();
     reload();
-  }, [reload]);
+  }, [reload, userId]);
 
-  const saveProfile = () => {
-    updateJobseekerProfile(profile);
+  const saveProfile = async () => {
+    await updateJobseekerProfile(profile);
     showToast("프로필이 저장되었습니다");
   };
 

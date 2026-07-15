@@ -41,8 +41,33 @@ function SelfIntroPageContent() {
       return;
     }
     const selfIntro = submitSelfIntro({ userId: session.userId, jobId, content, sharedWithCompany: consent });
-    const result = generateAndStoreFeedback(selfIntro.id, job);
-    setFeedback(result ?? getFeedback(selfIntro.id));
+
+    // API 라우트를 통해 GEMINI 피드백 생성
+    try {
+      const response = await fetch("/api/self-intro/feedback", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ resumeText: content, job }),
+      });
+
+      if (response.ok) {
+        const apiData = await response.json();
+        // API에서 받은 피드백 (strengths, improvements)
+        const geminiResult = apiData.data;
+        if (geminiResult && geminiResult.strengths && geminiResult.improvements) {
+          // localStorage에 저장
+          const storedFeedback = await generateAndStoreFeedback(selfIntro.id, geminiResult.strengths, geminiResult.improvements);
+          setFeedback(storedFeedback ?? getFeedback(selfIntro.id));
+        } else {
+          showToast("피드백 형식이 올바르지 않습니다");
+        }
+      } else {
+        showToast("피드백 생성에 실패했습니다");
+      }
+    } catch (error) {
+      console.error("Feedback API error:", error);
+      showToast("피드백 생성 중 오류가 발생했습니다");
+    }
 
     const others = listSelfIntrosForJob(jobId)
       .filter((si) => si.id !== selfIntro.id)

@@ -1,3 +1,4 @@
+import Image from "next/image";
 import type { JobDetail, Company, MatchScoreResult } from "@/types";
 import { formatDueDate, formatWon } from "@/lib/format";
 import { Logo } from "@/components/common/Logo";
@@ -18,7 +19,11 @@ export function JobDetailSections({
   return (
     <>
       <div className={styles.header}>
-        <Logo name={job.companyName} color={job.companyColor} size="lg" />
+        {company?.logoUrl ? (
+          <Image src={company.logoUrl} alt={job.companyName} width={80} height={80} className={styles.logoImage} />
+        ) : (
+          <Logo name={job.companyName} color={job.companyColor} size="lg" />
+        )}
         <div>
           <h2>{job.companyName}</h2>
           <p>

@@ -40,14 +40,16 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
   useEffect(() => {
     if (!job || !session) return;
     if (session.role === "jobseeker") {
-      const profile = getJobseekerProfile(session.userId);
-      if (isJobseekerProfileComplete(profile)) {
-        const result = computeJobseekerPassProbability(
-          { gpa: profile.gpa, gpaScale: profile.gpaScale, skillTagIds: profile.skillTagIds, careerHistory: profile.careerHistory },
-          { preferredGpaMin: null, preferredSkillTagIds: job.skillTagIds, preferredExperienceType: [], internshipRequired: false }
-        );
-        setMatchResult(result);
-      }
+      (async () => {
+        const profile = await getJobseekerProfile(session.userId);
+        if (isJobseekerProfileComplete(profile)) {
+          const result = computeJobseekerPassProbability(
+            { gpa: profile.gpa, gpaScale: profile.gpaScale, skillTagIds: profile.skillTagIds, careerHistory: profile.careerHistory },
+            { preferredGpaMin: null, preferredSkillTagIds: job.skillTagIds, preferredExperienceType: [], internshipRequired: false }
+          );
+          setMatchResult(result);
+        }
+      })();
       setApplication(getApplication(session.userId, job.id));
       setBookmarked(isBookmarked(session.userId, job.id));
     }

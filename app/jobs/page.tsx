@@ -29,7 +29,10 @@ export default function JobsPage() {
 
   useEffect(() => {
     if (session?.role === "jobseeker") {
-      setProfile(getJobseekerProfile(session.userId));
+      (async () => {
+        const p = await getJobseekerProfile(session.userId);
+        setProfile(p);
+      })();
     } else {
       setProfile(null);
     }

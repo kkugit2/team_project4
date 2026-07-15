@@ -1,0 +1,437 @@
+[
+  {
+    "id": 10510,
+    "type": "attraction",
+    "title": "차량지원"
+  },
+  {
+    "id": 10525,
+    "type": "attraction",
+    "title": "일본 현지 취업"
+  },
+  {
+    "id": 10524,
+    "type": "attraction",
+    "title": "일본어 활용"
+  },
+  {
+    "id": 10523,
+    "type": "attraction",
+    "title": "원티드 픽"
+  },
+  {
+    "id": 10522,
+    "type": "attraction",
+    "title": "인턴"
+  },
+  {
+    "id": 10521,
+    "type": "attraction",
+    "title": "예비 유니콘"
+  },
+  {
+    "id": 10520,
+    "type": "attraction",
+    "title": "출산육아휴직"
+  },
+  {
+    "id": 10519,
+    "type": "attraction",
+    "title": "장애인전형"
+  },
+  {
+    "id": 10513,
+    "type": "attraction",
+    "title": "전문연구요원"
+  },
+  {
+    "id": 10512,
+    "type": "attraction",
+    "title": "산업기능요원"
+  },
+  {
+    "id": 10511,
+    "type": "attraction",
+    "title": "통신비"
+  },
+  {
+    "id": 10526,
+    "type": "attraction",
+    "title": "외국어 능통자 우대"
+  },
+  {
+    "id": 10509,
+    "type": "attraction",
+    "title": "유연근무"
+  },
+  {
+    "id": 10508,
+    "type": "attraction",
+    "title": "재택근무"
+  },
+  {
+    "id": 10492,
+    "type": "attraction",
+    "title": "아기 유니콘"
+  },
+  {
+    "id": 10486,
+    "type": "attraction",
+    "title": "AI 선도 기업"
+  },
+  {
+    "id": 10484,
+    "type": "attraction",
+    "title": "일·가정 양립"
+  },
+  {
+    "id": 10466,
+    "type": "attraction",
+    "title": "금융업계"
+  },
+  {
+    "id": 10462,
+    "type": "attraction",
+    "title": "워크샵"
+  },
+  {
+    "id": 10447,
+    "type": "attraction",
+    "title": "유망산업"
+  },
+  {
+    "id": 10444,
+    "type": "attraction",
+    "title": "자율복장"
+  },
+  {
+    "id": 10443,
+    "type": "attraction",
+    "title": "사내동호회"
+  },
+  {
+    "id": 10602,
+    "type": "attraction",
+    "title": "모빌리티산업"
+  },
+  {
+    "id": 10685,
+    "type": "attraction",
+    "title": "유리한 지원 경쟁률"
+  },
+  {
+    "id": 10683,
+    "type": "attraction",
+    "title": "포스텍홀딩스 투자기업"
+  },
+  {
+    "id": 10682,
+    "type": "attraction",
+    "title": "Global Recruiting Carnival"
+  },
+  {
+    "id": 10680,
+    "type": "attraction",
+    "title": "스파크랩 투자기업"
+  },
+  {
+    "id": 10677,
+    "type": "attraction",
+    "title": "더벤처스 투자기업"
+  },
+  {
+    "id": 10675,
+    "type": "attraction",
+    "title": "글로벌 TOP 기업"
+  },
+  {
+    "id": 10665,
+    "type": "attraction",
+    "title": "매쉬업벤처스 투자기업"
+  },
+  {
+    "id": 10656,
+    "type": "attraction",
+    "title": "퓨처플레이 투자기업"
+  },
+  {
+    "id": 10655,
+    "type": "attraction",
+    "title": "IBK창공 투자기업"
+  },
+  {
+    "id": 10603,
+    "type": "attraction",
+    "title": "대기업"
+  },
+  {
+    "id": 10442,
+    "type": "attraction",
+    "title": "닉네임사용"
+  },
+  {
+    "id": 10601,
+    "type": "attraction",
+    "title": "유통산업"
+  },
+  {
+    "id": 10600,
+    "type": "attraction",
+    "title": "이커머스산업"
+  },
+  {
+    "id": 10599,
+    "type": "attraction",
+    "title": "미디어산업"
+  },
+  {
+    "id": 10598,
+    "type": "attraction",
+    "title": "뷰티산업"
+  },
+  {
+    "id": 10597,
+    "type": "attraction",
+    "title": "누적투자100억이상"
+  },
+  {
+    "id": 10593,
+    "type": "attraction",
+    "title": "장애인우대"
+  },
+  {
+    "id": 10592,
+    "type": "attraction",
+    "title": "병역특례"
+  },
+  {
+    "id": 10574,
+    "type": "attraction",
+    "title": "계약직"
+  },
+  {
+    "id": 10564,
+    "type": "attraction",
+    "title": "대규모 채용 중"
+  },
+  {
+    "id": 10537,
+    "type": "attraction",
+    "title": "적극 채용 중"
+  },
+  {
+    "id": 10406,
+    "type": "attraction",
+    "title": "10,001명이상"
+  },
+  {
+    "id": 10418,
+    "type": "attraction",
+    "title": "육아휴직"
+  },
+  {
+    "id": 10417,
+    "type": "attraction",
+    "title": "리프레시휴가"
+  },
+  {
+    "id": 10416,
+    "type": "attraction",
+    "title": "자유로운휴가"
+  },
+  {
+    "id": 10415,
+    "type": "attraction",
+    "title": "주4일근무"
+  },
+  {
+    "id": 10414,
+    "type": "attraction",
+    "title": "주35시간"
+  },
+  {
+    "id": 10411,
+    "type": "attraction",
+    "title": "퇴사율6~10%"
+  },
+  {
+    "id": 10410,
+    "type": "attraction",
+    "title": "퇴사율5%이하"
+  },
+  {
+    "id": 10409,
+    "type": "attraction",
+    "title": "설립10년이상"
+  },
+  {
+    "id": 10408,
+    "type": "attraction",
+    "title": "설립4~9년"
+  },
+  {
+    "id": 10407,
+    "type": "attraction",
+    "title": "설립3년이하"
+  },
+  {
+    "id": 10419,
+    "type": "attraction",
+    "title": "출산휴가"
+  },
+  {
+    "id": 10405,
+    "type": "attraction",
+    "title": "1,001~10,000명"
+  },
+  {
+    "id": 10404,
+    "type": "attraction",
+    "title": "301~1,000명"
+  },
+  {
+    "id": 10403,
+    "type": "attraction",
+    "title": "51~300명"
+  },
+  {
+    "id": 10402,
+    "type": "attraction",
+    "title": "50명이하"
+  },
+  {
+    "id": 10401,
+    "type": "attraction",
+    "title": "인원 급성장"
+  },
+  {
+    "id": 10400,
+    "type": "attraction",
+    "title": "인원성장"
+  },
+  {
+    "id": 10399,
+    "type": "attraction",
+    "title": "연봉상위11~20%"
+  },
+  {
+    "id": 10398,
+    "type": "attraction",
+    "title": "연봉상위6~10%"
+  },
+  {
+    "id": 10397,
+    "type": "attraction",
+    "title": "연봉상위2~5%"
+  },
+  {
+    "id": 10396,
+    "type": "attraction",
+    "title": "연봉상위1%"
+  },
+  {
+    "id": 10431,
+    "type": "attraction",
+    "title": "스톡옵션"
+  },
+  {
+    "id": 10441,
+    "type": "attraction",
+    "title": "수평적조직"
+  },
+  {
+    "id": 10440,
+    "type": "attraction",
+    "title": "편의시설"
+  },
+  {
+    "id": 10439,
+    "type": "attraction",
+    "title": "장비지원"
+  },
+  {
+    "id": 10438,
+    "type": "attraction",
+    "title": "휴가비"
+  },
+  {
+    "id": 10437,
+    "type": "attraction",
+    "title": "식대지원"
+  },
+  {
+    "id": 10436,
+    "type": "attraction",
+    "title": "커피·스낵바"
+  },
+  {
+    "id": 10435,
+    "type": "attraction",
+    "title": "해외연수"
+  },
+  {
+    "id": 10434,
+    "type": "attraction",
+    "title": "주차지원"
+  },
+  {
+    "id": 10433,
+    "type": "attraction",
+    "title": "자기계발지원"
+  },
+  {
+    "id": 10432,
+    "type": "attraction",
+    "title": "임직원할인"
+  },
+  {
+    "id": 10395,
+    "type": "attraction",
+    "title": "연봉 업계평균이상"
+  },
+  {
+    "id": 10430,
+    "type": "attraction",
+    "title": "대출지원"
+  },
+  {
+    "id": 10427,
+    "type": "attraction",
+    "title": "복지포인트"
+  },
+  {
+    "id": 10426,
+    "type": "attraction",
+    "title": "보너스"
+  },
+  {
+    "id": 10425,
+    "type": "attraction",
+    "title": "의료비지원"
+  },
+  {
+    "id": 10424,
+    "type": "attraction",
+    "title": "단체보험"
+  },
+  {
+    "id": 10423,
+    "type": "attraction",
+    "title": "건강검진지원"
+  },
+  {
+    "id": 10422,
+    "type": "attraction",
+    "title": "어린이돌봄"
+  },
+  {
+    "id": 10421,
+    "type": "attraction",
+    "title": "무제한연차"
+  },
+  {
+    "id": 10420,
+    "type": "attraction",
+    "title": "유급휴가"
+  }
+]

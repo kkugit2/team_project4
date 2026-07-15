@@ -65,8 +65,8 @@ function CompanyLandingContent() {
   const [sentScouts, setSentScouts] = useState<Scout[]>([]);
   const [remainingQuota, setRemainingQuota] = useState(0);
 
-  const reload = useCallback(() => {
-    const profile = getCompanyProfile(companyId);
+  const reload = useCallback(async () => {
+    const profile = await getCompanyProfile(companyId);
     setCompanyProfile(profile);
     setCandidates(listCandidatesForCompany(profile));
     setSentScouts(listSentScouts(companyId));

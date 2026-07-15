@@ -1,0 +1,2192 @@
+[
+  {
+    "id": 518,
+    "type": "category",
+    "title": "개발"
+  },
+  {
+    "id": 523,
+    "type": "category",
+    "title": "마케팅·광고"
+  },
+  {
+    "id": 507,
+    "type": "category",
+    "title": "경영·비즈니스"
+  },
+  {
+    "id": 530,
+    "type": "category",
+    "title": "영업"
+  },
+  {
+    "id": 510,
+    "type": "category",
+    "title": "고객서비스·리테일"
+  },
+  {
+    "id": 511,
+    "type": "category",
+    "title": "디자인"
+  },
+  {
+    "id": 522,
+    "type": "category",
+    "title": "제조·생산"
+  },
+  {
+    "id": 513,
+    "type": "category",
+    "title": "엔지니어링·설계"
+  },
+  {
+    "id": 517,
+    "type": "category",
+    "title": "HR"
+  },
+  {
+    "id": 524,
+    "type": "category",
+    "title": "미디어"
+  },
+  {
+    "id": 10566,
+    "type": "category",
+    "title": "정보보호"
+  },
+  {
+    "id": 508,
+    "type": "category",
+    "title": "금융"
+  },
+  {
+    "id": 532,
+    "type": "category",
+    "title": "물류·무역"
+  },
+  {
+    "id": 521,
+    "type": "category",
+    "title": "법률·법집행기관"
+  },
+  {
+    "id": 10057,
+    "type": "category",
+    "title": "식·음료"
+  },
+  {
+    "id": 515,
+    "type": "category",
+    "title": "의료·제약·바이오"
+  },
+  {
+    "id": 10101,
+    "type": "category",
+    "title": "교육"
+  },
+  {
+    "id": 959,
+    "type": "category",
+    "title": "게임 제작"
+  },
+  {
+    "id": 509,
+    "type": "category",
+    "title": "건설·시설"
+  },
+  {
+    "id": 514,
+    "type": "category",
+    "title": "공공·복지"
+  },
+  {
+    "id": 872,
+    "type": "category",
+    "title": "서버 개발자"
+  },
+  {
+    "id": 1634,
+    "type": "category",
+    "title": "머신러닝 엔지니어"
+  },
+  {
+    "id": 10110,
+    "type": "category",
+    "title": "소프트웨어 엔지니어"
+  },
+  {
+    "id": 674,
+    "type": "category",
+    "title": "DevOps / 시스템 관리자"
+  },
+  {
+    "id": 899,
+    "type": "category",
+    "title": "파이썬 개발자"
+  },
+  {
+    "id": 669,
+    "type": "category",
+    "title": "프론트엔드 개발자"
+  },
+  {
+    "id": 655,
+    "type": "category",
+    "title": "데이터 엔지니어"
+  },
+  {
+    "id": 660,
+    "type": "category",
+    "title": "자바 개발자"
+  },
+  {
+    "id": 900,
+    "type": "category",
+    "title": "C,C++ 개발자"
+  },
+  {
+    "id": 1024,
+    "type": "category",
+    "title": "데이터 사이언티스트"
+  },
+  {
+    "id": 665,
+    "type": "category",
+    "title": "시스템,네트워크 관리자"
+  },
+  {
+    "id": 873,
+    "type": "category",
+    "title": "웹 개발자"
+  },
+  {
+    "id": 658,
+    "type": "category",
+    "title": "임베디드 개발자"
+  },
+  {
+    "id": 877,
+    "type": "category",
+    "title": "개발 매니저"
+  },
+  {
+    "id": 895,
+    "type": "category",
+    "title": "Node.js 개발자"
+  },
+  {
+    "id": 1026,
+    "type": "category",
+    "title": "기술지원"
+  },
+  {
+    "id": 1025,
+    "type": "category",
+    "title": "빅데이터 엔지니어"
+  },
+  {
+    "id": 676,
+    "type": "category",
+    "title": "QA,테스트 엔지니어"
+  },
+  {
+    "id": 672,
+    "type": "category",
+    "title": "하드웨어 엔지니어"
+  },
+  {
+    "id": 876,
+    "type": "category",
+    "title": "프로덕트 매니저"
+  },
+  {
+    "id": 677,
+    "type": "category",
+    "title": "안드로이드 개발자"
+  },
+  {
+    "id": 678,
+    "type": "category",
+    "title": "iOS 개발자"
+  },
+  {
+    "id": 896,
+    "type": "category",
+    "title": "영상,음성 엔지니어"
+  },
+  {
+    "id": 10111,
+    "type": "category",
+    "title": "크로스플랫폼 앱 개발자"
+  },
+  {
+    "id": 661,
+    "type": "category",
+    "title": ".NET 개발자"
+  },
+  {
+    "id": 10230,
+    "type": "category",
+    "title": "ERP전문가"
+  },
+  {
+    "id": 898,
+    "type": "category",
+    "title": "그래픽스 엔지니어"
+  },
+  {
+    "id": 795,
+    "type": "category",
+    "title": "CTO,Chief Technology Officer"
+  },
+  {
+    "id": 939,
+    "type": "category",
+    "title": "웹 퍼블리셔"
+  },
+  {
+    "id": 1027,
+    "type": "category",
+    "title": "블록체인 플랫폼 엔지니어"
+  },
+  {
+    "id": 10231,
+    "type": "category",
+    "title": "DBA"
+  },
+  {
+    "id": 893,
+    "type": "category",
+    "title": "PHP 개발자"
+  },
+  {
+    "id": 1022,
+    "type": "category",
+    "title": "BI 엔지니어"
+  },
+  {
+    "id": 10536,
+    "type": "category",
+    "title": "테크니컬 라이터"
+  },
+  {
+    "id": 894,
+    "type": "category",
+    "title": "루비온레일즈 개발자"
+  },
+  {
+    "id": 10112,
+    "type": "category",
+    "title": "VR 엔지니어"
+  },
+  {
+    "id": 10531,
+    "type": "category",
+    "title": "RPA 엔지니어"
+  },
+  {
+    "id": 793,
+    "type": "category",
+    "title": "CIO,Chief Information Officer"
+  },
+  {
+    "id": 1635,
+    "type": "category",
+    "title": "콘텐츠 마케터"
+  },
+  {
+    "id": 710,
+    "type": "category",
+    "title": "마케터"
+  },
+  {
+    "id": 719,
+    "type": "category",
+    "title": "마케팅 전략 기획자"
+  },
+  {
+    "id": 10138,
+    "type": "category",
+    "title": "퍼포먼스 마케터"
+  },
+  {
+    "id": 950,
+    "type": "category",
+    "title": "글로벌 마케팅"
+  },
+  {
+    "id": 1030,
+    "type": "category",
+    "title": "디지털 마케터"
+  },
+  {
+    "id": 707,
+    "type": "category",
+    "title": "브랜드 마케터"
+  },
+  {
+    "id": 721,
+    "type": "category",
+    "title": "소셜 마케터"
+  },
+  {
+    "id": 763,
+    "type": "category",
+    "title": "광고 기획자(AE)"
+  },
+  {
+    "id": 717,
+    "type": "category",
+    "title": "그로스 해커"
+  },
+  {
+    "id": 714,
+    "type": "category",
+    "title": "PR 전문가"
+  },
+  {
+    "id": 10527,
+    "type": "category",
+    "title": "CRM 마케터"
+  },
+  {
+    "id": 1032,
+    "type": "category",
+    "title": "마케팅 디렉터"
+  },
+  {
+    "id": 1033,
+    "type": "category",
+    "title": "모바일마케팅"
+  },
+  {
+    "id": 720,
+    "type": "category",
+    "title": "제휴"
+  },
+  {
+    "id": 708,
+    "type": "category",
+    "title": "카피라이터"
+  },
+  {
+    "id": 716,
+    "type": "category",
+    "title": "BTL 마케터"
+  },
+  {
+    "id": 801,
+    "type": "category",
+    "title": "CBO,Chief Brand Officer"
+  },
+  {
+    "id": 722,
+    "type": "category",
+    "title": "키워드광고"
+  },
+  {
+    "id": 799,
+    "type": "category",
+    "title": "CMO,Chief Marketing Officer"
+  },
+  {
+    "id": 709,
+    "type": "category",
+    "title": "마켓 리서처"
+  },
+  {
+    "id": 715,
+    "type": "category",
+    "title": "ATL 마케터"
+  },
+  {
+    "id": 1031,
+    "type": "category",
+    "title": "Sports 전문가"
+  },
+  {
+    "id": 564,
+    "type": "category",
+    "title": "사업개발·기획자"
+  },
+  {
+    "id": 559,
+    "type": "category",
+    "title": "PM·PO"
+  },
+  {
+    "id": 565,
+    "type": "category",
+    "title": "서비스 기획자"
+  },
+  {
+    "id": 563,
+    "type": "category",
+    "title": "전략 기획자"
+  },
+  {
+    "id": 1034,
+    "type": "category",
+    "title": "회계·경리"
+  },
+  {
+    "id": 554,
+    "type": "category",
+    "title": "운영 매니저"
+  },
+  {
+    "id": 552,
+    "type": "category",
+    "title": "경영지원"
+  },
+  {
+    "id": 10232,
+    "type": "category",
+    "title": "상품기획자(BM)"
+  },
+  {
+    "id": 10115,
+    "type": "category",
+    "title": "해외 사업개발·기획자"
+  },
+  {
+    "id": 656,
+    "type": "category",
+    "title": "데이터 분석가"
+  },
+  {
+    "id": 557,
+    "type": "category",
+    "title": "오피스 관리"
+  },
+  {
+    "id": 567,
+    "type": "category",
+    "title": "조직관리"
+  },
+  {
+    "id": 561,
+    "type": "category",
+    "title": "구매담당"
+  },
+  {
+    "id": 562,
+    "type": "category",
+    "title": "총무"
+  },
+  {
+    "id": 10116,
+    "type": "category",
+    "title": "자금담당"
+  },
+  {
+    "id": 570,
+    "type": "category",
+    "title": "컨설턴트"
+  },
+  {
+    "id": 794,
+    "type": "category",
+    "title": "COO,Chief Operation Officer"
+  },
+  {
+    "id": 10122,
+    "type": "category",
+    "title": "사무보조"
+  },
+  {
+    "id": 558,
+    "type": "category",
+    "title": "지역 관리 매니저"
+  },
+  {
+    "id": 798,
+    "type": "category",
+    "title": "CSO,Chief Strategy Officer"
+  },
+  {
+    "id": 569,
+    "type": "category",
+    "title": "리스크 관리 전문가"
+  },
+  {
+    "id": 550,
+    "type": "category",
+    "title": "비서"
+  },
+  {
+    "id": 568,
+    "type": "category",
+    "title": "경영 혁신가"
+  },
+  {
+    "id": 792,
+    "type": "category",
+    "title": "CFO,Chief Financial Officer"
+  },
+  {
+    "id": 10119,
+    "type": "category",
+    "title": "공연 기획자"
+  },
+  {
+    "id": 10117,
+    "type": "category",
+    "title": "전시 기획자"
+  },
+  {
+    "id": 791,
+    "type": "category",
+    "title": "CEO,Chief Executive Officer"
+  },
+  {
+    "id": 10118,
+    "type": "category",
+    "title": "세미나/포럼 기획자"
+  },
+  {
+    "id": 555,
+    "type": "category",
+    "title": "안내원"
+  },
+  {
+    "id": 560,
+    "type": "category",
+    "title": "지점장"
+  },
+  {
+    "id": 10120,
+    "type": "category",
+    "title": "애자일코치"
+  },
+  {
+    "id": 10121,
+    "type": "category",
+    "title": "사내 심리상담가"
+  },
+  {
+    "id": 1036,
+    "type": "category",
+    "title": "기업영업"
+  },
+  {
+    "id": 954,
+    "type": "category",
+    "title": "영업 관리자"
+  },
+  {
+    "id": 768,
+    "type": "category",
+    "title": "주요고객사 담당자"
+  },
+  {
+    "id": 955,
+    "type": "category",
+    "title": "해외영업"
+  },
+  {
+    "id": 1035,
+    "type": "category",
+    "title": "솔루션 컨설턴트"
+  },
+  {
+    "id": 1037,
+    "type": "category",
+    "title": "고객성공매니저"
+  },
+  {
+    "id": 770,
+    "type": "category",
+    "title": "기술영업"
+  },
+  {
+    "id": 766,
+    "type": "category",
+    "title": "외부영업"
+  },
+  {
+    "id": 773,
+    "type": "category",
+    "title": "세일즈 엔지니어"
+  },
+  {
+    "id": 1633,
+    "type": "category",
+    "title": "미디어 세일즈"
+  },
+  {
+    "id": 767,
+    "type": "category",
+    "title": "내부영업"
+  },
+  {
+    "id": 772,
+    "type": "category",
+    "title": "의료기기 영업"
+  },
+  {
+    "id": 771,
+    "type": "category",
+    "title": "제약영업"
+  },
+  {
+    "id": 1028,
+    "type": "category",
+    "title": "CS 매니저"
+  },
+  {
+    "id": 758,
+    "type": "category",
+    "title": "MD"
+  },
+  {
+    "id": 586,
+    "type": "category",
+    "title": "CS 어드바이저"
+  },
+  {
+    "id": 760,
+    "type": "category",
+    "title": "리테일 MD"
+  },
+  {
+    "id": 10126,
+    "type": "category",
+    "title": "서비스 운영"
+  },
+  {
+    "id": 901,
+    "type": "category",
+    "title": "CRM 전문가"
+  },
+  {
+    "id": 759,
+    "type": "category",
+    "title": "패션 MD"
+  },
+  {
+    "id": 752,
+    "type": "category",
+    "title": "매장 관리자"
+  },
+  {
+    "id": 769,
+    "type": "category",
+    "title": "인바운드 텔레마케터"
+  },
+  {
+    "id": 754,
+    "type": "category",
+    "title": "매장점원"
+  },
+  {
+    "id": 591,
+    "type": "category",
+    "title": "AS 기술자"
+  },
+  {
+    "id": 762,
+    "type": "category",
+    "title": "가맹점 관리자"
+  },
+  {
+    "id": 902,
+    "type": "category",
+    "title": "아웃바운드 텔레마케터"
+  },
+  {
+    "id": 757,
+    "type": "category",
+    "title": "비주얼머천다이저"
+  },
+  {
+    "id": 10125,
+    "type": "category",
+    "title": "리셉션"
+  },
+  {
+    "id": 641,
+    "type": "category",
+    "title": "여행 에이전트"
+  },
+  {
+    "id": 1637,
+    "type": "category",
+    "title": "헬스케어매니저"
+  },
+  {
+    "id": 639,
+    "type": "category",
+    "title": "이벤트 기획자"
+  },
+  {
+    "id": 755,
+    "type": "category",
+    "title": "피부관리사"
+  },
+  {
+    "id": 589,
+    "type": "category",
+    "title": "승무원"
+  },
+  {
+    "id": 640,
+    "type": "category",
+    "title": "플로리스트"
+  },
+  {
+    "id": 756,
+    "type": "category",
+    "title": "헤어 디자이너"
+  },
+  {
+    "id": 10123,
+    "type": "category",
+    "title": "미용사"
+  },
+  {
+    "id": 10375,
+    "type": "category",
+    "title": "캐디"
+  },
+  {
+    "id": 599,
+    "type": "category",
+    "title": "UX 디자이너"
+  },
+  {
+    "id": 597,
+    "type": "category",
+    "title": "UI,GUI 디자이너"
+  },
+  {
+    "id": 592,
+    "type": "category",
+    "title": "그래픽 디자이너"
+  },
+  {
+    "id": 10532,
+    "type": "category",
+    "title": "콘텐츠 디자이너"
+  },
+  {
+    "id": 594,
+    "type": "category",
+    "title": "웹 디자이너"
+  },
+  {
+    "id": 879,
+    "type": "category",
+    "title": "BI/BX 디자이너"
+  },
+  {
+    "id": 603,
+    "type": "category",
+    "title": "제품 디자이너"
+  },
+  {
+    "id": 602,
+    "type": "category",
+    "title": "영상,모션 디자이너"
+  },
+  {
+    "id": 1029,
+    "type": "category",
+    "title": "광고 디자이너"
+  },
+  {
+    "id": 10130,
+    "type": "category",
+    "title": "패키지 디자이너"
+  },
+  {
+    "id": 953,
+    "type": "category",
+    "title": "패션 디자이너"
+  },
+  {
+    "id": 929,
+    "type": "category",
+    "title": "3D 디자이너"
+  },
+  {
+    "id": 606,
+    "type": "category",
+    "title": "공간 디자이너"
+  },
+  {
+    "id": 595,
+    "type": "category",
+    "title": "모바일 디자이너"
+  },
+  {
+    "id": 928,
+    "type": "category",
+    "title": "2D 디자이너"
+  },
+  {
+    "id": 601,
+    "type": "category",
+    "title": "인테리어 디자이너"
+  },
+  {
+    "id": 10131,
+    "type": "category",
+    "title": "VMD"
+  },
+  {
+    "id": 600,
+    "type": "category",
+    "title": "산업 디자이너"
+  },
+  {
+    "id": 593,
+    "type": "category",
+    "title": "아트 디렉터"
+  },
+  {
+    "id": 596,
+    "type": "category",
+    "title": "일러스트레이터"
+  },
+  {
+    "id": 952,
+    "type": "category",
+    "title": "출판, 편집 디자이너"
+  },
+  {
+    "id": 951,
+    "type": "category",
+    "title": "캐릭터 디자이너"
+  },
+  {
+    "id": 10129,
+    "type": "category",
+    "title": "전시 디자이너"
+  },
+  {
+    "id": 10127,
+    "type": "category",
+    "title": "가구 디자이너"
+  },
+  {
+    "id": 10530,
+    "type": "category",
+    "title": "UX 리서처"
+  },
+  {
+    "id": 605,
+    "type": "category",
+    "title": "조경 디자이너"
+  },
+  {
+    "id": 10128,
+    "type": "category",
+    "title": "패브릭 디자이너"
+  },
+  {
+    "id": 704,
+    "type": "category",
+    "title": "품질 관리자"
+  },
+  {
+    "id": 701,
+    "type": "category",
+    "title": "생산 관리자"
+  },
+  {
+    "id": 699,
+    "type": "category",
+    "title": "자재관리·구매"
+  },
+  {
+    "id": 703,
+    "type": "category",
+    "title": "공정 관리자"
+  },
+  {
+    "id": 700,
+    "type": "category",
+    "title": "기계·설비·설계"
+  },
+  {
+    "id": 10113,
+    "type": "category",
+    "title": "섬유·의류·패션"
+  },
+  {
+    "id": 10114,
+    "type": "category",
+    "title": "반도체·디스플레이"
+  },
+  {
+    "id": 705,
+    "type": "category",
+    "title": "안전 관리자"
+  },
+  {
+    "id": 698,
+    "type": "category",
+    "title": "제조 엔지니어"
+  },
+  {
+    "id": 702,
+    "type": "category",
+    "title": "생산직 종사자"
+  },
+  {
+    "id": 706,
+    "type": "category",
+    "title": "제조 테스트 엔지니어"
+  },
+  {
+    "id": 696,
+    "type": "category",
+    "title": "화학자"
+  },
+  {
+    "id": 697,
+    "type": "category",
+    "title": "기계제작 기술자"
+  },
+  {
+    "id": 695,
+    "type": "category",
+    "title": "조립 기술자"
+  },
+  {
+    "id": 843,
+    "type": "category",
+    "title": "기계 엔지니어"
+  },
+  {
+    "id": 823,
+    "type": "category",
+    "title": "전자 엔지니어"
+  },
+  {
+    "id": 10145,
+    "type": "category",
+    "title": "로봇·자동화"
+  },
+  {
+    "id": 822,
+    "type": "category",
+    "title": "전기기계 공학자"
+  },
+  {
+    "id": 821,
+    "type": "category",
+    "title": "전기 엔지니어"
+  },
+  {
+    "id": 817,
+    "type": "category",
+    "title": "제어 엔지니어"
+  },
+  {
+    "id": 10132,
+    "type": "category",
+    "title": "CAD·3D 설계자"
+  },
+  {
+    "id": 856,
+    "type": "category",
+    "title": "제품 엔지니어"
+  },
+  {
+    "id": 859,
+    "type": "category",
+    "title": "QA 엔지니어"
+  },
+  {
+    "id": 826,
+    "type": "category",
+    "title": "장비 엔지니어"
+  },
+  {
+    "id": 857,
+    "type": "category",
+    "title": "프로젝트 엔지니어"
+  },
+  {
+    "id": 855,
+    "type": "category",
+    "title": "공정 엔지니어"
+  },
+  {
+    "id": 828,
+    "type": "category",
+    "title": "설비 엔지니어"
+  },
+  {
+    "id": 802,
+    "type": "category",
+    "title": "항공우주 공학자"
+  },
+  {
+    "id": 819,
+    "type": "category",
+    "title": "도면 작성가"
+  },
+  {
+    "id": 804,
+    "type": "category",
+    "title": "자동차 공학자"
+  },
+  {
+    "id": 860,
+    "type": "category",
+    "title": "QC 엔지니어"
+  },
+  {
+    "id": 853,
+    "type": "category",
+    "title": "플랜트 엔지니어"
+  },
+  {
+    "id": 815,
+    "type": "category",
+    "title": "건설 엔지니어"
+  },
+  {
+    "id": 848,
+    "type": "category",
+    "title": "원자력·에너지"
+  },
+  {
+    "id": 809,
+    "type": "category",
+    "title": "화학공학 엔지니어"
+  },
+  {
+    "id": 810,
+    "type": "category",
+    "title": "도면 담당자"
+  },
+  {
+    "id": 842,
+    "type": "category",
+    "title": "재료공학자"
+  },
+  {
+    "id": 861,
+    "type": "category",
+    "title": "전자계전 엔지니어"
+  },
+  {
+    "id": 867,
+    "type": "category",
+    "title": "구조공학 엔지니어"
+  },
+  {
+    "id": 839,
+    "type": "category",
+    "title": "인허가 담당 엔지니어"
+  },
+  {
+    "id": 864,
+    "type": "category",
+    "title": "RF 엔지니어"
+  },
+  {
+    "id": 865,
+    "type": "category",
+    "title": "회전기계 엔지니어"
+  },
+  {
+    "id": 812,
+    "type": "category",
+    "title": "시운전 엔지니어"
+  },
+  {
+    "id": 824,
+    "type": "category",
+    "title": "환경 엔지니어"
+  },
+  {
+    "id": 825,
+    "type": "category",
+    "title": "환경 안전기사"
+  },
+  {
+    "id": 835,
+    "type": "category",
+    "title": "고압설계 엔지니어"
+  },
+  {
+    "id": 836,
+    "type": "category",
+    "title": "산업 엔지니어"
+  },
+  {
+    "id": 840,
+    "type": "category",
+    "title": "생산공학 엔지니어"
+  },
+  {
+    "id": 847,
+    "type": "category",
+    "title": "선박 공학자"
+  },
+  {
+    "id": 852,
+    "type": "category",
+    "title": "배관설계 엔지니어"
+  },
+  {
+    "id": 858,
+    "type": "category",
+    "title": "사업수주 엔지니어"
+  },
+  {
+    "id": 803,
+    "type": "category",
+    "title": "농업 공학자"
+  },
+  {
+    "id": 805,
+    "type": "category",
+    "title": "유전 공학자"
+  },
+  {
+    "id": 806,
+    "type": "category",
+    "title": "생물의학자"
+  },
+  {
+    "id": 807,
+    "type": "category",
+    "title": "보일러 엔지니어"
+  },
+  {
+    "id": 808,
+    "type": "category",
+    "title": "세라믹 엔지니어"
+  },
+  {
+    "id": 811,
+    "type": "category",
+    "title": "토목기사"
+  },
+  {
+    "id": 820,
+    "type": "category",
+    "title": "시추 엔지니어"
+  },
+  {
+    "id": 830,
+    "type": "category",
+    "title": "소방안전 기술자"
+  },
+  {
+    "id": 831,
+    "type": "category",
+    "title": "지리정보시스템"
+  },
+  {
+    "id": 832,
+    "type": "category",
+    "title": "지리학자"
+  },
+  {
+    "id": 833,
+    "type": "category",
+    "title": "지질공학자"
+  },
+  {
+    "id": 834,
+    "type": "category",
+    "title": "보건안전 엔지니어"
+  },
+  {
+    "id": 838,
+    "type": "category",
+    "title": "I&C 엔지니어"
+  },
+  {
+    "id": 841,
+    "type": "category",
+    "title": "해양공학자"
+  },
+  {
+    "id": 844,
+    "type": "category",
+    "title": "금속 공학자"
+  },
+  {
+    "id": 845,
+    "type": "category",
+    "title": "광산 기술자"
+  },
+  {
+    "id": 846,
+    "type": "category",
+    "title": "광산 안전 기술자"
+  },
+  {
+    "id": 850,
+    "type": "category",
+    "title": "석유공학 엔지니어"
+  },
+  {
+    "id": 854,
+    "type": "category",
+    "title": "플라스틱 엔지니어"
+  },
+  {
+    "id": 863,
+    "type": "category",
+    "title": "저수처리 엔지니어"
+  },
+  {
+    "id": 869,
+    "type": "category",
+    "title": "터빈공학자"
+  },
+  {
+    "id": 643,
+    "type": "category",
+    "title": "인사담당"
+  },
+  {
+    "id": 644,
+    "type": "category",
+    "title": "리크루터"
+  },
+  {
+    "id": 645,
+    "type": "category",
+    "title": "평가·보상"
+  },
+  {
+    "id": 1043,
+    "type": "category",
+    "title": "HRBP"
+  },
+  {
+    "id": 649,
+    "type": "category",
+    "title": "조직문화"
+  },
+  {
+    "id": 648,
+    "type": "category",
+    "title": "HRD"
+  },
+  {
+    "id": 650,
+    "type": "category",
+    "title": "급여담당"
+  },
+  {
+    "id": 642,
+    "type": "category",
+    "title": "HR 컨설턴트"
+  },
+  {
+    "id": 647,
+    "type": "category",
+    "title": "노무·노사"
+  },
+  {
+    "id": 1041,
+    "type": "category",
+    "title": "헤드헌터"
+  },
+  {
+    "id": 611,
+    "type": "category",
+    "title": "기술 교육"
+  },
+  {
+    "id": 1044,
+    "type": "category",
+    "title": "사내 강사"
+  },
+  {
+    "id": 651,
+    "type": "category",
+    "title": "E-러닝"
+  },
+  {
+    "id": 608,
+    "type": "category",
+    "title": "교사"
+  },
+  {
+    "id": 1042,
+    "type": "category",
+    "title": "교수"
+  },
+  {
+    "id": 723,
+    "type": "category",
+    "title": "영상 편집가"
+  },
+  {
+    "id": 727,
+    "type": "category",
+    "title": "PD"
+  },
+  {
+    "id": 1046,
+    "type": "category",
+    "title": "콘텐츠 크리에이터"
+  },
+  {
+    "id": 10535,
+    "type": "category",
+    "title": "콘텐츠 에디터"
+  },
+  {
+    "id": 10235,
+    "type": "category",
+    "title": "연예,엔터테인먼트"
+  },
+  {
+    "id": 3351,
+    "type": "category",
+    "title": "비디오 제작"
+  },
+  {
+    "id": 725,
+    "type": "category",
+    "title": "에디터"
+  },
+  {
+    "id": 940,
+    "type": "category",
+    "title": "통·번역"
+  },
+  {
+    "id": 724,
+    "type": "category",
+    "title": "작가"
+  },
+  {
+    "id": 729,
+    "type": "category",
+    "title": "사진작가"
+  },
+  {
+    "id": 728,
+    "type": "category",
+    "title": "리포터"
+  },
+  {
+    "id": 956,
+    "type": "category",
+    "title": "출판 기획자"
+  },
+  {
+    "id": 957,
+    "type": "category",
+    "title": "음향 엔지니어"
+  },
+  {
+    "id": 726,
+    "type": "category",
+    "title": "저널리스트"
+  },
+  {
+    "id": 1636,
+    "type": "category",
+    "title": "라이센스 관리자"
+  },
+  {
+    "id": 10534,
+    "type": "category",
+    "title": "조명 엔지니어"
+  },
+  {
+    "id": 1045,
+    "type": "category",
+    "title": "큐레이터"
+  },
+  {
+    "id": 10533,
+    "type": "category",
+    "title": "사운드 디자이너"
+  },
+  {
+    "id": 671,
+    "type": "category",
+    "title": "보안 엔지니어"
+  },
+  {
+    "id": 10233,
+    "type": "category",
+    "title": "정보보호 담당자"
+  },
+  {
+    "id": 10567,
+    "type": "category",
+    "title": "정보보호 컨설팅"
+  },
+  {
+    "id": 10568,
+    "type": "category",
+    "title": "개인정보 담당자"
+  },
+  {
+    "id": 10571,
+    "type": "category",
+    "title": "모의해킹/취약점 진단"
+  },
+  {
+    "id": 10569,
+    "type": "category",
+    "title": "보안관제"
+  },
+  {
+    "id": 10570,
+    "type": "category",
+    "title": "CISO/CPO"
+  },
+  {
+    "id": 534,
+    "type": "category",
+    "title": "회계담당"
+  },
+  {
+    "id": 1048,
+    "type": "category",
+    "title": "재무 담당자"
+  },
+  {
+    "id": 538,
+    "type": "category",
+    "title": "재무 분석가"
+  },
+  {
+    "id": 920,
+    "type": "category",
+    "title": "IR"
+  },
+  {
+    "id": 10056,
+    "type": "category",
+    "title": "투자·증권"
+  },
+  {
+    "id": 547,
+    "type": "category",
+    "title": "내부통제 담당자"
+  },
+  {
+    "id": 882,
+    "type": "category",
+    "title": "애널리스트"
+  },
+  {
+    "id": 542,
+    "type": "category",
+    "title": "공인회계사"
+  },
+  {
+    "id": 938,
+    "type": "category",
+    "title": "준법감시인"
+  },
+  {
+    "id": 937,
+    "type": "category",
+    "title": "투자은행가"
+  },
+  {
+    "id": 743,
+    "type": "category",
+    "title": "부동산 중개사"
+  },
+  {
+    "id": 936,
+    "type": "category",
+    "title": "자산운용가"
+  },
+  {
+    "id": 742,
+    "type": "category",
+    "title": "부동산 자산 관리자"
+  },
+  {
+    "id": 1047,
+    "type": "category",
+    "title": "세무사"
+  },
+  {
+    "id": 935,
+    "type": "category",
+    "title": "자산관리사"
+  },
+  {
+    "id": 681,
+    "type": "category",
+    "title": "보험 에이전트"
+  },
+  {
+    "id": 684,
+    "type": "category",
+    "title": "언더라이터"
+  },
+  {
+    "id": 933,
+    "type": "category",
+    "title": "트레이더"
+  },
+  {
+    "id": 934,
+    "type": "category",
+    "title": "금융공학자"
+  },
+  {
+    "id": 682,
+    "type": "category",
+    "title": "손해 사정관"
+  },
+  {
+    "id": 683,
+    "type": "category",
+    "title": "계리사"
+  },
+  {
+    "id": 745,
+    "type": "category",
+    "title": "감정평가사"
+  },
+  {
+    "id": 1049,
+    "type": "category",
+    "title": "청구 담당자"
+  },
+  {
+    "id": 783,
+    "type": "category",
+    "title": "물류담당"
+  },
+  {
+    "id": 10148,
+    "type": "category",
+    "title": "입·출고 관리자"
+  },
+  {
+    "id": 777,
+    "type": "category",
+    "title": "배송담당"
+  },
+  {
+    "id": 10149,
+    "type": "category",
+    "title": "유통 관리자"
+  },
+  {
+    "id": 10151,
+    "type": "category",
+    "title": "수출입사무"
+  },
+  {
+    "id": 782,
+    "type": "category",
+    "title": "물류 분석가"
+  },
+  {
+    "id": 780,
+    "type": "category",
+    "title": "지게차 운전사"
+  },
+  {
+    "id": 10053,
+    "type": "category",
+    "title": "무역사무"
+  },
+  {
+    "id": 784,
+    "type": "category",
+    "title": "화물트럭 운전기사"
+  },
+  {
+    "id": 786,
+    "type": "category",
+    "title": "운송 관리자"
+  },
+  {
+    "id": 787,
+    "type": "category",
+    "title": "웨어하우스"
+  },
+  {
+    "id": 10150,
+    "type": "category",
+    "title": "바이어관리·상담·개발"
+  },
+  {
+    "id": 788,
+    "type": "category",
+    "title": "항공 운송"
+  },
+  {
+    "id": 781,
+    "type": "category",
+    "title": "운전기사"
+  },
+  {
+    "id": 785,
+    "type": "category",
+    "title": "선적,발송 사무원"
+  },
+  {
+    "id": 10140,
+    "type": "category",
+    "title": "원산지관리사"
+  },
+  {
+    "id": 778,
+    "type": "category",
+    "title": "디젤 정비공"
+  },
+  {
+    "id": 779,
+    "type": "category",
+    "title": "운행 관리원"
+  },
+  {
+    "id": 789,
+    "type": "category",
+    "title": "해운·해양 운송"
+  },
+  {
+    "id": 790,
+    "type": "category",
+    "title": "보세사"
+  },
+  {
+    "id": 10139,
+    "type": "category",
+    "title": "관세사"
+  },
+  {
+    "id": 10236,
+    "type": "category",
+    "title": "항해사"
+  },
+  {
+    "id": 10237,
+    "type": "category",
+    "title": "기관사"
+  },
+  {
+    "id": 1002,
+    "type": "category",
+    "title": "법무담당"
+  },
+  {
+    "id": 691,
+    "type": "category",
+    "title": "변호사"
+  },
+  {
+    "id": 10529,
+    "type": "category",
+    "title": "인허가(RA) 담당"
+  },
+  {
+    "id": 692,
+    "type": "category",
+    "title": "법무 자문위원"
+  },
+  {
+    "id": 10137,
+    "type": "category",
+    "title": "특허담당"
+  },
+  {
+    "id": 10136,
+    "type": "category",
+    "title": "변리사"
+  },
+  {
+    "id": 689,
+    "type": "category",
+    "title": "보안요원"
+  },
+  {
+    "id": 686,
+    "type": "category",
+    "title": "수사관"
+  },
+  {
+    "id": 693,
+    "type": "category",
+    "title": "법무관"
+  },
+  {
+    "id": 694,
+    "type": "category",
+    "title": "법무사"
+  },
+  {
+    "id": 687,
+    "type": "category",
+    "title": "보호 관찰관"
+  },
+  {
+    "id": 688,
+    "type": "category",
+    "title": "경찰관"
+  },
+  {
+    "id": 690,
+    "type": "category",
+    "title": "경호원"
+  },
+  {
+    "id": 10058,
+    "type": "category",
+    "title": "메뉴개발"
+  },
+  {
+    "id": 10153,
+    "type": "category",
+    "title": "식품가공·개발"
+  },
+  {
+    "id": 761,
+    "type": "category",
+    "title": "식품 MD"
+  },
+  {
+    "id": 748,
+    "type": "category",
+    "title": "요리사"
+  },
+  {
+    "id": 749,
+    "type": "category",
+    "title": "외식업 종사자"
+  },
+  {
+    "id": 628,
+    "type": "category",
+    "title": "영양사"
+  },
+  {
+    "id": 746,
+    "type": "category",
+    "title": "제과·제빵사"
+  },
+  {
+    "id": 750,
+    "type": "category",
+    "title": "레스토랑 관리자"
+  },
+  {
+    "id": 747,
+    "type": "category",
+    "title": "바텐더"
+  },
+  {
+    "id": 10141,
+    "type": "category",
+    "title": "푸드스타일리스트"
+  },
+  {
+    "id": 10152,
+    "type": "category",
+    "title": "소믈리에"
+  },
+  {
+    "id": 10154,
+    "type": "category",
+    "title": "바리스타"
+  },
+  {
+    "id": 739,
+    "type": "category",
+    "title": "연구원"
+  },
+  {
+    "id": 735,
+    "type": "category",
+    "title": "임상시험 연구원"
+  },
+  {
+    "id": 740,
+    "type": "category",
+    "title": "생명공학 연구원"
+  },
+  {
+    "id": 731,
+    "type": "category",
+    "title": "약학 분석 화학자"
+  },
+  {
+    "id": 736,
+    "type": "category",
+    "title": "임상시험 간호사"
+  },
+  {
+    "id": 627,
+    "type": "category",
+    "title": "간호사"
+  },
+  {
+    "id": 10054,
+    "type": "category",
+    "title": "방사선사"
+  },
+  {
+    "id": 622,
+    "type": "category",
+    "title": "치과 위생사"
+  },
+  {
+    "id": 626,
+    "type": "category",
+    "title": "임상병리사"
+  },
+  {
+    "id": 630,
+    "type": "category",
+    "title": "물리 치료사"
+  },
+  {
+    "id": 633,
+    "type": "category",
+    "title": "의사"
+  },
+  {
+    "id": 732,
+    "type": "category",
+    "title": "연구실 기사"
+  },
+  {
+    "id": 733,
+    "type": "category",
+    "title": "약사"
+  },
+  {
+    "id": 10147,
+    "type": "category",
+    "title": "임상심리사"
+  },
+  {
+    "id": 623,
+    "type": "category",
+    "title": "증례 관리자"
+  },
+  {
+    "id": 624,
+    "type": "category",
+    "title": "간병인"
+  },
+  {
+    "id": 625,
+    "type": "category",
+    "title": "조무사"
+  },
+  {
+    "id": 629,
+    "type": "category",
+    "title": "작업 치료사"
+  },
+  {
+    "id": 631,
+    "type": "category",
+    "title": "호흡장애 치료사"
+  },
+  {
+    "id": 632,
+    "type": "category",
+    "title": "수의 테크니션"
+  },
+  {
+    "id": 634,
+    "type": "category",
+    "title": "수의사"
+  },
+  {
+    "id": 635,
+    "type": "category",
+    "title": "간호 조무사"
+  },
+  {
+    "id": 636,
+    "type": "category",
+    "title": "치과의사"
+  },
+  {
+    "id": 637,
+    "type": "category",
+    "title": "검안사"
+  },
+  {
+    "id": 734,
+    "type": "category",
+    "title": "약사 보조원"
+  },
+  {
+    "id": 737,
+    "type": "category",
+    "title": "미생물학자"
+  },
+  {
+    "id": 738,
+    "type": "category",
+    "title": "유전공학자"
+  },
+  {
+    "id": 1040,
+    "type": "category",
+    "title": "한의사"
+  },
+  {
+    "id": 10134,
+    "type": "category",
+    "title": "병원 코디네이터"
+  },
+  {
+    "id": 10135,
+    "type": "category",
+    "title": "의무기록사"
+  },
+  {
+    "id": 10103,
+    "type": "category",
+    "title": "교재·교육기획"
+  },
+  {
+    "id": 10102,
+    "type": "category",
+    "title": "전문강사"
+  },
+  {
+    "id": 10109,
+    "type": "category",
+    "title": "자격증·기술전문교육"
+  },
+  {
+    "id": 10106,
+    "type": "category",
+    "title": "외국어교육"
+  },
+  {
+    "id": 10104,
+    "type": "category",
+    "title": "학원강사"
+  },
+  {
+    "id": 10105,
+    "type": "category",
+    "title": "교직원"
+  },
+  {
+    "id": 10107,
+    "type": "category",
+    "title": "유치원·보육교사"
+  },
+  {
+    "id": 10108,
+    "type": "category",
+    "title": "초·중·고 교사"
+  },
+  {
+    "id": 892,
+    "type": "category",
+    "title": "게임 기획자"
+  },
+  {
+    "id": 880,
+    "type": "category",
+    "title": "게임 그래픽 디자이너"
+  },
+  {
+    "id": 881,
+    "type": "category",
+    "title": "게임 아티스트"
+  },
+  {
+    "id": 962,
+    "type": "category",
+    "title": "모바일 게임 개발자"
+  },
+  {
+    "id": 961,
+    "type": "category",
+    "title": "게임 클라이언트 개발자"
+  },
+  {
+    "id": 878,
+    "type": "category",
+    "title": "유니티 개발자"
+  },
+  {
+    "id": 958,
+    "type": "category",
+    "title": "게임운영자(GM)"
+  },
+  {
+    "id": 897,
+    "type": "category",
+    "title": "언리얼 개발자"
+  },
+  {
+    "id": 960,
+    "type": "category",
+    "title": "게임 서버 개발자"
+  },
+  {
+    "id": 576,
+    "type": "category",
+    "title": "관리인"
+  },
+  {
+    "id": 10143,
+    "type": "category",
+    "title": "건축시공·감리"
+  },
+  {
+    "id": 10142,
+    "type": "category",
+    "title": "실내건축"
+  },
+  {
+    "id": 575,
+    "type": "category",
+    "title": "유지보수 관리자"
+  },
+  {
+    "id": 572,
+    "type": "category",
+    "title": "현장 소장"
+  },
+  {
+    "id": 584,
+    "type": "category",
+    "title": "견적 기술자"
+  },
+  {
+    "id": 10144,
+    "type": "category",
+    "title": "건설 안전·품질·검사"
+  },
+  {
+    "id": 574,
+    "type": "category",
+    "title": "정비공"
+  },
+  {
+    "id": 577,
+    "type": "category",
+    "title": "전기 기술자"
+  },
+  {
+    "id": 571,
+    "type": "category",
+    "title": "목수"
+  },
+  {
+    "id": 573,
+    "type": "category",
+    "title": "중장비 기술자"
+  },
+  {
+    "id": 578,
+    "type": "category",
+    "title": "인스톨러"
+  },
+  {
+    "id": 579,
+    "type": "category",
+    "title": "페인터"
+  },
+  {
+    "id": 580,
+    "type": "category",
+    "title": "플랜트 관리자"
+  },
+  {
+    "id": 581,
+    "type": "category",
+    "title": "용접기사"
+  },
+  {
+    "id": 582,
+    "type": "category",
+    "title": "배관공"
+  },
+  {
+    "id": 583,
+    "type": "category",
+    "title": "연관공"
+  },
+  {
+    "id": 585,
+    "type": "category",
+    "title": "측량·계측"
+  },
+  {
+    "id": 604,
+    "type": "category",
+    "title": "건축가"
+  },
+  {
+    "id": 10055,
+    "type": "category",
+    "title": "사회복지사"
+  },
+  {
+    "id": 609,
+    "type": "category",
+    "title": "카운셀러"
+  },
+  {
+    "id": 615,
+    "type": "category",
+    "title": "소방관"
+  },
+  {
+    "id": 616,
+    "type": "category",
+    "title": "환경 전문가"
+  },
+  {
+    "id": 617,
+    "type": "category",
+    "title": "정보 분석가"
+  },
+  {
+    "id": 618,
+    "type": "category",
+    "title": "인명 구조원"
+  },
+  {
+    "id": 619,
+    "type": "category",
+    "title": "지역 전문가"
+  },
+  {
+    "id": 620,
+    "type": "category",
+    "title": "공무원"
+  },
+  {
+    "id": 621,
+    "type": "category",
+    "title": "직업군인"
+  },
+  {
+    "id": 730,
+    "type": "category",
+    "title": "자원봉사자"
+  },
+  {
+    "id": 10133,
+    "type": "category",
+    "title": "응급구조사"
+  },
+  {
+    "id": 10146,
+    "type": "category",
+    "title": "요양보호사"
+  }
+]

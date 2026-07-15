@@ -26,12 +26,12 @@ export default function CompanySignupPage() {
     getTags("skill").then(setSkillTags);
   }, []);
 
-  const submit = () => {
+  const submit = async () => {
     if (!profile.companyName.trim()) {
       showToast("회사명을 입력해주세요.");
       return;
     }
-    const result = signUpCompany({ email, password, companyName: profile.companyName, profile });
+    const result = await signUpCompany({ email, password, companyName: profile.companyName, profile });
     if (isAppError(result)) {
       showToast(result.error.message);
       return;

@@ -14,6 +14,7 @@ import { listViewed } from "@/lib/viewedCandidates";
 import { listSentScouts, remainingMonthlyQuota } from "@/lib/scouts";
 import type { CompanyProfile, Scout, Tag, ViewedCandidate } from "@/types";
 import { formatDateTime } from "@/lib/format";
+import { emptyCompanyProfile } from "@/types";
 
 const SCOUT_PREVIEW_COUNT = 5;
 
@@ -22,7 +23,7 @@ function CompanyMyPageContent() {
   const { showToast } = useToast();
   const companyId = session!.userId;
 
-  const [profile, setProfile] = useState<CompanyProfile>(() => getCompanyProfile(companyId));
+  const [profile, setProfile] = useState<CompanyProfile>(emptyCompanyProfile(companyId, ""));
   const [skillTags, setSkillTags] = useState<Tag[]>([]);
   const [viewed, setViewed] = useState<ViewedCandidate[]>([]);
   const [sentScouts, setSentScouts] = useState<Scout[]>([]);
@@ -33,10 +34,14 @@ function CompanyMyPageContent() {
     setViewed(listViewed(companyId));
     setSentScouts(listSentScouts(companyId));
     setRemainingQuota(remainingMonthlyQuota(companyId));
+    (async () => {
+      const p = await getCompanyProfile(companyId);
+      setProfile(p);
+    })();
   }, [companyId]);
 
-  const saveProfile = () => {
-    updateCompanyProfile(profile);
+  const saveProfile = async () => {
+    await updateCompanyProfile(profile);
     showToast("인재상 정보가 저장되었습니다");
   };
 

@@ -18,11 +18,12 @@ function JobseekerHome({ userId }: { userId: string }) {
   const [profileComplete, setProfileComplete] = useState(true);
 
   useEffect(() => {
-    const profile = getJobseekerProfile(userId);
-    setProfileComplete(isJobseekerProfileComplete(profile));
-    getJobs().then((jobs) => {
+    (async () => {
+      const profile = await getJobseekerProfile(userId);
+      setProfileComplete(isJobseekerProfileComplete(profile));
+      const jobs = await getJobs();
       setInsights(computeProfileInsights(profile, jobs, MOCK_CANDIDATES));
-    });
+    })();
   }, [userId]);
 
   return (
@@ -81,9 +82,13 @@ export default function HomePage() {
     }
   }, [session, router]);
 
-  if (isLoading || session?.role === "company") return <main className="page" />;
-
-  if (session?.role === "jobseeker") return <JobseekerHome userId={session.userId} />;
+  // 기본적으로 AnonymousLanding을 표시 (로딩/에러 상태 무시하고 항상 뭔가 렌더링)
+  try {
+    if (isLoading || session?.role === "company") return <main className="page">로딩 중...</main>;
+    if (session?.role === "jobseeker") return <JobseekerHome userId={session.userId} />;
+  } catch (e) {
+    console.error("Error in HomePage:", e);
+  }
 
   return <AnonymousLanding />;
 }

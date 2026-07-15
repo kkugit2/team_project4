@@ -48,5 +48,6 @@ export interface Company {
   description: string;
   benefits: string;
   cultureTagIds: number[];
+  logoUrl?: string;
   avgSalary?: number;
 }

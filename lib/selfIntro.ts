@@ -4,7 +4,7 @@ import { TABLE_KEYS } from "./constants";
 import { genId, getTable, insertRow, upsertRow } from "./localDb";
 import { getJobseekerProfile } from "./profiles";
 import { hasApplied } from "./applications";
-import { generateFeedback } from "./mockLlm";
+import { generateFeedback } from "./geminilLm";
 
 import { findJobById, MOCK_CANDIDATES } from "@/data/dummyData";
 
@@ -42,10 +42,7 @@ export function getSelfIntro(id: string): SelfIntro | null {
   return getTable<SelfIntro>(TABLE_KEYS.SELF_INTROS).find((si) => si.id === id) ?? null;
 }
 
-export function generateAndStoreFeedback(selfIntroId: string, job: JobDetail): FeedbackResult | null {
-  const si = getSelfIntro(selfIntroId);
-  if (!si) return null;
-  const { strengths, improvements } = generateFeedback(si.content, job);
+export async function generateAndStoreFeedback(selfIntroId: string, strengths: string[], improvements: string[]): Promise<FeedbackResult | null> {
   const result: FeedbackResult = {
     selfIntroId,
     strengths,

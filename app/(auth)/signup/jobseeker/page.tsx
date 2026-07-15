@@ -26,8 +26,8 @@ export default function JobseekerSignupPage() {
     getTags("skill").then(setSkillTags);
   }, []);
 
-  const submit = () => {
-    const result = signUpJobseeker({ email, password, profile });
+  const submit = async () => {
+    const result = await signUpJobseeker({ email, password, profile });
     if (isAppError(result)) {
       showToast(result.error.message);
       return;
