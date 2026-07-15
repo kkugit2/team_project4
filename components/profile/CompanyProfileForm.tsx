@@ -1,7 +1,7 @@
 "use client";
 
 import type { CompanyProfile, Tag } from "@/types";
-import { MOCK_COMPANIES } from "@/data/mockCompanies";
+import { MOCK_COMPANIES } from "@/data/dummyData";
 import { DynamicListField } from "./DynamicListField";
 
 export function CompanyProfileForm({

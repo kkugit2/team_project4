@@ -36,7 +36,7 @@ app/                    Next.js 라우트 (App Router)
   api/wanted/*, api/tags/*     원티드 프록시 경계 (지금은 mock 반환)
 components/             common(RingStat/MatchGauge 등) / nav / job / home / profile / applications / bookmarks / scout / candidate / selfIntro
 lib/                     인증, 프로필, 매칭 스코어, 프로필 인사이트, 스카웃, 자소서/피드백, 원티드 클라이언트 등 (localStorage 기반 목업)
-data/                    mock 시드 데이터 (jobs, companies, tags, candidates, scouts)
+data/                    dummyData.json(공고/회사/태그/지원자/스카웃 시드 원본) + dummyData.ts(타입·조회 헬퍼)
 types/                   공유 TypeScript 타입 (Backend-Guideline 3장 스키마와 대응)
 ```
 

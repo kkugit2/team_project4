@@ -13,7 +13,7 @@ import { computeCandidateFitScore } from "@/lib/matchScore";
 import { sendScout, listSentScouts, remainingMonthlyQuota } from "@/lib/scouts";
 import { recordView } from "@/lib/viewedCandidates";
 import { isAppError } from "@/lib/errors";
-import { findTagsByIds } from "@/data/mockTags";
+import { findTagsByIds } from "@/data/dummyData";
 import type { CandidateSummary, CompanyProfile, Scout } from "@/types";
 
 function ConditionSummary({ profile }: { profile: CompanyProfile }) {

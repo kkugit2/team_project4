@@ -1,6 +1,6 @@
 // UI-UX-Guideline_all.md 4-2 구직자 홈(통계 분석) 계산. 순수 함수 — I/O 없음.
 import { computeJobseekerPassProbability } from "./matchScore";
-import { findTagById } from "@/data/mockTags";
+import { findTagById } from "@/data/dummyData";
 import type { Job, JobseekerProfile } from "@/types";
 
 type PeerPool = { skillTagIds: number[]; careerHistory: unknown[] }[];

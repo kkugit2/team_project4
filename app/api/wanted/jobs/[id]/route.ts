@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { findJobById } from "@/data/mockJobs";
+import { findJobById } from "@/data/dummyData";
 
 export async function GET(_request: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
