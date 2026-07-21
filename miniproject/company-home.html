@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>매치보드 — 인재 랭킹</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/style.css" />
+<style>
+  .condition-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+  .rank-row { display: flex; align-items: center; gap: 18px; padding: 14px 4px; border-bottom: 1px solid var(--line); }
+  .rank-row:last-child { border-bottom: none; }
+  .rank-num { font-family: var(--font-mono); font-weight: 700; color: var(--muted); width: 28px; text-align:center; flex-shrink:0; }
+  .rank-info { flex: 1; min-width: 0; }
+  .rank-info .meta { font-size: 12.5px; color: var(--muted); margin-top: 2px; }
+
+  .resume-modal-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.5); z-index: 100; align-items: center; justify-content: center; }
+  .resume-modal-overlay.active { display: flex; }
+  .resume-modal { background: white; border-radius: 12px; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2); padding: 32px; max-width: 500px; width: 90%; max-height: 80vh; overflow-y: auto; }
+  .resume-modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+  .resume-modal-title { font-size: 18px; font-weight: 700; }
+  .resume-modal-close { background: none; border: none; font-size: 24px; cursor: pointer; color: var(--muted); }
+  .resume-modal-section { margin-bottom: 20px; }
+  .resume-modal-section-title { font-size: 13px; font-weight: 700; color: var(--navy); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; }
+  .resume-modal-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 14px; }
+  .resume-modal-row-label { color: var(--muted); }
+  .resume-modal-row-value { font-weight: 500; }
+</style>
+</head>
+<body>
+  <div id="topnav-root"></div>
+
+  <main class="container page-body">
+    <h1>인재 랭킹</h1>
+
+    <div class="condition-bar">
+      <div class="row wrap" id="condition-chips"></div>
+      <a href="mypage.html" class="btn btn-ghost btn-sm">채용 조건 수정</a>
+    </div>
+
+    <div class="card">
+      <div id="ranking-list"></div>
+      <div id="empty-state" class="empty-state" style="display:none;">
+        아직 공유 동의한 지원자가 없습니다 → 구직자가 자소서 피드백 페이지에서 공유에 동의하면 이곳에 표시돼요.
+      </div>
+    </div>
+
+    <div id="resume-modal-overlay" class="resume-modal-overlay">
+      <div class="resume-modal">
+        <div class="resume-modal-header">
+          <div class="resume-modal-title" id="resume-modal-title"></div>
+          <button class="resume-modal-close" id="resume-modal-close">✕</button>
+        </div>
+        <div id="resume-modal-content"></div>
+      </div>
+    </div>
+  </main>
+
+  <script type="module">
+    import { initNav } from "./js/nav.js";
+    import { supabase, requireRole } from "./js/supabaseClient.js";
+    import { computeCompanyMatchScore } from "./js/matching.js";
+    import { gaugeHtml } from "./js/gauge.js";
+
+    const auth = await requireRole(["company"]);
+    if (!auth) throw new Error("redirecting");
+    await initNav("home");
+
+    // 더미 구직자 데이터 로드
+    const dummyDataResp = await fetch("/dummyData.json");
+    const dummyData = await dummyDataResp.json();
+
+    const { data: companyProfile } = await supabase
+      .from("company_profile")
+      .select("*")
+      .eq("user_id", auth.user.id)
+      .maybeSingle();
+
+    renderConditionChips(companyProfile);
+
+    if (!companyProfile) {
+      document.getElementById("empty-state").style.display = "block";
+      document.getElementById("empty-state").textContent = "채용 조건이 등록되어 있지 않습니다 → 마이페이지에서 등록해주세요.";
+      throw new Error("no company profile");
+    }
+
+    // 더미 구직자 데이터를 candidateRows 형태로 변환
+    const candidateRows = (dummyData.jobseekers || []).map((seeker, idx) => ({
+      jobseeker_id: `dummy-${idx}`,
+      school: seeker.school,
+      major: seeker.major,
+      skills: seeker.skills,
+      career_history: seeker.career_history,
+      gpa: seeker.gpa,
+      gpa_scale: seeker.gpa_scale,
+      certifications: seeker.certifications,
+      career_years: seeker.career_years,
+      has_applied: idx % 5 === 0,
+      submitted_at: new Date(Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000).toISOString()
+    }));
+
+    // 후보자별 중복 제거
+    const byJobseeker = new Map();
+    (candidateRows || [])
+      .slice()
+      .sort((a, b) => (b.has_applied === a.has_applied ? 0 : b.has_applied ? 1 : -1))
+      .forEach((row) => {
+        if (!byJobseeker.has(row.jobseeker_id)) byJobseeker.set(row.jobseeker_id, row);
+      });
+    const candidates = [...byJobseeker.values()];
+
+    // localStorage에서 로컬 scouts 복원
+    const localScoutsRaw = JSON.parse(localStorage.getItem('local_scouts') || '{}');
+    const localScouts = Object.fromEntries(
+      Object.values(localScoutsRaw).map((s) => [s.jobseeker_id, s])
+    );
+
+    const { data: sentScouts } = await supabase.from("scouts").select("*").eq("company_user_id", auth.user.id);
+    const scoutMap = Object.assign(
+      {},
+      Object.fromEntries((sentScouts || []).map((s) => [s.jobseeker_id, s])),
+      localScouts
+    );
+
+    const ranked = candidates
+      .map((c) => ({ candidate: c, match: computeCompanyMatchScore(c, companyProfile) }))
+      .filter((r) => r.match)
+      .sort((a, b) => b.match.score - a.match.score);
+
+    document.getElementById("empty-state").style.display = ranked.length ? "none" : "block";
+
+    document.getElementById("ranking-list").innerHTML = ranked
+      .map(({ candidate, match }, idx) => {
+        const skillChips = (candidate.skills || [])
+          .slice(0, 5)
+          .map((s) => `<span class="chip">${escapeHtml(s)}</span>`)
+          .join(" ");
+        const scout = scoutMap[candidate.jobseeker_id];
+        const isExpired = scout && scout.status === "sent" && new Date(scout.expires_at) < new Date();
+        let scoutBtnHtml;
+        if (!scout || isExpired) {
+          scoutBtnHtml = `<button class="btn btn-primary btn-sm scout-btn" data-jobseeker-id="${candidate.jobseeker_id}">스카웃 제안</button>`;
+        } else {
+          const labelMap = { sent: "스카웃 발송됨 · 대기중", accepted: "스카웃 수락됨", rejected: "스카웃 거절됨" };
+          scoutBtnHtml = `<button class="btn btn-ghost btn-sm" disabled>${labelMap[scout.status] || scout.status}</button>`;
+        }
+
+        const resumeBtnHtml = `<button class="btn btn-secondary btn-sm resume-btn" data-jobseeker-id="${candidate.jobseeker_id}" data-index="${idx}">이력서 보기</button>`;
+
+        return `
+        <div class="rank-row">
+          <div class="rank-num">${idx + 1}</div>
+          ${gaugeHtml(match.score, { size: 56, stroke: 6, unit: "부합도" })}
+          <div class="rank-info">
+            <div>${escapeHtml(candidate.school || "학교 미기재")} · ${escapeHtml(candidate.major || "전공 미기재")} ${candidate.has_applied ? '<span class="pill pill-good" style="margin-left:6px;">자사 지원자</span>' : ""}</div>
+            <div class="meta">경력 ${Number(candidate.career_years || 0).toFixed(1)}년 · 자격증 ${(candidate.certifications || []).length}개</div>
+            <div class="row wrap" style="margin-top:6px;">${skillChips}</div>
+          </div>
+          <div style="display:flex; gap:8px; flex-shrink:0;">
+            ${resumeBtnHtml}
+            ${scoutBtnHtml}
+          </div>
+        </div>`;
+      })
+      .join("");
+
+    function updateScoutButton(jobseekerId) {
+      const btn = document.querySelector(`.scout-btn[data-jobseeker-id="${jobseekerId}"]`);
+      if (!btn) return;
+
+      const scout = scoutMap[jobseekerId];
+      if (scout && scout.status === "sent") {
+        btn.textContent = "스카웃 발송됨 · 대기중";
+        btn.classList.remove("btn-primary");
+        btn.classList.add("btn-ghost");
+        btn.disabled = true;
+      } else {
+        btn.textContent = "스카웃 제안";
+        btn.classList.remove("btn-ghost");
+        btn.classList.add("btn-primary");
+        btn.disabled = false;
+      }
+    }
+
+    document.querySelectorAll(".scout-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const jobseekerId = btn.dataset.jobseekerId;
+
+        const scoutData = {
+          id: `local-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+          jobseeker_id: jobseekerId,
+          company_user_id: auth.user.id,
+          status: "sent",
+          sent_at: new Date().toISOString(),
+          expires_at: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString()
+        };
+
+        // localStorage에 저장 (scout ID를 key로 사용)
+        localScouts[scoutData.id] = scoutData;
+        localStorage.setItem('local_scouts', JSON.stringify(localScouts));
+
+        // scoutMap 업데이트
+        scoutMap[jobseekerId] = scoutData;
+
+        // UI 업데이트
+        updateScoutButton(jobseekerId);
+      });
+    });
+
+    // localStorage 변경 감지 (다른 탭/창에서 변경된 경우)
+    window.addEventListener('storage', (e) => {
+      if (e.key === 'local_scouts') {
+        const updatedScouts = JSON.parse(e.newValue || '{}');
+        Object.assign(scoutMap, updatedScouts);
+
+        // 모든 버튼 상태 업데이트
+        ranked.forEach(({ candidate }) => {
+          updateScoutButton(candidate.jobseeker_id);
+        });
+      }
+    });
+
+    const modalOverlay = document.getElementById("resume-modal-overlay");
+    const modalTitle = document.getElementById("resume-modal-title");
+    const modalContent = document.getElementById("resume-modal-content");
+    const closeBtn = document.getElementById("resume-modal-close");
+
+    function openResumeModal(candidate) {
+      const school = escapeHtml(candidate.school || "학교 미기재");
+      const major = escapeHtml(candidate.major || "전공 미기재");
+      modalTitle.textContent = `${school} · ${major}`;
+
+      const careerHistory = (candidate.career_history || [])
+        .map(c => `<div style="margin-bottom:8px;"><strong>${escapeHtml(c.company)}</strong><br><span style="font-size:12px; color:var(--muted);">${c.period} · ${c.type}</span></div>`)
+        .join("");
+
+      const skills = (candidate.skills || []).length > 0
+        ? (candidate.skills || []).map(s => `<span class="chip" style="display:inline-block; margin:4px 4px 4px 0;">${escapeHtml(s)}</span>`).join("")
+        : `<span style="color:var(--muted);">기술 미등록</span>`;
+
+      const certifications = (candidate.certifications || []).length > 0
+        ? (candidate.certifications || []).map(c => `<span class="chip" style="display:inline-block; margin:4px 4px 4px 0;">${escapeHtml(c)}</span>`).join("")
+        : `<span style="color:var(--muted);">자격증 없음</span>`;
+
+      modalContent.innerHTML = `
+        <div class="resume-modal-section">
+          <div class="resume-modal-row">
+            <span class="resume-modal-row-label">학점(GPA)</span>
+            <span class="resume-modal-row-value">${candidate.gpa}/${candidate.gpa_scale}</span>
+          </div>
+          <div class="resume-modal-row">
+            <span class="resume-modal-row-label">경력</span>
+            <span class="resume-modal-row-value">${Number(candidate.career_years || 0).toFixed(1)}년</span>
+          </div>
+        </div>
+
+        <div class="resume-modal-section">
+          <div class="resume-modal-section-title">경력 이력</div>
+          ${careerHistory || '<span style="color:var(--muted);">경력 없음</span>'}
+        </div>
+
+        <div class="resume-modal-section">
+          <div class="resume-modal-section-title">보유 기술</div>
+          <div>${skills}</div>
+        </div>
+
+        <div class="resume-modal-section">
+          <div class="resume-modal-section-title">자격증</div>
+          <div>${certifications}</div>
+        </div>
+      `;
+
+      modalOverlay.classList.add("active");
+    }
+
+    function closeResumeModal() {
+      modalOverlay.classList.remove("active");
+    }
+
+    closeBtn.addEventListener("click", closeResumeModal);
+    modalOverlay.addEventListener("click", (e) => {
+      if (e.target === modalOverlay) closeResumeModal();
+    });
+
+    document.querySelectorAll(".resume-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const idx = parseInt(btn.dataset.index);
+        const candidate = ranked[idx]?.candidate;
+        if (!candidate) return;
+        openResumeModal(candidate);
+      });
+    });
+
+    function renderConditionChips(cp) {
+      const el = document.getElementById("condition-chips");
+      if (!cp) {
+        el.innerHTML = `<span class="muted">등록된 채용 조건이 없습니다.</span>`;
+        return;
+      }
+      const chips = [];
+      if (cp.preferred_gpa_min) chips.push(`학점 ${cp.preferred_gpa_min}+`);
+      (cp.preferred_skills || []).forEach((s) => chips.push(s));
+      (cp.preferred_experience_type || []).forEach((t) => chips.push(t));
+      if (cp.internship_required) chips.push("인턴 경험 필수");
+      el.innerHTML = chips.map((c) => `<span class="chip">${escapeHtml(c)}</span>`).join(" ") || `<span class="muted">등록된 조건 없음</span>`;
+    }
+
+    function escapeHtml(str) {
+      return String(str ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+    }
+  </script>
+</body>
+</html>

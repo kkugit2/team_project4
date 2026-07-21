@@ -1,0 +1,44 @@
+.tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.tabs button {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: #fff;
+  font-weight: 700;
+  cursor: pointer;
+  color: var(--text-muted);
+}
+
+.tabs button.active,
+.tabs button.companyActive {
+  color: var(--navy);
+  border-color: var(--navy);
+  background: var(--navy-100);
+}
+
+.form {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.footer {
+  text-align: center;
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-top: 16px;
+}
+
+.footer a {
+  color: var(--primary);
+  font-weight: 600;
+}

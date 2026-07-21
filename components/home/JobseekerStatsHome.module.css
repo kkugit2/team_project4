@@ -1,0 +1,105 @@
+.statGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.statCard {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 20px;
+}
+
+.statLabel {
+  margin: 0 0 8px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.statValue {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.comparisonGroup {
+  margin-bottom: 16px;
+}
+
+.comparisonLabel {
+  margin: 0 0 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.barRow {
+  display: grid;
+  grid-template-columns: 44px 1fr 64px;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.barName {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.barTrack {
+  height: 8px;
+  border-radius: 999px;
+  background: var(--line);
+  overflow: hidden;
+}
+
+.barMine {
+  height: 100%;
+  background: var(--navy);
+  border-radius: 999px;
+}
+
+.barAvg {
+  height: 100%;
+  background: var(--navy-mid);
+  border-radius: 999px;
+}
+
+.barValue {
+  margin: 0;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.donutSection {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.insightGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.strengthCard {
+  background: #eaf3ef;
+  border-color: var(--good);
+}
+
+.weaknessCard {
+  background: #f6e9e6;
+  border-color: var(--warn);
+}
+
+.insightList {
+  margin: 0;
+  padding-left: 18px;
+  font-size: 14px;
+  line-height: 1.8;
+}

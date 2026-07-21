@@ -1,0 +1,98 @@
+.topbar {
+  background: var(--paper);
+  border-bottom: 1px solid var(--line);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.inner {
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.brand {
+  font-weight: 800;
+  font-size: 20px;
+  color: var(--navy);
+  flex-shrink: 0;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex: 1;
+}
+
+.nav a {
+  padding: 8px 4px;
+  margin-right: 20px;
+  color: var(--muted);
+  font-weight: 600;
+  font-size: 14px;
+  border-bottom: 2px solid transparent;
+}
+
+.nav a:hover {
+  color: var(--ink);
+}
+
+.nav a.active {
+  color: var(--navy);
+  border-bottom-color: var(--navy);
+}
+
+.right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.roleTag {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--navy);
+  background: var(--navy-100);
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+
+.avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--navy);
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.logoutBtn {
+  padding: 8px 14px;
+  border-radius: var(--radius-sm);
+  color: var(--muted);
+  font-weight: 600;
+  font-size: 14px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.logoutBtn:hover {
+  background: var(--bg);
+}
+
+.loginLink {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--navy);
+}

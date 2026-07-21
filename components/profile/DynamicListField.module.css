@@ -1,0 +1,23 @@
+.inputRow {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.inputRow input {
+  flex: 1;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.chips button {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: inherit;
+  font-size: 11px;
+  padding: 0;
+}

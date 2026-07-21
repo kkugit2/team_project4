@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>매치보드 — 마이페이지</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/style.css" />
+<style>
+  .list-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--line); }
+  .list-row:last-child { border-bottom: none; }
+  .list-row .title { font-size: 13.5px; font-weight: 600; }
+  .list-row .sub { font-size: 12px; color: var(--muted); }
+  .profile-summary dt { font-size: 12px; color: var(--muted); margin-top: 10px; }
+  .profile-summary dd { margin: 2px 0 0; font-size: 13.5px; }
+</style>
+</head>
+<body>
+  <div id="topnav-root"></div>
+
+  <main class="container page-body">
+    <h1>마이페이지</h1>
+    <div id="jobseeker-mypage" class="split" style="display:none;">
+      <div>
+        <div class="card">
+          <div class="card-title">프로필 요약</div>
+          <div id="profile-view"></div>
+          <div id="profile-edit-wrap" style="display:none; margin-top:12px;"></div>
+          <button class="btn btn-secondary btn-block" id="profile-edit-toggle" style="margin-top:14px;">정보 수정</button>
+        </div>
+      </div>
+      <div class="stack">
+        <div class="card">
+          <div class="card-title">나의 지원현황</div>
+          <div id="applications-list"></div>
+        </div>
+        <div class="card">
+          <div class="card-title">찜 목록</div>
+          <div id="bookmarks-list"></div>
+        </div>
+        <div class="card">
+          <div class="card-title">스카웃함</div>
+          <div id="scouts-list"></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="company-mypage" class="split" style="display:none;">
+      <div>
+        <div class="card">
+          <div class="card-title">인재상 프로필</div>
+          <div id="company-profile-view"></div>
+          <div id="company-profile-edit-wrap" style="display:none; margin-top:12px;"></div>
+          <button class="btn btn-secondary btn-block" id="company-profile-edit-toggle" style="margin-top:14px;">정보 수정</button>
+        </div>
+      </div>
+      <div class="stack">
+        <div class="card">
+          <div class="row between">
+            <div class="card-title" style="margin-bottom:0;">스카웃 발송 내역</div>
+            <a href="scout-management.html" class="muted" style="font-size:13px;">전체보기 →</a>
+          </div>
+          <div id="scout-summary" style="margin-top:10px;"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script type="module">
+    import { initNav } from "./js/nav.js";
+    import { supabase, requireRole } from "./js/supabaseClient.js";
+    import { renderJobseekerProfileEditForm, renderCompanyProfileEditForm } from "./js/auth.js";
+
+    const auth = await requireRole(["jobseeker", "company"]);
+    if (!auth) throw new Error("redirecting");
+    await initNav("mypage");
+
+    if (auth.role === "jobseeker") {
+      document.getElementById("jobseeker-mypage").style.display = "grid";
+      await initJobseekerMypage(auth.user.id);
+    } else {
+      document.getElementById("company-mypage").style.display = "grid";
+      await initCompanyMypage(auth.user.id);
+    }
+
+    async function initCompanyMypage(userId) {
+      const { data: profile } = await supabase.from("company_profile").select("*").eq("user_id", userId).maybeSingle();
+      renderCompanyProfileView(profile);
+
+      document.getElementById("company-profile-edit-toggle").addEventListener("click", () => {
+        const editWrap = document.getElementById("company-profile-edit-wrap");
+        const isOpen = editWrap.style.display !== "none";
+        if (isOpen) {
+          editWrap.style.display = "none";
+          return;
+        }
+        editWrap.style.display = "block";
+        const handle = renderCompanyProfileEditForm(editWrap, profile);
+        document.getElementById("profile-edit-form").addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const updated = handle.collect();
+          const { error } = await supabase.from("company_profile").update(updated).eq("user_id", userId);
+          const msg = document.getElementById("profile-save-msg");
+          if (error) {
+            msg.textContent = "저장 실패";
+            console.error(error);
+            return;
+          }
+          msg.textContent = "저장되었습니다.";
+          Object.assign(profile, updated);
+          renderCompanyProfileView(profile);
+          editWrap.style.display = "none";
+        });
+      });
+
+      const { data: scouts } = await supabase
+        .from("scouts")
+        .select("*")
+        .eq("company_user_id", userId)
+        .order("sent_at", { ascending: false })
+        .limit(5);
+
+      // localStorage의 로컬 스카웃도 함께 가져오기
+      const localScouts = JSON.parse(localStorage.getItem('local_scouts') || '{}');
+      const allScouts = [
+        ...(scouts || []),
+        ...Object.values(localScouts)
+      ].sort((a, b) => new Date(b.expires_at || b.sent_at || 0) - new Date(a.expires_at || a.sent_at || 0));
+
+      const el = document.getElementById("scout-summary");
+      if (!allScouts?.length) {
+        el.innerHTML = `<div class="empty-state">아직 발송한 스카웃이 없습니다.</div>`;
+        return;
+      }
+      const statusMap = { sent: "대기중", accepted: "수락됨", rejected: "거절됨" };
+      el.innerHTML = allScouts
+        .map((s) => {
+          const isExpired = s.status === "sent" && new Date(s.expires_at) < new Date();
+          const sentDate = s.sent_at ? new Date(s.sent_at).toLocaleDateString("ko-KR") : new Date().toLocaleDateString("ko-KR");
+          return `
+          <div class="list-row">
+            <div class="sub">발송일 ${sentDate}</div>
+            <span class="pill pill-muted">${isExpired ? "만료됨" : statusMap[s.status] || s.status}</span>
+          </div>`;
+        })
+        .join("");
+    }
+
+    function renderCompanyProfileView(profile) {
+      const el = document.getElementById("company-profile-view");
+      if (!profile) {
+        el.innerHTML = `<div class="empty-state">등록된 인재상 정보가 없습니다.</div>`;
+        return;
+      }
+      el.innerHTML = `
+        <dl class="profile-summary" style="margin:0;">
+          <dt>회사명</dt><dd>${escapeHtml(profile.company_name || "-")}</dd>
+          <dt>최소 학점 기준</dt><dd>${profile.preferred_gpa_min ?? "-"}</dd>
+          <dt>원하는 기술 스택</dt><dd>${(profile.preferred_skills || []).map((s) => `<span class="chip">${escapeHtml(s)}</span>`).join(" ") || "-"}</dd>
+          <dt>원하는 경험 유형</dt><dd>${(profile.preferred_experience_type || []).join(", ") || "-"}</dd>
+          <dt>인턴십 필수</dt><dd>${profile.internship_required ? "예" : "아니요"}</dd>
+        </dl>`;
+    }
+
+    async function initJobseekerMypage(userId) {
+      const { data: profile } = await supabase.from("jobseeker_profile").select("*").eq("user_id", userId).maybeSingle();
+      renderProfileView(profile);
+
+      document.getElementById("profile-edit-toggle").addEventListener("click", () => {
+        const editWrap = document.getElementById("profile-edit-wrap");
+        const isOpen = editWrap.style.display !== "none";
+        if (isOpen) {
+          editWrap.style.display = "none";
+          return;
+        }
+        editWrap.style.display = "block";
+        const handle = renderJobseekerProfileEditForm(editWrap, profile);
+        document.getElementById("profile-edit-form").addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const updated = handle.collect();
+          const { error } = await supabase.from("jobseeker_profile").update(updated).eq("user_id", userId);
+          const msg = document.getElementById("profile-save-msg");
+          if (error) {
+            msg.textContent = "저장 실패";
+            console.error(error);
+            return;
+          }
+          msg.textContent = "저장되었습니다.";
+          Object.assign(profile, updated);
+          renderProfileView(profile);
+          editWrap.style.display = "none";
+        });
+      });
+
+      await renderApplications(userId);
+      await renderBookmarks(userId);
+      await renderScouts(userId);
+    }
+
+    function renderProfileView(profile) {
+      const el = document.getElementById("profile-view");
+      if (!profile) {
+        el.innerHTML = `<div class="empty-state">등록된 프로필이 없습니다.</div>`;
+        return;
+      }
+      el.innerHTML = `
+        <dl class="profile-summary" style="margin:0;">
+          <dt>학교 / 전공</dt><dd>${escapeHtml(profile.school || "-")} / ${escapeHtml(profile.major || "-")}</dd>
+          <dt>졸업 여부</dt><dd>${escapeHtml(profile.graduation_status || "-")}</dd>
+          <dt>학점</dt><dd>${profile.gpa != null ? `${profile.gpa} / ${profile.gpa_scale}` : "-"}</dd>
+          <dt>경력 연차</dt><dd>${Number(profile.career_years || 0).toFixed(1)}년</dd>
+          <dt>보유 기술</dt><dd>${(profile.skills || []).map((s) => `<span class="chip">${escapeHtml(s)}</span>`).join(" ") || "-"}</dd>
+          <dt>자격증</dt><dd>${(profile.certifications || []).join(", ") || "-"}</dd>
+        </dl>`;
+    }
+
+    async function renderApplications(userId) {
+      const { data } = await supabase
+        .from("applications")
+        .select("id, applied_at, status, jobs(id, name, company_id, companies(name))")
+        .eq("user_id", userId)
+        .order("applied_at", { ascending: false });
+
+      const el = document.getElementById("applications-list");
+      if (!data?.length) {
+        el.innerHTML = `<div class="empty-state">아직 지원한 공고가 없습니다 → 공고 둘러보기에서 지원해보세요.</div>`;
+        return;
+      }
+      el.innerHTML = data
+        .map(
+          (a) => `
+        <div class="list-row">
+          <div>
+            <div class="title">${escapeHtml(a.jobs?.name || "삭제된 공고")}</div>
+            <div class="sub">${escapeHtml(a.jobs?.companies?.name || "")}</div>
+          </div>
+          <span class="pill pill-good">지원함</span>
+        </div>`
+        )
+        .join("");
+    }
+
+    async function renderBookmarks(userId) {
+      const { data } = await supabase
+        .from("bookmarks")
+        .select("job_id, jobs(id, name, company_id, companies(name))")
+        .eq("user_id", userId);
+
+      const el = document.getElementById("bookmarks-list");
+      if (!data?.length) {
+        el.innerHTML = `<div class="empty-state">찜한 공고가 없습니다.</div>`;
+        return;
+      }
+      el.innerHTML = data
+        .map(
+          (b) => `
+        <div class="list-row">
+          <a href="company-detail.html?company_id=${b.jobs?.company_id}&job_id=${b.job_id}">
+            <div class="title">${escapeHtml(b.jobs?.name || "삭제된 공고")}</div>
+            <div class="sub">${escapeHtml(b.jobs?.companies?.name || "")}</div>
+          </a>
+          <button class="btn btn-ghost btn-sm remove-bookmark" data-job-id="${b.job_id}">찜 해제</button>
+        </div>`
+        )
+        .join("");
+
+      el.querySelectorAll(".remove-bookmark").forEach((btn) => {
+        btn.addEventListener("click", async () => {
+          await supabase.from("bookmarks").delete().eq("user_id", userId).eq("job_id", Number(btn.dataset.jobId));
+          renderBookmarks(userId);
+        });
+      });
+    }
+
+    async function renderScouts(userId) {
+      const { data: scouts } = await supabase
+        .from("scouts")
+        .select("*")
+        .eq("jobseeker_id", userId)
+        .order("sent_at", { ascending: false });
+
+      const el = document.getElementById("scouts-list");
+      if (!scouts?.length) {
+        el.innerHTML = `<div class="empty-state">받은 스카웃 제안이 없습니다.</div>`;
+        return;
+      }
+
+      const companyIds = [...new Set(scouts.map((s) => s.company_user_id))];
+      const { data: companyProfiles } = await supabase
+        .from("company_profile")
+        .select("user_id, company_name")
+        .in("user_id", companyIds);
+      const companyNameMap = Object.fromEntries((companyProfiles || []).map((c) => [c.user_id, c.company_name]));
+
+      el.innerHTML = scouts
+        .map((s) => {
+          const isExpired = s.status === "sent" && new Date(s.expires_at) < new Date();
+          const displayStatus = isExpired ? "expired" : s.status;
+          const statusMap = {
+            sent: { label: "대기중", cls: "pill-navy" },
+            accepted: { label: "수락함", cls: "pill-good" },
+            rejected: { label: "거절함", cls: "pill-muted" },
+            expired: { label: "만료됨", cls: "pill-muted" },
+          };
+          const st = statusMap[displayStatus];
+          const actions =
+            displayStatus === "sent"
+              ? `<button class="btn btn-secondary btn-sm scout-accept" data-id="${s.id}">수락</button>
+                 <button class="btn btn-ghost btn-sm scout-reject" data-id="${s.id}">거절</button>`
+              : "";
+          return `
+          <div class="list-row">
+            <div>
+              <div class="title">${escapeHtml(companyNameMap[s.company_user_id] || "알 수 없는 기업")}</div>
+              <div class="sub">발송일 ${new Date(s.sent_at).toLocaleDateString("ko-KR")}</div>
+            </div>
+            <div class="row">
+              <span class="pill ${st.cls}">${st.label}</span>
+              ${actions}
+            </div>
+          </div>`;
+        })
+        .join("");
+
+      el.querySelectorAll(".scout-accept").forEach((btn) =>
+        btn.addEventListener("click", async () => {
+          await supabase.from("scouts").update({ status: "accepted" }).eq("id", btn.dataset.id);
+          renderScouts(userId);
+        })
+      );
+      el.querySelectorAll(".scout-reject").forEach((btn) =>
+        btn.addEventListener("click", async () => {
+          await supabase.from("scouts").update({ status: "rejected" }).eq("id", btn.dataset.id);
+          renderScouts(userId);
+        })
+      );
+    }
+
+    function escapeHtml(str) {
+      return String(str ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+    }
+  </script>
+</body>
+</html>
