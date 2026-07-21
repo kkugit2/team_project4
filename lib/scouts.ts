@@ -5,7 +5,7 @@ import { appError, ERROR_CODES, type AppError } from "./errors";
 import { genId, getTable, setTable, insertRow, removeRow, getSingleton, setSingleton } from "./localDb";
 import type { Scout } from "@/types";
 
-import { SEED_SCOUT_TEMPLATES } from "@/data/dummyData";
+// SEED_SCOUT_TEMPLATES는 삭제됨 (CSV 기반으로 변경)
 
 
 const THIRTY_DAYS_MS = 30 * 24 * 60 * 60 * 1000;
@@ -118,22 +118,9 @@ interface SeededFlags {
 }
 
 export function seedDemoScoutsForNewJobseeker(jobseekerId: string): void {
+  // TODO: Supabase 연동 시 CSV 데이터에서 샘플 회사의 스카웃 제안을 생성
+  // 현재는 빈 상태로 유지 (스카웃 기능은 사용자가 직접 발송)
   const flags = getSingleton<SeededFlags>(TABLE_KEYS.SEEDED_FLAGS) ?? { scoutsSeededFor: [] };
-  if (flags.scoutsSeededFor.includes(jobseekerId)) return;
-
-  const sentAt = new Date();
-  const seeded: Scout[] = SEED_SCOUT_TEMPLATES.map((tpl) => ({
-    id: genId("scout"),
-    companyId: tpl.companyId,
-    companyName: tpl.companyName,
-    jobseekerId,
-    message: tpl.message,
-    status: "sent",
-    sentAt: sentAt.toISOString(),
-    expiresAt: computeExpiresAt(sentAt).toISOString(),
-  }));
-  setTable(TABLE_KEYS.SCOUTS, [...allScouts(), ...seeded]);
-
   flags.scoutsSeededFor.push(jobseekerId);
   setSingleton(TABLE_KEYS.SEEDED_FLAGS, flags);
 }

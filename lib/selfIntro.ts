@@ -6,7 +6,7 @@ import { getJobseekerProfile } from "./profiles";
 import { hasApplied } from "./applications";
 import { generateFeedback } from "./mockLlm";
 
-import { findJobById, MOCK_CANDIDATES } from "@/data/dummyData";
+import { MOCK_CANDIDATES } from "@/data/dummyData";
 
 import type { SelfIntro, FeedbackResult, JobDetail, CandidateSummary, CompanyProfile } from "@/types";
 
@@ -65,12 +65,8 @@ export function listCandidatesForCompany(companyProfile: CompanyProfile): Candid
 
   const realCandidates: CandidateSummary[] = realShared.map((si) => {
     const profile = getJobseekerProfile(si.userId);
-    const job = findJobById(si.jobId);
-    const appliedToThisCompany = Boolean(
-      companyProfile.wantedCompanyId &&
-        job?.companyId === companyProfile.wantedCompanyId &&
-        hasApplied(si.userId, si.jobId)
-    );
+    // TODO: wantedCompanyId 비교는 API 라우트에서 처리 (csvLoader는 서버 전용)
+    const appliedToThisCompany = false;
     return {
       jobseekerId: si.userId,
       displayLabel: `지원자 ${si.userId.slice(-4).toUpperCase()}`,
@@ -89,8 +85,8 @@ export function listCandidatesForCompany(companyProfile: CompanyProfile): Candid
   // 기업 랜딩(4-2)을 혼자서도 데모할 수 있도록 시드된 가상 후보 — 실제 지원 여부는 데모 목적상
   // "이 후보가 실제로 이 공고에 지원했다"고 가정해 계산한다 (data/mockCandidates.ts 참고).
   const seededCandidates: CandidateSummary[] = MOCK_CANDIDATES.map((c) => {
-    const job = findJobById(c.jobId);
-    const appliedToThisCompany = Boolean(companyProfile.wantedCompanyId && job?.companyId === companyProfile.wantedCompanyId);
+    // TODO: wantedCompanyId 비교는 API 라우트에서 처리
+    const appliedToThisCompany = false;
     return {
       jobseekerId: c.jobseekerId,
       displayLabel: c.displayLabel,

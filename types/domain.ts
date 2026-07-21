@@ -19,6 +19,7 @@ export interface Job {
   companyId: string;
   companyName: string;
   companyColor: string;
+  companyLogoUrl?: string;
   category: string;
   position: string;
   location: string;

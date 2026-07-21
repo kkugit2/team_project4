@@ -2,8 +2,6 @@
 
 import type { CompanyProfile, Tag } from "@/types";
 
-import { MOCK_COMPANIES } from "@/data/dummyData";
-
 import { DynamicListField } from "./DynamicListField";
 
 export function CompanyProfileForm({
@@ -33,21 +31,16 @@ export function CompanyProfileForm({
       </div>
 
       <div className="field">
-        <label>원티드 등록 기업 연결 (선택)</label>
+        <label>원티드 등록 기업 ID (선택)</label>
         <p className="hint">
-          연결하면 해당 기업의 실제 공고에 지원한 구직자를 &quot;우리 회사 지원 여부&quot;로 식별할 수 있습니다.
+          기업 ID를 입력하면 해당 기업의 실제 공고에 지원한 구직자를 &quot;우리 회사 지원 여부&quot;로 식별할 수 있습니다.
         </p>
-        <select
+        <input
+          type="text"
+          placeholder="예: 6817"
           value={value.wantedCompanyId ?? ""}
           onChange={(e) => set("wantedCompanyId", e.target.value || undefined)}
-        >
-          <option value="">연결 안 함</option>
-          {MOCK_COMPANIES.map((c) => (
-            <option key={c.id} value={c.id}>
-              {c.name}
-            </option>
-          ))}
-        </select>
+        />
       </div>
 
       <div className="field">

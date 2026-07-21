@@ -24,7 +24,7 @@ export function JobCard({
     <article className={styles.card}>
       <Link className={styles.link} href={`/job/${job.id}`}>
         <div className={styles.head}>
-          <Logo name={job.companyName} color={job.companyColor} />
+          <Logo name={job.companyName} color={job.companyColor} imageUrl={job.companyLogoUrl} />
           <div>
             <h3>{job.companyName}</h3>
             <p className={styles.category}>{job.category}</p>
