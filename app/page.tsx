@@ -18,11 +18,12 @@ function JobseekerHome({ userId }: { userId: string }) {
   const [profileComplete, setProfileComplete] = useState(true);
 
   useEffect(() => {
-    const profile = getJobseekerProfile(userId);
-    setProfileComplete(isJobseekerProfileComplete(profile));
-    getJobs().then((jobs) => {
+    (async () => {
+      const profile = await getJobseekerProfile(userId);
+      setProfileComplete(isJobseekerProfileComplete(profile));
+      const jobs = await getJobs();
       setInsights(computeProfileInsights(profile, jobs, MOCK_CANDIDATES));
-    });
+    })();
   }, [userId]);
 
   return (

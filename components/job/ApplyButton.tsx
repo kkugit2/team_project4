@@ -52,10 +52,10 @@ export function ApplyButton({
     awaitingReturn.current = true;
   };
 
-  const confirmApplied = (didApply: boolean) => {
+  const confirmApplied = async (didApply: boolean) => {
     setShowConfirm(false);
     if (didApply && userId) {
-      addApplication(userId, jobId);
+      await addApplication(userId, jobId);
       showToast("지원현황에 기록되었습니다");
       onApplied();
     }

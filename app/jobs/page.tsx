@@ -22,6 +22,8 @@ export default function JobsPage() {
   const [sort, setSort] = useState<JobSort>("due");
   const [profile, setProfile] = useState<JobseekerProfile | null>(null);
   const [, forceRerender] = useState(0);
+  const [appliedJobs, setAppliedJobs] = useState<Set<string>>(new Set());
+  const [bookmarkedJobs, setBookmarkedJobs] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     getJobs().then(setJobs);
@@ -29,11 +31,27 @@ export default function JobsPage() {
 
   useEffect(() => {
     if (session?.role === "jobseeker") {
-      setProfile(getJobseekerProfile(session.userId));
+      (async () => {
+        const prof = await getJobseekerProfile(session.userId);
+        setProfile(prof);
+      })();
     } else {
       setProfile(null);
     }
   }, [session]);
+
+  useEffect(() => {
+    if (session?.role === "jobseeker") {
+      (async () => {
+        const { listApplications } = await import("@/lib/applications");
+        const { listBookmarks } = await import("@/lib/bookmarks");
+        const apps = await listApplications(session.userId);
+        const bookmarks = await listBookmarks(session.userId);
+        setAppliedJobs(new Set(apps.map((a) => a.jobId)));
+        setBookmarkedJobs(new Set(bookmarks.map((b) => b.jobId)));
+      })();
+    }
+  }, [session?.userId, session?.role]);
 
   const isJobseeker = session?.role === "jobseeker";
   const profileReady = isJobseeker && profile !== null && isJobseekerProfileComplete(profile);
@@ -66,12 +84,12 @@ export default function JobsPage() {
     return list;
   }, [scored, category, sort]);
 
-  const handleToggleBookmark = (jobId: string) => {
+  const handleToggleBookmark = async (jobId: string) => {
     if (!session) {
       showToast("로그인 후 이용할 수 있습니다");
       return;
     }
-    const bookmarked = toggleBookmark(session.userId, jobId);
+    const bookmarked = await toggleBookmark(session.userId, jobId);
     showToast(bookmarked ? "찜 목록에 추가했습니다" : "찜 목록에서 제거했습니다");
     forceRerender((n) => n + 1);
   };
@@ -112,8 +130,8 @@ export default function JobsPage() {
             key={job.id}
             job={job}
             matchResult={matchResult}
-            applied={session ? hasApplied(session.userId, job.id) : false}
-            bookmarked={session ? isBookmarked(session.userId, job.id) : false}
+            applied={appliedJobs.has(job.id)}
+            bookmarked={bookmarkedJobs.has(job.id)}
             onToggleBookmark={isJobseeker ? () => handleToggleBookmark(job.id) : undefined}
           />
         ))}

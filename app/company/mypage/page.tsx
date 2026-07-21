@@ -22,22 +22,33 @@ function CompanyMyPageContent() {
   const { showToast } = useToast();
   const companyId = session!.userId;
 
-  const [profile, setProfile] = useState<CompanyProfile>(() => getCompanyProfile(companyId));
+  const [profile, setProfile] = useState<CompanyProfile | null>(null);
   const [skillTags, setSkillTags] = useState<Tag[]>([]);
   const [viewed, setViewed] = useState<ViewedCandidate[]>([]);
   const [sentScouts, setSentScouts] = useState<Scout[]>([]);
   const [remainingQuota, setRemainingQuota] = useState(0);
 
   useEffect(() => {
+    (async () => {
+      const prof = await getCompanyProfile(companyId);
+      setProfile(prof);
+    })();
     getTags("skill").then(setSkillTags);
-    setViewed(listViewed(companyId));
-    setSentScouts(listSentScouts(companyId));
-    setRemainingQuota(remainingMonthlyQuota(companyId));
+    (async () => {
+      const viewedData = await listViewed(companyId);
+      setViewed(viewedData);
+      const scoutsData = await listSentScouts(companyId);
+      setSentScouts(scoutsData);
+      const quotaData = await remainingMonthlyQuota(companyId);
+      setRemainingQuota(quotaData);
+    })();
   }, [companyId]);
 
-  const saveProfile = () => {
-    updateCompanyProfile(profile);
-    showToast("인재상 정보가 저장되었습니다");
+  const saveProfile = async () => {
+    if (profile) {
+      await updateCompanyProfile(profile);
+      showToast("인재상 정보가 저장되었습니다");
+    }
   };
 
   return (
@@ -50,10 +61,14 @@ function CompanyMyPageContent() {
       <div style={{ display: "grid", gridTemplateColumns: "320px 1fr", gap: 24, alignItems: "start" }}>
         <div className="section-card">
           <h3>인재상 프로필</h3>
-          <CompanyProfileForm value={profile} onChange={setProfile} skillTags={skillTags} />
-          <button type="button" className="btn btn-primary" onClick={saveProfile} style={{ width: "100%" }}>
-            저장
-          </button>
+          {profile && (
+            <>
+              <CompanyProfileForm value={profile} onChange={setProfile} skillTags={skillTags} />
+              <button type="button" className="btn btn-primary" onClick={saveProfile} style={{ width: "100%" }}>
+                저장
+              </button>
+            </>
+          )}
         </div>
 
         <div>

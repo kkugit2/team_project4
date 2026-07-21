@@ -64,13 +64,24 @@ function CompanyLandingContent() {
   const [candidates, setCandidates] = useState<CandidateSummary[]>([]);
   const [sentScouts, setSentScouts] = useState<Scout[]>([]);
   const [remainingQuota, setRemainingQuota] = useState(0);
+  const [candidateContents, setCandidateContents] = useState<Record<string, string>>({});
 
-  const reload = useCallback(() => {
-    const profile = getCompanyProfile(companyId);
+  const reload = useCallback(async () => {
+    const profile = await getCompanyProfile(companyId);
     setCompanyProfile(profile);
-    setCandidates(listCandidatesForCompany(profile));
-    setSentScouts(listSentScouts(companyId));
-    setRemainingQuota(remainingMonthlyQuota(companyId));
+    const cands = await listCandidatesForCompany(profile);
+    setCandidates(cands);
+    const scouts = await listSentScouts(companyId);
+    setSentScouts(scouts);
+    const quota = await remainingMonthlyQuota(companyId);
+    setRemainingQuota(quota);
+
+    // Preload candidate contents
+    const contents: Record<string, string> = {};
+    for (const cand of cands) {
+      contents[cand.selfIntroId] = await getCandidateSelfIntroContent(cand);
+    }
+    setCandidateContents(contents);
   }, [companyId]);
 
   useEffect(() => {
@@ -97,15 +108,15 @@ function CompanyLandingContent() {
       .sort((a, b) => b.matchResult.score - a.matchResult.score);
   }, [candidates, companyProfile]);
 
-  const handleSendScout = (jobseekerId: string, message: string) => {
+  const handleSendScout = async (jobseekerId: string, message: string) => {
     if (!companyProfile) return;
-    const result = sendScout(companyId, companyProfile.companyName, jobseekerId, message);
+    const result = await sendScout(companyId, companyProfile.companyName, jobseekerId, message);
     if (isAppError(result)) {
       showToast(result.error.message);
       return;
     }
     showToast("스카웃을 발송했습니다");
-    reload();
+    await reload();
   };
 
   return (
@@ -127,10 +138,10 @@ function CompanyLandingContent() {
               rank={index + 1}
               candidate={candidate}
               matchResult={matchResult}
-              content={getCandidateSelfIntroContent(candidate)}
+              content={candidateContents[candidate.selfIntroId] || ""}
               alreadySent={sentJobseekerIds.has(candidate.jobseekerId)}
               remainingQuota={remainingQuota}
-              onView={() => recordView(companyId, candidate.jobseekerId)}
+              onView={async () => await recordView(companyId, candidate.jobseekerId)}
               onSendScout={(message) => handleSendScout(candidate.jobseekerId, message)}
             />
           ))}

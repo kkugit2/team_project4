@@ -23,7 +23,7 @@ function MyPageContent() {
   const { showToast } = useToast();
   const userId = session!.userId;
 
-  const [profile, setProfile] = useState<JobseekerProfile>(() => getJobseekerProfile(userId));
+  const [profile, setProfile] = useState<JobseekerProfile | null>(null);
   const [skillTags, setSkillTags] = useState<Tag[]>([]);
   const [applications, setApplications] = useState<Application[]>([]);
   const [bookmarks, setBookmarks] = useState<Bookmark[]>([]);
@@ -31,11 +31,12 @@ function MyPageContent() {
   const [jobsById, setJobsById] = useState<Record<string, Job>>({});
 
   const reload = useCallback(async () => {
-    const apps = listApplications(userId);
-    const marks = listBookmarks(userId);
+    const apps = await listApplications(userId);
+    const marks = await listBookmarks(userId);
     setApplications(apps);
     setBookmarks(marks);
-    setScouts(listReceivedScouts(userId));
+    const scoutData = await listReceivedScouts(userId);
+    setScouts(scoutData);
 
     const ids = Array.from(new Set([...apps.map((a) => a.jobId), ...marks.map((b) => b.jobId)]));
     const jobs = await Promise.all(ids.map((id) => getJob(id)));
@@ -47,40 +48,46 @@ function MyPageContent() {
   }, [userId]);
 
   useEffect(() => {
+    (async () => {
+      const prof = await getJobseekerProfile(userId);
+      setProfile(prof);
+    })();
     getTags("skill").then(setSkillTags);
     reload();
-  }, [reload]);
+  }, [reload, userId]);
 
-  const saveProfile = () => {
-    updateJobseekerProfile(profile);
-    showToast("프로필이 저장되었습니다");
+  const saveProfile = async () => {
+    if (profile) {
+      await updateJobseekerProfile(profile);
+      showToast("프로필이 저장되었습니다");
+    }
   };
 
-  const handleStatusChange = (jobId: string, status: ApplicationStatus) => {
-    updateApplicationStatus(userId, jobId, status);
-    reload();
+  const handleStatusChange = async (jobId: string, status: ApplicationStatus) => {
+    await updateApplicationStatus(userId, jobId, status);
+    await reload();
     showToast("지원 상태를 변경했습니다");
   };
 
-  const handleRemoveApplication = (jobId: string) => {
-    removeApplication(userId, jobId);
-    reload();
+  const handleRemoveApplication = async (jobId: string) => {
+    await removeApplication(userId, jobId);
+    await reload();
     showToast("지원현황에서 삭제했습니다");
   };
 
-  const handleRemoveBookmark = (jobId: string) => {
-    toggleBookmark(userId, jobId);
-    reload();
+  const handleRemoveBookmark = async (jobId: string) => {
+    await toggleBookmark(userId, jobId);
+    await reload();
     showToast("찜 목록에서 제거했습니다");
   };
 
-  const handleRespondScout = (scoutId: string, action: "accepted" | "rejected") => {
-    const result = respondToScout(scoutId, action);
+  const handleRespondScout = async (scoutId: string, action: "accepted" | "rejected") => {
+    const result = await respondToScout(scoutId, action);
     if (isAppError(result)) {
       showToast(result.error.message);
       return;
     }
-    reload();
+    await reload();
     showToast(action === "accepted" ? "스카웃을 수락했습니다" : "스카웃을 거절했습니다");
   };
 
@@ -94,10 +101,14 @@ function MyPageContent() {
       <div style={{ display: "grid", gridTemplateColumns: "320px 1fr", gap: 24, alignItems: "start" }}>
         <div className="section-card">
           <h3>프로필 요약 · 수정</h3>
-          <JobseekerProfileForm value={profile} onChange={setProfile} skillTags={skillTags} />
-          <button type="button" className="btn btn-primary" onClick={saveProfile} style={{ width: "100%" }}>
-            저장
-          </button>
+          {profile && (
+            <>
+              <JobseekerProfileForm value={profile} onChange={setProfile} skillTags={skillTags} />
+              <button type="button" className="btn btn-primary" onClick={saveProfile} style={{ width: "100%" }}>
+                저장
+              </button>
+            </>
+          )}
         </div>
 
         <div>

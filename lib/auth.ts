@@ -15,13 +15,14 @@ interface AuthUserRecord {
   role: Role;
 }
 
-function findUserByEmail(email: string): AuthUserRecord | undefined {
-  return getTable<AuthUserRecord>(TABLE_KEYS.AUTH_USERS).find((u) => u.email === email);
+async function findUserByEmail(email: string): Promise<AuthUserRecord | undefined> {
+  const users = await getTable<AuthUserRecord>(TABLE_KEYS.AUTH_USERS);
+  return users.find((u) => u.email === email);
 }
 
-function createSession(user: AuthUserRecord): Session {
+async function createSession(user: AuthUserRecord): Promise<Session> {
   const session: Session = { userId: user.userId, email: user.email, role: user.role };
-  setSingleton(TABLE_KEYS.SESSION, session);
+  await setSingleton(TABLE_KEYS.SESSION, session);
   return session;
 }
 
@@ -31,18 +32,19 @@ export interface JobseekerSignupInput {
   profile?: Partial<Omit<JobseekerProfile, "userId">>;
 }
 
-export function signUpJobseeker(input: JobseekerSignupInput): Session | AppError {
-  if (findUserByEmail(input.email)) {
+export async function signUpJobseeker(input: JobseekerSignupInput): Promise<Session | AppError> {
+  const existingUser = await findUserByEmail(input.email);
+  if (existingUser) {
     return appError(ERROR_CODES.EMAIL_ALREADY_EXISTS, "이미 가입된 이메일입니다.");
   }
   const userId = genId("user");
   const user: AuthUserRecord = { userId, email: input.email, password: input.password, role: "jobseeker" };
-  insertRow(TABLE_KEYS.AUTH_USERS, user);
+  await insertRow(TABLE_KEYS.AUTH_USERS, user);
 
   const profile: JobseekerProfile = { ...emptyJobseekerProfile(userId), ...input.profile, userId };
-  upsertRow<JobseekerProfile>(TABLE_KEYS.JOBSEEKER_PROFILE, profile, (p) => p.userId === userId);
+  await upsertRow<JobseekerProfile>(TABLE_KEYS.JOBSEEKER_PROFILE, profile, (p) => p.userId === userId);
 
-  seedDemoScoutsForNewJobseeker(userId);
+  await seedDemoScoutsForNewJobseeker(userId);
 
   return createSession(user);
 }
@@ -54,13 +56,14 @@ export interface CompanySignupInput {
   profile?: Partial<Omit<CompanyProfile, "userId" | "companyName">>;
 }
 
-export function signUpCompany(input: CompanySignupInput): Session | AppError {
-  if (findUserByEmail(input.email)) {
+export async function signUpCompany(input: CompanySignupInput): Promise<Session | AppError> {
+  const existingUser = await findUserByEmail(input.email);
+  if (existingUser) {
     return appError(ERROR_CODES.EMAIL_ALREADY_EXISTS, "이미 가입된 이메일입니다.");
   }
   const userId = genId("user");
   const user: AuthUserRecord = { userId, email: input.email, password: input.password, role: "company" };
-  insertRow(TABLE_KEYS.AUTH_USERS, user);
+  await insertRow(TABLE_KEYS.AUTH_USERS, user);
 
   const profile: CompanyProfile = {
     ...emptyCompanyProfile(userId, input.companyName),
@@ -68,23 +71,23 @@ export function signUpCompany(input: CompanySignupInput): Session | AppError {
     userId,
     companyName: input.companyName,
   };
-  upsertRow<CompanyProfile>(TABLE_KEYS.COMPANY_PROFILE, profile, (p) => p.userId === userId);
+  await upsertRow<CompanyProfile>(TABLE_KEYS.COMPANY_PROFILE, profile, (p) => p.userId === userId);
 
   return createSession(user);
 }
 
-export function login(email: string, password: string): Session | AppError {
-  const user = findUserByEmail(email);
+export async function login(email: string, password: string): Promise<Session | AppError> {
+  const user = await findUserByEmail(email);
   if (!user || user.password !== password) {
     return appError(ERROR_CODES.INVALID_CREDENTIALS, "이메일 또는 비밀번호가 올바르지 않습니다.");
   }
   return createSession(user);
 }
 
-export function logout(): void {
-  setSingleton(TABLE_KEYS.SESSION, null);
+export async function logout(): Promise<void> {
+  await setSingleton(TABLE_KEYS.SESSION, null);
 }
 
-export function getSession(): Session | null {
+export async function getSession(): Promise<Session | null> {
   return getSingleton<Session>(TABLE_KEYS.SESSION);
 }
