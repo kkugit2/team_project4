@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>매치보드 — 스카웃 관리</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div id="topnav-root"></div>
+
+  <main class="container page-body">
+    <h1>스카웃 관리</h1>
+
+    <div class="card" style="margin-bottom:20px; display:flex; align-items:center; justify-content:space-between;">
+      <span>이번 달 발송 건수</span>
+      <span class="mono" style="font-size:18px; font-weight:700; color:var(--navy);" id="quota-display">- / 10건</span>
+    </div>
+
+    <div class="row wrap" id="status-filters" style="margin-bottom:16px;"></div>
+
+    <div class="card">
+      <table>
+        <thead>
+          <tr>
+            <th>지원자</th>
+            <th>발송일</th>
+            <th>만료 기한</th>
+            <th>상태</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="scout-tbody"></tbody>
+      </table>
+      <div id="empty-state" class="empty-state" style="display:none;">해당 상태의 스카웃 내역이 없습니다.</div>
+    </div>
+  </main>
+
+  <script type="module">
+    import { initNav } from "./js/nav.js";
+    import { supabase, requireRole } from "./js/supabaseClient.js";
+
+    const auth = await requireRole(["company"]);
+    if (!auth) throw new Error("redirecting");
+    await initNav("scouts");
+
+    const { data: scouts } = await supabase
+      .from("scouts")
+      .select("*")
+      .eq("company_user_id", auth.user.id)
+      .order("sent_at", { ascending: false });
+
+    const list = scouts || [];
+
+    const jobseekerIds = [...new Set(list.map((s) => s.jobseeker_id))];
+    const { data: candidateInfo } = await supabase
+      .from("self_intros_anonymized")
+      .select("jobseeker_id, school, major")
+      .in("jobseeker_id", jobseekerIds.length ? jobseekerIds : ["00000000-0000-0000-0000-000000000000"]);
+    const infoMap = Object.fromEntries((candidateInfo || []).map((c) => [c.jobseeker_id, c]));
+
+    const now = new Date();
+    const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+    const sentThisMonth = list.filter((s) => new Date(s.sent_at) >= monthStart).length;
+    document.getElementById("quota-display").textContent = `${sentThisMonth} / 10건`;
+
+    function effectiveStatus(s) {
+      if (s.status === "sent" && new Date(s.expires_at) < now) return "expired";
+      return s.status;
+    }
+
+    const STATUS_LABELS = { all: "전체", sent: "대기중", accepted: "수락됨", rejected: "거절됨", expired: "만료됨" };
+    let activeStatus = "all";
+
+    renderFilters();
+    render();
+
+    function renderFilters() {
+      const wrap = document.getElementById("status-filters");
+      wrap.innerHTML = Object.entries(STATUS_LABELS)
+        .map(([key, label]) => `<button class="filter-pill ${key === activeStatus ? "active" : ""}" data-status="${key}">${label}</button>`)
+        .join("");
+      wrap.querySelectorAll(".filter-pill").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          activeStatus = btn.dataset.status;
+          renderFilters();
+          render();
+        });
+      });
+    }
+
+    function render() {
+      const filtered = list.filter((s) => activeStatus === "all" || effectiveStatus(s) === activeStatus);
+      document.getElementById("empty-state").style.display = filtered.length ? "none" : "block";
+
+      const statusPillClass = { sent: "pill-navy", accepted: "pill-good", rejected: "pill-muted", expired: "pill-muted" };
+
+      document.getElementById("scout-tbody").innerHTML = filtered
+        .map((s) => {
+          const status = effectiveStatus(s);
+          const info = infoMap[s.jobseeker_id];
+          const label = info ? `${escapeHtml(info.school || "학교 미기재")} · ${escapeHtml(info.major || "전공 미기재")}` : `후보자 #${s.jobseeker_id.slice(0, 8)}`;
+          const daysLeft = Math.max(0, Math.ceil((new Date(s.expires_at) - now) / 86400000));
+          const expiryText = status === "sent" ? `${daysLeft}일 남음` : "-";
+          const action = status === "sent" ? `<button class="btn btn-ghost btn-sm cancel-btn" data-id="${s.id}">제안 취소</button>` : "";
+
+          return `
+          <tr>
+            <td>${label}</td>
+            <td>${new Date(s.sent_at).toLocaleDateString("ko-KR")}</td>
+            <td>${expiryText}</td>
+            <td><span class="pill ${statusPillClass[status]}">${STATUS_LABELS[status]}</span></td>
+            <td>${action}</td>
+          </tr>`;
+        })
+        .join("");
+
+      document.querySelectorAll(".cancel-btn").forEach((btn) => {
+        btn.addEventListener("click", async () => {
+          await supabase.from("scouts").delete().eq("id", btn.dataset.id);
+          const idx = list.findIndex((s) => s.id === btn.dataset.id);
+          if (idx >= 0) list.splice(idx, 1);
+          render();
+        });
+      });
+    }
+
+    function escapeHtml(str) {
+      return String(str ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+    }
+  </script>
+</body>
+</html>

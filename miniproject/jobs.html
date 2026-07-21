@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>매치보드 — 공고 둘러보기</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/style.css" />
+<style>
+  .job-card { display: flex; flex-direction: column; gap: 10px; cursor: pointer; }
+  .job-card .top-row { display: flex; align-items: center; gap: 10px; }
+  .job-card .logo { width: 40px; height: 40px; border-radius: 8px; object-fit: cover; background: var(--navy-100); flex-shrink: 0; }
+  .job-card .company-name { font-size: 13px; color: var(--muted); }
+  .job-card .job-name { font-size: 15px; font-weight: 700; line-height: 1.35; min-height: 40px; }
+  .job-card .bottom-row { display: flex; align-items: center; justify-content: space-between; margin-top: auto; }
+  .bookmark-btn {
+    background: none;
+    border: none;
+    font-size: 28px;
+    cursor: pointer;
+    color: var(--line);
+    line-height: 1;
+    padding: 8px;
+    transition: all 0.2s ease;
+  }
+  .bookmark-btn:hover {
+    transform: scale(1.2);
+    color: var(--warn);
+  }
+  .bookmark-btn.active {
+    color: var(--warn);
+  }
+  .login-banner { background: var(--navy-100); border-radius: var(--radius-card); padding: 14px 18px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
+</style>
+</head>
+<body>
+  <div id="topnav-root"></div>
+
+  <main class="container page-body">
+    <h1>공고 둘러보기</h1>
+
+    <div id="login-banner" class="login-banner" style="display:none;">
+      <span>로그인하면 합격확률·찜·지원현황을 확인할 수 있어요.</span>
+      <a class="btn btn-secondary btn-sm" href="index.html">로그인</a>
+    </div>
+
+    <div class="row between wrap" style="margin-bottom:20px;">
+      <div class="row wrap" id="filter-pills"></div>
+      <div class="row">
+        <select id="sort-select">
+          <option value="match">매칭도순</option>
+          <option value="due">마감임박순</option>
+          <option value="latest">최신순</option>
+        </select>
+        <label class="row" style="font-size:13px; gap:6px; margin:0;" id="bookmark-filter-wrap" style="display:none;">
+          <input type="checkbox" id="bookmark-filter" />
+          찜한 공고만
+        </label>
+      </div>
+    </div>
+
+    <section id="job-grid" class="grid-cards"></section>
+    <div id="empty-state" class="empty-state" style="display:none;">
+      조건에 맞는 공고가 없습니다 → 다른 직군 필터를 선택해보세요.
+    </div>
+  </main>
+
+  <script type="module">
+    import { initNav } from "./js/nav.js";
+    import { supabase, getCurrentProfile } from "./js/supabaseClient.js";
+    import { computeJobMatchScore } from "./js/matching.js";
+    import { gaugeHtml } from "./js/gauge.js";
+
+    const { user, role } = await getCurrentProfile();
+    await initNav("jobs");
+
+    const isJobseeker = !!user && role === "jobseeker";
+    if (!isJobseeker) {
+      document.getElementById("login-banner").style.display = "flex";
+    } else {
+      document.getElementById("bookmark-filter-wrap").style.display = "flex";
+    }
+
+    const { data: jobs, error: jobsErr } = await supabase
+      .from("jobs")
+      .select("id, company_id, name, category_parent, employment_type, due_time, annual_from, annual_to, skill_tags, requirements, preferred_points, companies(name, logo_url)")
+      .order("id", { ascending: false });
+    if (jobsErr) console.error(jobsErr);
+
+    let profile = null;
+    let bookmarkedIds = new Set();
+    let appliedIds = new Set();
+
+    if (isJobseeker) {
+      const { data: p } = await supabase
+        .from("jobseeker_profile")
+        .select("*")
+        .eq("user_id", user.id)
+        .maybeSingle();
+      profile = p;
+
+      const { data: bookmarks } = await supabase.from("bookmarks").select("job_id").eq("user_id", user.id);
+      bookmarkedIds = new Set((bookmarks || []).map((b) => b.job_id));
+
+      const { data: applications } = await supabase.from("applications").select("job_id").eq("user_id", user.id);
+      appliedIds = new Set((applications || []).map((a) => a.job_id));
+    }
+
+    const allJobs = jobs || [];
+    const categories = [...new Set(allJobs.map((j) => j.category_parent).filter(Boolean))].sort();
+
+    let activeCategory = "all";
+    let activeSort = "match";
+    let bookmarkOnly = false;
+
+    renderFilterPills();
+    render();
+
+    document.getElementById("sort-select").addEventListener("change", (e) => {
+      activeSort = e.target.value;
+      render();
+    });
+    document.getElementById("bookmark-filter")?.addEventListener("change", (e) => {
+      bookmarkOnly = e.target.checked;
+      render();
+    });
+
+    function renderFilterPills() {
+      const wrap = document.getElementById("filter-pills");
+      const pills = ["all", ...categories];
+      wrap.innerHTML = pills
+        .map(
+          (c) =>
+            `<button class="filter-pill ${c === activeCategory ? "active" : ""}" data-cat="${escapeAttr(c)}">${c === "all" ? "전체" : escapeAttr(c)}</button>`
+        )
+        .join("");
+      wrap.querySelectorAll(".filter-pill").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          activeCategory = btn.dataset.cat;
+          renderFilterPills();
+          render();
+        });
+      });
+    }
+
+    function render() {
+      let list = allJobs.filter((j) => activeCategory === "all" || j.category_parent === activeCategory);
+      if (bookmarkOnly) list = list.filter((j) => bookmarkedIds.has(j.id));
+
+      const withScore = list.map((j) => ({
+        job: j,
+        match: profile ? computeJobMatchScore(profile, j) : null,
+      }));
+
+      if (activeSort === "match" && profile) {
+        withScore.sort((a, b) => (b.match?.score || 0) - (a.match?.score || 0));
+      } else if (activeSort === "due") {
+        withScore.sort((a, b) => new Date(a.job.due_time || "9999-12-31") - new Date(b.job.due_time || "9999-12-31"));
+      } else {
+        withScore.sort((a, b) => b.job.id - a.job.id);
+      }
+
+      const grid = document.getElementById("job-grid");
+      document.getElementById("empty-state").style.display = withScore.length ? "none" : "block";
+
+      grid.innerHTML = withScore
+        .map(({ job, match }) => {
+          const company = job.companies || {};
+          const logo = company.logo_url
+            ? `<img class="logo" src="${escapeAttr(company.logo_url)}" alt="" />`
+            : `<div class="logo"></div>`;
+
+          let badgeHtml;
+          if (!isJobseeker) {
+            badgeHtml = `<span class="pill pill-muted">로그인 후 확인</span>`;
+          } else if (!profile || (!profile.career_years && !profile.skills?.length)) {
+            badgeHtml = `<span class="pill pill-muted">마이페이지에서 경력 입력 시 확인 가능</span>`;
+          } else {
+            badgeHtml = `<div style="display:flex; align-items:center; gap:8px;">${gaugeHtml(match.score, { size: 56, stroke: 6 })}<span style="font-size:12px; color:var(--muted);">AI 예측</span></div>`;
+          }
+
+          const appliedBadge = appliedIds.has(job.id) ? `<span class="pill pill-good">지원함</span>` : "";
+          const bookmarkBtn = isJobseeker
+            ? `<button class="bookmark-btn ${bookmarkedIds.has(job.id) ? "active" : ""}" data-job-id="${job.id}" title="찜하기">${bookmarkedIds.has(job.id) ? "♥" : "♡"}</button>`
+            : "";
+
+          return `
+            <div class="card job-card" data-company-id="${job.company_id}" data-job-id="${job.id}">
+              <div class="top-row">
+                ${logo}
+                <div>
+                  <div class="company-name">${escapeAttr(company.name || "")}</div>
+                  <span class="chip">${escapeAttr(job.category_parent || "")}</span>
+                </div>
+              </div>
+              <div class="job-name">${escapeAttr(job.name)}</div>
+              <div class="row wrap" style="font-size:12px; color:var(--muted);">
+                <span>마감 ${job.due_time ? escapeAttr(job.due_time) : "상시"}</span>
+                ${appliedBadge}
+              </div>
+              <div class="bottom-row">
+                ${badgeHtml}
+                ${bookmarkBtn}
+              </div>
+            </div>`;
+        })
+        .join("");
+
+      grid.querySelectorAll(".job-card").forEach((card) => {
+        card.addEventListener("click", (e) => {
+          if (e.target.closest(".bookmark-btn")) return;
+          const companyId = card.dataset.companyId;
+          const jobId = card.dataset.jobId;
+          window.location.href = `company-detail.html?company_id=${companyId}&job_id=${jobId}`;
+        });
+      });
+
+      grid.querySelectorAll(".bookmark-btn").forEach((btn) => {
+        btn.addEventListener("click", async (e) => {
+          e.stopPropagation();
+          const jobId = Number(btn.dataset.jobId);
+          if (bookmarkedIds.has(jobId)) {
+            await supabase.from("bookmarks").delete().eq("user_id", user.id).eq("job_id", jobId);
+            bookmarkedIds.delete(jobId);
+          } else {
+            await supabase.from("bookmarks").insert({ user_id: user.id, job_id: jobId });
+            bookmarkedIds.add(jobId);
+          }
+          render();
+        });
+      });
+    }
+
+    function escapeAttr(str) {
+      return String(str ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+    }
+  </script>
+</body>
+</html>
