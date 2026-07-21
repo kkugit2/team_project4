@@ -40,16 +40,20 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
   useEffect(() => {
     if (!job || !session) return;
     if (session.role === "jobseeker") {
-      const profile = getJobseekerProfile(session.userId);
-      if (isJobseekerProfileComplete(profile)) {
-        const result = computeJobseekerPassProbability(
-          { gpa: profile.gpa, gpaScale: profile.gpaScale, skillTagIds: profile.skillTagIds, careerHistory: profile.careerHistory },
-          { preferredGpaMin: null, preferredSkillTagIds: job.skillTagIds, preferredExperienceType: [], internshipRequired: false }
-        );
-        setMatchResult(result);
-      }
-      setApplication(getApplication(session.userId, job.id));
-      setBookmarked(isBookmarked(session.userId, job.id));
+      (async () => {
+        const profile = await getJobseekerProfile(session.userId);
+        if (isJobseekerProfileComplete(profile)) {
+          const result = computeJobseekerPassProbability(
+            { gpa: profile.gpa, gpaScale: profile.gpaScale, skillTagIds: profile.skillTagIds, careerHistory: profile.careerHistory },
+            { preferredGpaMin: null, preferredSkillTagIds: job.skillTagIds, preferredExperienceType: [], internshipRequired: false }
+          );
+          setMatchResult(result);
+        }
+        const app = await getApplication(session.userId, job.id);
+        setApplication(app);
+        const bookmarked = await isBookmarked(session.userId, job.id);
+        setBookmarked(bookmarked);
+      })();
     }
   }, [job, session]);
 
@@ -65,13 +69,14 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
 
   const isJobseeker = session?.role === "jobseeker";
 
-  const handleToggleBookmark = () => {
+  const handleToggleBookmark = async () => {
     if (!session) {
       showToast("로그인 후 이용할 수 있습니다");
       return;
     }
-    setBookmarked(toggleBookmark(session.userId, job.id));
-    showToast(bookmarked ? "찜 목록에서 제거했습니다" : "찜 목록에 추가했습니다");
+    const newBookmarked = await toggleBookmark(session.userId, job.id);
+    setBookmarked(newBookmarked);
+    showToast(newBookmarked ? "찜 목록에 추가했습니다" : "찜 목록에서 제거했습니다");
   };
 
   return (
@@ -92,7 +97,12 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
                 jobId={job.id}
                 userId={session?.userId ?? null}
                 application={application}
-                onApplied={() => setApplication(getApplication(session!.userId, job.id))}
+                onApplied={() => {
+                  (async () => {
+                    const app = await getApplication(session!.userId, job.id);
+                    setApplication(app);
+                  })();
+                }}
               />
             )}
             {isJobseeker && (

@@ -1,16 +1,24 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { MOCK_JOBS, MOCK_COMPANIES } from "@/data/dummyData";
+import { searchJobs } from "@/lib/csvLoader";
 
 
 export async function GET(request: NextRequest) {
-  const query = (request.nextUrl.searchParams.get("q") ?? "").trim().toLowerCase();
-  if (!query) return NextResponse.json({ jobs: [], companies: [] });
+  try {
+    const query = (request.nextUrl.searchParams.get("q") ?? "").trim().toLowerCase();
+    if (!query) return NextResponse.json({ jobs: [], companies: [] });
 
-  const jobs = MOCK_JOBS.filter(
-    (j) => j.position.toLowerCase().includes(query) || j.companyName.toLowerCase().includes(query)
-  );
-  const companies = MOCK_COMPANIES.filter((c) => c.name.toLowerCase().includes(query));
+    const jobs = searchJobs(query);
 
-  return NextResponse.json({ jobs, companies });
+    // TODO: Supabase와 연동 시 실제 회사 데이터를 검색
+    const companies: any[] = [];
+
+    return NextResponse.json({ jobs, companies });
+  } catch (error) {
+    console.error("Error searching jobs:", error);
+    return NextResponse.json(
+      { error: "Search failed" },
+      { status: 500 }
+    );
+  }
 }

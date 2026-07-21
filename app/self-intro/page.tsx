@@ -40,11 +40,13 @@ function SelfIntroPageContent() {
       showToast("공고 정보를 불러올 수 없습니다");
       return;
     }
-    const selfIntro = submitSelfIntro({ userId: session.userId, jobId, content, sharedWithCompany: consent });
-    const result = generateAndStoreFeedback(selfIntro.id, job);
-    setFeedback(result ?? getFeedback(selfIntro.id));
+    const selfIntro = await submitSelfIntro({ userId: session.userId, jobId, content, sharedWithCompany: consent });
+    const result = await generateAndStoreFeedback(selfIntro.id, job);
+    const feedback = result ?? (await getFeedback(selfIntro.id));
+    setFeedback(feedback);
 
-    const others = listSelfIntrosForJob(jobId)
+    const allIntros = await listSelfIntrosForJob(jobId);
+    const others = allIntros
       .filter((si) => si.id !== selfIntro.id)
       .map((si) => si.content);
     setComparison(compareToCompetitors(content, others));

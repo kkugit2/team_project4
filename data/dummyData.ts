@@ -79,73 +79,8 @@ export function findTagsByIds(ids: number[]): Tag[] {
   return ids.map((id) => findTagById(id)).filter((t): t is Tag => Boolean(t));
 }
 
-// ---- 회사 · 공고: companies 48개를 회사 1개 + 공고 1개로 1:1 변환 ----
-
-const COMPANY_COLORS = ["#2563eb", "#0891b2", "#16a34a", "#f59e0b", "#9333ea", "#1d4ed8", "#0f766e", "#db2777", "#b45309", "#4f46e5"];
-const LOCATIONS = ["서울 강남구", "서울 서초구", "경기 판교", "서울 송파구", "서울 마포구", "서울 성동구", "경기 성남시", "서울 영등포구"];
-
-const POSITION_BY_CATEGORY: Record<string, string> = {
-  "서버/백엔드": "백엔드 개발자",
-  프론트엔드: "프론트엔드 개발자",
-  "데이터/ML": "데이터/ML 엔지니어",
-  모바일: "모바일 개발자",
-  "게임/그래픽스": "게임 클라이언트 개발자",
-  "시스템/임베디드": "임베디드 소프트웨어 엔지니어",
-  "인프라/DevOps": "DevOps 엔지니어",
-};
-
-function pad2(n: number): string {
-  return String(n).padStart(2, "0");
-}
-
-export const MOCK_COMPANIES: Company[] = rawCompanies.map((c, i) => ({
-  id: `c${i + 1}`,
-  name: c.name,
-  color: COMPANY_COLORS[i % COMPANY_COLORS.length],
-  description: `${c.name}은(는) ${c.preferred_skills.join(", ")} 역량을 갖춘 인재를 찾고 있습니다.`,
-  benefits: "복지 정보는 회사 채용 페이지에서 확인할 수 있어요.",
-  cultureTagIds: [],
-}));
-
-export function findCompanyById(id: string): Company | undefined {
-  return MOCK_COMPANIES.find((c) => c.id === id);
-}
-
-export const MOCK_JOBS: JobDetail[] = rawCompanies.map((c, i) => {
-  const category = inferCategory(c.preferred_skills);
-  const newHire = 38000000 + (i % 8) * 1000000;
-  const requirementParts = [
-    `선호 기술: ${c.preferred_skills.join(", ")}`,
-    `학점 ${c.preferred_gpa_min} 이상 (4.5 만점 기준)`,
-    `선호 경험: ${c.preferred_experience_type.join(", ")}`,
-  ];
-  if (c.internship_required) requirementParts.push("인턴십 경험 필수");
-
-  return {
-    id: `j${i + 1}`,
-    companyId: `c${i + 1}`,
-    companyName: c.name,
-    companyColor: COMPANY_COLORS[i % COMPANY_COLORS.length],
-    category,
-    position: POSITION_BY_CATEGORY[category] ?? "소프트웨어 엔지니어",
-    location: LOCATIONS[i % LOCATIONS.length],
-    dueTime: i % 9 === 0 ? null : `2026-08-${pad2((i % 28) + 1)}`,
-    applyUrl: `https://example.com/careers/${i + 1}`,
-    skillTagIds: toSkillTagIds(c.preferred_skills),
-    salary: { newHire, average: newHire + 7000000 },
-    intro: `${c.name}은(는) ${c.preferred_skills.join(", ")} 역량을 갖춘 인재를 찾고 있습니다.`,
-    mainTasks: `${c.preferred_skills.join(" · ")} 기반 서비스 개발 및 운영`,
-    requirements: requirementParts.join(" · "),
-    preferredPoints: `${c.preferred_experience_type.join("/")} 경험 보유자 우대`,
-    hireRounds: "서류전형 → 실무면접 → 최종면접",
-    benefits: "복지 정보는 회사 채용 페이지에서 확인할 수 있어요.",
-    promoImages: [],
-  };
-});
-
-export function findJobById(id: string): JobDetail | undefined {
-  return MOCK_JOBS.find((j) => j.id === id);
-}
+// 회사 · 공고 데이터는 CSV(jobs.csv, companies.csv)에서 로드
+// lib/csvLoader.ts 참조
 
 // ---- 데모 지원자: jobseekers 49명을 기업용 랭킹(4-2) 시드 지원자로 변환 ----
 
@@ -173,19 +108,8 @@ function indexToLetters(i: number): string {
   return label;
 }
 
-/** 스킬 교집합이 가장 큰 공고를 결정적으로 선택 (동률이면 앞선 공고) */
-function bestMatchingJobId(skillTagIds: number[]): string {
-  let best = MOCK_JOBS[0];
-  let bestOverlap = -1;
-  for (const job of MOCK_JOBS) {
-    const overlap = job.skillTagIds.filter((id) => skillTagIds.includes(id)).length;
-    if (overlap > bestOverlap) {
-      best = job;
-      bestOverlap = overlap;
-    }
-  }
-  return best.id;
-}
+// 주의: jobId는 CSV 공고 ID(374736 등)로 설정됨
+// 실제로는 lib/csvLoader의 getJobsFromCSV()에서 가져온 ID를 사용해야 함
 
 export const MOCK_CANDIDATES: MockCandidate[] = rawJobseekers.map((js, i) => {
   const skillTagIds = toSkillTagIds(js.skills);
@@ -193,6 +117,12 @@ export const MOCK_CANDIDATES: MockCandidate[] = rawJobseekers.map((js, i) => {
   const careerSentence = lastCareer
     ? `${lastCareer.company}에서 ${lastCareer.type}으로 근무한 경험이 있습니다.`
     : "학업과 프로젝트를 통해 실무 역량을 쌓고 있습니다.";
+
+  // 임시: CSV 공고 ID 매핑 (첫 공고 또는 skillTagIds 기반)
+  // 실제로는 getJobsFromCSV()로부터 가져와야 함
+  const csvJobIds = ["374736", "374735", "374288", "292867", "342694"];
+  const jobId = csvJobIds[i % csvJobIds.length];
+
   return {
     jobseekerId: `seed-${i + 1}`,
     displayLabel: `지원자 ${indexToLetters(i)}`,
@@ -208,21 +138,9 @@ export const MOCK_CANDIDATES: MockCandidate[] = rawJobseekers.map((js, i) => {
       isInternship: h.type === "인턴",
     })),
     selfIntroId: `seed-si-${i + 1}`,
-    jobId: bestMatchingJobId(skillTagIds),
+    jobId,
     content: `${js.skills.slice(0, 3).join(", ")}을(를) 다루는 ${js.major} 전공자입니다. ${careerSentence}`,
   };
 });
 
-// ---- 신규 구직자 스카웃함 데모 시드: 앞의 두 회사가 보낸 것으로 구성 ----
-
-export interface SeedScoutTemplate {
-  companyId: string;
-  companyName: string;
-  message: string;
-}
-
-export const SEED_SCOUT_TEMPLATES: SeedScoutTemplate[] = MOCK_COMPANIES.slice(0, 2).map((c) => ({
-  companyId: c.id,
-  companyName: c.name,
-  message: `${c.name}에서 프로필을 보고 관심이 있어 스카웃 제안을 드립니다. 편하실 때 확인 부탁드려요.`,
-}));
+// 스카웃 템플릿은 Supabase에서 관리됨

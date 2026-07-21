@@ -27,9 +27,11 @@ function ScoutManagementContent() {
   const [remainingQuota, setRemainingQuota] = useState(0);
   const [filter, setFilter] = useState<ScoutStatus | "all">("all");
 
-  const reload = useCallback(() => {
-    setScouts(listSentScouts(companyId));
-    setRemainingQuota(remainingMonthlyQuota(companyId));
+  const reload = useCallback(async () => {
+    const scoutData = await listSentScouts(companyId);
+    setScouts(scoutData);
+    const quotaData = await remainingMonthlyQuota(companyId);
+    setRemainingQuota(quotaData);
   }, [companyId]);
 
   useEffect(() => {
@@ -38,14 +40,14 @@ function ScoutManagementContent() {
 
   const filtered = useMemo(() => (filter === "all" ? scouts : scouts.filter((s) => s.status === filter)), [scouts, filter]);
 
-  const handleWithdraw = (scoutId: string) => {
-    const result = withdrawScout(companyId, scoutId);
+  const handleWithdraw = async (scoutId: string) => {
+    const result = await withdrawScout(companyId, scoutId);
     if (isAppError(result)) {
       showToast(result.error.message);
       return;
     }
     showToast("스카웃 제안을 취소했습니다");
-    reload();
+    await reload();
   };
 
   return (
