@@ -141,7 +141,13 @@ function CompanyLandingContent() {
               content={candidateContents[candidate.selfIntroId] || ""}
               alreadySent={sentJobseekerIds.has(candidate.jobseekerId)}
               remainingQuota={remainingQuota}
-              onView={async () => await recordView(companyId, candidate.jobseekerId)}
+              onView={async () => {
+                try {
+                  await recordView(companyId, candidate.jobseekerId);
+                } catch (err) {
+                  // viewed_candidates 기록 실패 무시 (선택사항)
+                }
+              }}
               onSendScout={(message) => handleSendScout(candidate.jobseekerId, message)}
             />
           ))}

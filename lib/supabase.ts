@@ -1,8 +1,9 @@
 import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
+// 환경변수 읽기 - 없으면 기본값 사용 (개발 중에도 작동하도록)
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://fekeiqjxzfibyzxukisk.supabase.co';
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZla2VpcWp4emZpYnl6eHVraXNrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQxMjgzOTMsImV4cCI6MjA5OTcwNDM5M30.49EQQg7JCiUbszIs9Vd2wzqT5pnG9tXCyRViTOwulVg';
+const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZla2VpcWp4emZpYnl6eHVraXNrIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4NDEyODM5MywiZXhwIjoyMDk5NzA0MzkzfQ.toSp95lsHpHytkgyrecWCemKD-31Qwby8evoovRpXwE';
 
 // 클라이언트 전용 (브라우저/클라이언트 컴포넌트)
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {

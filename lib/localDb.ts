@@ -110,12 +110,20 @@ export async function insertRow<T>(key: string, row: T): Promise<T> {
       .single();
 
     if (error) {
+      // viewed_candidates는 선택사항 기능이므로 에러 무시
+      if (tableName === 'viewed_candidates') {
+        return row as T;
+      }
       console.error(`Error inserting into ${tableName}:`, error);
       throw error;
     }
 
     return (data || row) as T;
   } catch (err) {
+    // viewed_candidates는 선택사항 기능이므로 에러 무시
+    if (getTableName(key) === 'viewed_candidates') {
+      return row as T;
+    }
     console.error(`Error in insertRow(${key}):`, err);
     throw err;
   }
